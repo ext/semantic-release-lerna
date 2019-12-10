@@ -1,11 +1,11 @@
 const {defaultTo, castArray} = require('lodash');
 const AggregateError = require('aggregate-error');
 const tempy = require('tempy');
-const setLegacyToken = require('./lib/set-legacy-token');
-const getPkg = require('./lib/get-pkg');
-const verifyNpmConfig = require('./lib/verify-config');
-const verifyNpmAuth = require('./lib/verify-auth');
-const addChannelNpm = require('./lib/add-channel');
+const setLegacyToken = require('@semantic-release/npm/lib/set-legacy-token');
+const getPkg = require('@semantic-release/npm/lib/get-pkg');
+const verifyNpmConfig = require('@semantic-release/npm/lib/verify-config');
+const verifyNpmAuth = require('@semantic-release/npm/lib/verify-auth');
+const addChannelNpm = require('@semantic-release/npm/lib/add-channel');
 const prepareNpm = require('./lib/prepare');
 const publishNpm = require('./lib/publish');
 

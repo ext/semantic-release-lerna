@@ -19,6 +19,7 @@
   ],
   "dependencies": {
     "@semantic-release/error": "^2.2.0",
+    "@semantic-release/npm": "^5.3.4",
     "aggregate-error": "^3.0.0",
     "execa": "^4.0.0",
     "fs-extra": "^9.0.0",
