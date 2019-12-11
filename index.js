@@ -5,7 +5,6 @@ const setLegacyToken = require('@semantic-release/npm/lib/set-legacy-token');
 const getPkg = require('@semantic-release/npm/lib/get-pkg');
 const verifyNpmConfig = require('@semantic-release/npm/lib/verify-config');
 const verifyNpmAuth = require('@semantic-release/npm/lib/verify-auth');
-const addChannelNpm = require('@semantic-release/npm/lib/add-channel');
 const prepareNpm = require('./lib/prepare');
 const publishNpm = require('./lib/publish');
 
@@ -97,27 +96,4 @@ async function publish(pluginConfig, context) {
   return publishNpm(npmrc, pluginConfig, pkg, context);
 }
 
-async function addChannel(pluginConfig, context) {
-  let pkg;
-  const errors = verified ? [] : verifyNpmConfig(pluginConfig);
-
-  setLegacyToken(context);
-
-  try {
-    // Reload package.json in case a previous external step updated it
-    pkg = await getPkg(pluginConfig, context);
-    if (!verified && pluginConfig.npmPublish !== false && pkg.private !== true) {
-      await verifyNpmAuth(npmrc, pkg, context);
-    }
-  } catch (error) {
-    errors.push(...error);
-  }
-
-  if (errors.length > 0) {
-    throw new AggregateError(errors);
-  }
-
-  return addChannelNpm(npmrc, pluginConfig, pkg, context);
-}
-
-module.exports = {verifyConditions, prepare, publish, addChannel};
+module.exports = {verifyConditions, prepare, publish};

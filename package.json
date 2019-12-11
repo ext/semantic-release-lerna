@@ -1,14 +1,8 @@
 {
   "name": "semantic-release-lerna",
   "description": "semantic-release plugin to publish lerna monorepo packages to npm",
-  "version": "0.0.0-development",
+  "version": "0.0.0",
   "author": "David Sveningsson <ext@sidvind.com>",
-  "ava": {
-    "files": [
-      "test/**/*.test.js"
-    ],
-    "timeout": "2m"
-  },
   "bugs": {
     "url": "https://gitlab.com/extsidvind/semantic-release-lerna/issues"
   },
@@ -18,8 +12,12 @@
     "Gregor Martynus (https://twitter.com/gr2m)"
   ],
   "dependencies": {
+    "@lerna/child-process": "^3.16.5",
+    "@lerna/collect-updates": "^3.20.0",
+    "@lerna/package-graph": "^3.18.5",
+    "@lerna/project": "^3.21.0",
     "@semantic-release/error": "^2.2.0",
-    "@semantic-release/npm": "^5.3.4",
+    "@semantic-release/npm": "^7.0.5",
     "aggregate-error": "^3.0.0",
     "execa": "^4.0.0",
     "fs-extra": "^9.0.0",
@@ -34,13 +32,12 @@
     "tempy": "^0.5.0"
   },
   "devDependencies": {
-    "ava": "^3.1.0",
-    "clear-module": "^4.0.0",
     "codecov": "^3.0.0",
     "delay": "^4.0.0",
     "dockerode": "^3.0.0",
     "get-stream": "^5.0.0",
     "got": "^11.0.0",
+    "jest": "^26.3.0",
     "nyc": "^15.0.0",
     "p-retry": "^4.0.0",
     "semantic-release": "^17.0.0",
@@ -83,7 +80,8 @@
   },
   "prettier": {
     "printWidth": 120,
-    "trailingComma": "es5"
+    "trailingComma": "es5",
+    "singleQuote": true
   },
   "publishConfig": {
     "access": "public"
@@ -97,7 +95,7 @@
     "lint": "xo",
     "pretest": "npm run lint",
     "semantic-release": "semantic-release",
-    "test": "nyc ava -v"
+    "test": "jest --collectCoverage"
   },
   "xo": {
     "prettier": true,
