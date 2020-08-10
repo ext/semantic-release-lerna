@@ -1,7 +1,7 @@
 {
   "name": "semantic-release-lerna",
   "description": "semantic-release plugin to publish lerna monorepo packages to npm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "David Sveningsson <ext@sidvind.com>",
   "bugs": {
     "url": "https://github.com/ext/semantic-release-lerna/issues"
