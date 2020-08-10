@@ -57,7 +57,7 @@
     "lib",
     "index.js"
   ],
-  "homepage": "https://gitlab.com/extsidvind/semantic-release-lerna",
+  "homepage": "https://github.com/ext/semantic-release-lerna",
   "keywords": [
     "npm",
     "lerna",
@@ -93,7 +93,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/extsidvind/semantic-release-lerna.git"
+    "url": "https://github.com/ext/semantic-release-lerna"
   },
   "scripts": {
     "codecov": "codecov -f coverage/coverage-final.json",
