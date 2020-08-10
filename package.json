@@ -11,6 +11,11 @@
     "Stephan Bönnemann <stephan@boennemann.me> (http://boennemann.me)",
     "Gregor Martynus (https://twitter.com/gr2m)"
   ],
+  "renovate": {
+    "extends": [
+      "@html-validate"
+    ]
+  },
   "dependencies": {
     "@lerna/child-process": "^3.16.5",
     "@lerna/collect-updates": "^3.20.0",
