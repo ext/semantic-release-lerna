@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "author": "David Sveningsson <ext@sidvind.com>",
   "bugs": {
-    "url": "https://gitlab.com/extsidvind/semantic-release-lerna/issues"
+    "url": "https://github.com/ext/semantic-release-lerna/issues"
   },
   "contributors": [
     "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
