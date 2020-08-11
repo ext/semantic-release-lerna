@@ -37,18 +37,18 @@
     "tempy": "^0.6.0"
   },
   "devDependencies": {
-    "codecov": "^3.0.0",
-    "delay": "^4.0.0",
-    "dockerode": "^3.0.0",
-    "get-stream": "^5.0.0",
-    "got": "^11.0.0",
-    "jest": "^26.3.0",
-    "nyc": "^15.0.0",
-    "p-retry": "^4.0.0",
-    "semantic-release": "^17.0.0",
-    "sinon": "^9.0.0",
-    "stream-buffers": "^3.0.2",
-    "xo": "^0.29.0"
+    "codecov": "3.7.2",
+    "delay": "4.4.0",
+    "dockerode": "3.2.1",
+    "get-stream": "5.2.0",
+    "got": "11.5.2",
+    "jest": "26.3.0",
+    "nyc": "15.1.0",
+    "p-retry": "4.2.0",
+    "semantic-release": "17.1.1",
+    "sinon": "9.0.3",
+    "stream-buffers": "3.0.2",
+    "xo": "0.29.1"
   },
   "engines": {
     "node": ">=10.18"
