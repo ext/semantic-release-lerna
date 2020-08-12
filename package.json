@@ -1,63 +1,7 @@
 {
   "name": "semantic-release-lerna",
-  "description": "semantic-release plugin to publish lerna monorepo packages to npm",
   "version": "0.0.2",
-  "author": "David Sveningsson <ext@sidvind.com>",
-  "bugs": {
-    "url": "https://github.com/ext/semantic-release-lerna/issues"
-  },
-  "contributors": [
-    "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
-    "Stephan Bönnemann <stephan@boennemann.me> (http://boennemann.me)",
-    "Gregor Martynus (https://twitter.com/gr2m)"
-  ],
-  "renovate": {
-    "extends": [
-      "@html-validate"
-    ]
-  },
-  "dependencies": {
-    "@lerna/child-process": "^3.16.5",
-    "@lerna/collect-updates": "^3.20.0",
-    "@lerna/package-graph": "^3.18.5",
-    "@lerna/project": "^3.21.0",
-    "@semantic-release/error": "^2.2.0",
-    "@semantic-release/npm": "^7.0.5",
-    "aggregate-error": "^3.0.0",
-    "execa": "^4.0.0",
-    "fs-extra": "^9.0.0",
-    "lodash": "^4.17.15",
-    "nerf-dart": "^1.0.0",
-    "normalize-url": "^5.0.0",
-    "npm": "^6.10.3",
-    "rc": "^1.2.8",
-    "read-pkg": "^5.0.0",
-    "registry-auth-token": "^4.0.0",
-    "semver": "^7.1.2",
-    "tempy": "^0.6.0"
-  },
-  "devDependencies": {
-    "codecov": "3.7.2",
-    "delay": "4.4.0",
-    "dockerode": "3.2.1",
-    "get-stream": "5.2.0",
-    "got": "11.5.2",
-    "jest": "26.3.0",
-    "nyc": "15.1.0",
-    "p-retry": "4.2.0",
-    "semantic-release": "17.1.1",
-    "sinon": "9.0.3",
-    "stream-buffers": "3.0.2",
-    "xo": "0.33.0"
-  },
-  "engines": {
-    "node": ">=10.18"
-  },
-  "files": [
-    "lib",
-    "index.js"
-  ],
-  "homepage": "https://github.com/ext/semantic-release-lerna",
+  "description": "semantic-release plugin to publish lerna monorepo packages to npm",
   "keywords": [
     "npm",
     "lerna",
@@ -66,47 +10,78 @@
     "semantic-release",
     "version"
   ],
-  "license": "MIT",
-  "main": "index.js",
-  "nyc": {
-    "include": [
-      "lib/**/*.js",
-      "index.js"
-    ],
-    "reporter": [
-      "json",
-      "text",
-      "html"
-    ],
-    "all": true
-  },
-  "peerDependencies": {
-    "semantic-release": ">=16.0.0 <18.0.0"
-  },
-  "prettier": {
-    "printWidth": 120,
-    "trailingComma": "es5",
-    "singleQuote": true
-  },
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/ext/semantic-release-lerna",
+  "bugs": {
+    "url": "https://github.com/ext/semantic-release-lerna/issues"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/ext/semantic-release-lerna"
   },
+  "license": "MIT",
+  "author": "David Sveningsson <ext@sidvind.com>",
+  "contributors": [
+    "Pierre Vanduynslager (https://twitter.com/@pvdlg_)",
+    "Stephan Bönnemann <stephan@boennemann.me> (http://boennemann.me)",
+    "Gregor Martynus (https://twitter.com/gr2m)"
+  ],
+  "main": "index.js",
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "scripts": {
     "codecov": "codecov -f coverage/coverage-final.json",
     "lint": "xo",
-    "pretest": "npm run lint",
     "semantic-release": "semantic-release",
+    "pretest": "npm run lint",
     "test": "jest --collectCoverage"
   },
   "xo": {
     "prettier": true,
-    "space": true,
     "rules": {
       "unicorn/string-content": "off"
-    }
+    },
+    "space": true
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "dependencies": {
+    "@lerna/child-process": "^3.16.5",
+    "@lerna/collect-updates": "^3.20.0",
+    "@lerna/package-graph": "^3.18.5",
+    "@lerna/project": "^3.21.0",
+    "@semantic-release/npm": "^7.0.5",
+    "aggregate-error": "^3.0.0",
+    "execa": "^4.0.0",
+    "fs-extra": "^9.0.0",
+    "lodash": "^4.17.15",
+    "tempy": "^0.6.0"
+  },
+  "devDependencies": {
+    "codecov": "3.7.2",
+    "jest": "26.3.0",
+    "lerna": "3.22.1",
+    "semantic-release": "17.1.1",
+    "stream-buffers": "3.0.2",
+    "xo": "0.33.0"
+  },
+  "peerDependencies": {
+    "lerna": ">= 3",
+    "semantic-release": ">=16.0.0 <18.0.0"
+  },
+  "engines": {
+    "node": ">=10.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "renovate": {
+    "extends": [
+      "@html-validate"
+    ]
   }
 }
