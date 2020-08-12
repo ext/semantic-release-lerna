@@ -10,7 +10,6 @@ const publishNpm = require('./lib/publish');
 const generateNotes = require('./lib/generate-notes');
 
 let verified;
-let prepared;
 const npmrc = tempy.file({name: '.npmrc'});
 
 async function verifyConditions(pluginConfig, context) {
@@ -67,7 +66,6 @@ async function prepare(pluginConfig, context) {
   }
 
   await prepareNpm(npmrc, pluginConfig, context);
-  prepared = true;
 }
 
 async function publish(pluginConfig, context) {
@@ -88,10 +86,6 @@ async function publish(pluginConfig, context) {
 
   if (errors.length > 0) {
     throw new AggregateError(errors);
-  }
-
-  if (!prepared) {
-    await prepareNpm(npmrc, pluginConfig, context);
   }
 
   return publishNpm(npmrc, pluginConfig, pkg, context);
