@@ -1,6 +1,6 @@
 {
   "name": "semantic-release-lerna",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "semantic-release plugin to publish lerna monorepo packages to npm",
   "keywords": [
     "npm",
@@ -28,7 +28,8 @@
   "main": "index.js",
   "files": [
     "lib",
-    "index.js"
+    "index.js",
+    "!*.test.js"
   ],
   "scripts": {
     "codecov": "codecov -f coverage/coverage-final.json",
