@@ -25,10 +25,11 @@ As of now the following features from `@semantic-release/npm` is not supported/i
 - Only rudimentary support for authentication verification.
 - Only rudimentary support for private packages.
 
-| Step      | Description                                                                                              |
-| --------- | -------------------------------------------------------------------------------------------------------- |
-| `prepare` | Update the `package.json` version and [create](https://docs.npmjs.com/cli/pack) the npm package tarball. |
-| `publish` | [Publish the npm package](https://docs.npmjs.com/cli/publish) to the registry.                           |
+| Step            | Description                                                                                                                                                                                                                                                                                       |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `generateNotes` | If the plugin option `generateNotes` is true this plugin generate release notes with the commit scope set to a list of affected packages (unless otherwise specificed by the commit message). This option replaces `@semantic-release/release-notes-generator`, do not use both at the same time. |
+| `prepare`       | Update the `package.json` version and [create](https://docs.npmjs.com/cli/pack) the npm package tarball.                                                                                                                                                                                          |
+| `publish`       | [Publish the npm package](https://docs.npmjs.com/cli/publish) to the registry.                                                                                                                                                                                                                    |
 
 ## Install
 
@@ -45,7 +46,7 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
-    "semantic-release-lerna",
+    ["semantic-release-lerna", { "generateNotes": true }],
     "@semantic-release/changelog",
     "@semantic-release/git"
   ]

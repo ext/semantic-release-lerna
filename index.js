@@ -7,6 +7,7 @@ const verifyNpmConfig = require('@semantic-release/npm/lib/verify-config');
 const verifyNpmAuth = require('@semantic-release/npm/lib/verify-auth');
 const prepareNpm = require('./lib/prepare');
 const publishNpm = require('./lib/publish');
+const generateNotes = require('./lib/generate-notes');
 
 let verified;
 let prepared;
@@ -96,4 +97,9 @@ async function publish(pluginConfig, context) {
   return publishNpm(npmrc, pluginConfig, pkg, context);
 }
 
-module.exports = {verifyConditions, prepare, publish};
+module.exports = {
+  verifyConditions,
+  prepare,
+  publish,
+  generateNotes,
+};
