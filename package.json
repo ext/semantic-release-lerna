@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "codecov": "3.7.2",
-    "jest": "26.3.0",
+    "jest": "26.4.0",
     "lerna": "3.22.1",
     "semantic-release": "17.1.1",
     "stream-buffers": "3.0.2",
