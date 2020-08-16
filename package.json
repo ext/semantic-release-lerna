@@ -64,6 +64,9 @@
   },
   "devDependencies": {
     "codecov": "3.7.2",
+    "delay": "^4.4.0",
+    "dockerode": "^3.2.1",
+    "got": "^11.5.2",
     "jest": "26.4.0",
     "lerna": "3.22.1",
     "semantic-release": "17.1.1",
