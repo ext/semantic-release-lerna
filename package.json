@@ -88,5 +88,8 @@
     "extends": [
       "@html-validate"
     ]
+  },
+  "jest": {
+    "testTimeout": 10000
   }
 }
