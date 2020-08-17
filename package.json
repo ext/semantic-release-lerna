@@ -63,7 +63,7 @@
     "tempy": "^0.6.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.10",
+    "@types/jest": "26.0.10",
     "codecov": "3.7.2",
     "delay": "4.4.0",
     "dockerode": "3.2.1",
