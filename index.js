@@ -1,10 +1,11 @@
-const {defaultTo, castArray} = require('lodash');
+const {defaultTo} = require('lodash');
 const AggregateError = require('aggregate-error');
 const tempy = require('tempy');
 const setLegacyToken = require('@semantic-release/npm/lib/set-legacy-token');
 const getPkg = require('@semantic-release/npm/lib/get-pkg');
 const verifyNpmConfig = require('@semantic-release/npm/lib/verify-config');
-const verifyNpmAuth = require('@semantic-release/npm/lib/verify-auth');
+const verifyNpmAuth = require('./lib/verify-auth');
+const verifyGit = require('./lib/verify-git');
 const prepareNpm = require('./lib/prepare');
 const publishNpm = require('./lib/publish');
 const generateNotes = require('./lib/generate-notes');
@@ -12,27 +13,26 @@ const generateNotes = require('./lib/generate-notes');
 let verified;
 const npmrc = tempy.file({name: '.npmrc'});
 
+const defaultConfig = {
+  npmVerifyAuth: true,
+  npmPublish: undefined,
+  tarballDir: undefined,
+  pkgRoot: undefined,
+};
+
 async function verifyConditions(pluginConfig, context) {
-  // If the npm publish plugin is used and has `npmPublish`, `tarballDir` or `pkgRoot` configured, validate them now in order to prevent any release if the configuration is wrong
-  if (context.options.publish) {
-    const publishPlugin =
-      castArray(context.options.publish).find((config) => config.path && config.path === 'semantic-release-lerna') ||
-      {};
+  pluginConfig.npmVerifyAuth = defaultTo(pluginConfig.npmVerifyAuth, defaultConfig.npmVerifyAuth);
+  pluginConfig.npmPublish = defaultTo(pluginConfig.npmPublish, defaultConfig.npmPublish);
+  pluginConfig.tarballDir = defaultTo(pluginConfig.tarballDir, defaultConfig.tarballDir);
+  pluginConfig.pkgRoot = defaultTo(pluginConfig.pkgRoot, defaultConfig.pkgRoot);
 
-    pluginConfig.npmPublish = defaultTo(pluginConfig.npmPublish, publishPlugin.npmPublish);
-    pluginConfig.tarballDir = defaultTo(pluginConfig.tarballDir, publishPlugin.tarballDir);
-    pluginConfig.pkgRoot = defaultTo(pluginConfig.pkgRoot, publishPlugin.pkgRoot);
-  }
-
-  const errors = verifyNpmConfig(pluginConfig);
+  const errors = [...verifyNpmConfig(pluginConfig), ...(await verifyGit(context))];
 
   setLegacyToken(context);
 
   try {
-    const pkg = await getPkg(pluginConfig, context);
-
-    // Verify the npm authentication only if `npmPublish` is not false and `pkg.private` is not `true`
-    if (pluginConfig.npmPublish !== false && pkg.private !== true) {
+    if (pluginConfig.npmVerifyAuth) {
+      const pkg = await getPkg(pluginConfig, context);
       await verifyNpmAuth(npmrc, pkg, context);
     }
   } catch (error) {
@@ -52,9 +52,8 @@ async function prepare(pluginConfig, context) {
   setLegacyToken(context);
 
   try {
-    // Reload package.json in case a previous external step updated it
-    const pkg = await getPkg(pluginConfig, context);
-    if (!verified && pluginConfig.npmPublish !== false && pkg.private !== true) {
+    if (pluginConfig.npmVerifyAuth) {
+      const pkg = await getPkg(pluginConfig, context);
       await verifyNpmAuth(npmrc, pkg, context);
     }
   } catch (error) {

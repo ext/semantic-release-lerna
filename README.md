@@ -52,3 +52,9 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
   ]
 }
 ```
+
+## Options
+
+### `npmVerifyAuth`
+
+Set to `false` to disable verifying NPM registry credentials.
