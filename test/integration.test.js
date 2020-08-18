@@ -120,7 +120,7 @@ test('should publish only changed packages', async () => {
   expect(await getPublishedVersions(bar.name)).toEqual(['0.0.0']);
 
   /* Verify versions */
-  expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.0.0'}));
+  expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(foo.manifestLocation)).toEqual({name: foo.name, version: '0.1.0'});
   expect(await readJson(bar.manifestLocation)).toEqual({name: bar.name, version: '0.0.0'});
@@ -157,7 +157,7 @@ test('should publish depender packages when dependee changes', async () => {
   expect(await getPublishedVersions(bar.name)).toEqual(['0.0.0', '0.1.0']);
 
   /* Verify versions */
-  expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.0.0'}));
+  expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(foo.manifestLocation)).toEqual({name: foo.name, version: '0.1.0'});
   expect(await readJson(bar.manifestLocation)).toEqual({
