@@ -1,6 +1,6 @@
 {
   "name": "semantic-release-lerna",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "semantic-release plugin to publish lerna monorepo packages to npm",
   "keywords": [
     "npm",
