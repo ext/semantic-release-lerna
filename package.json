@@ -60,7 +60,7 @@
     "execa": "^4.0.0",
     "fs-extra": "^9.0.0",
     "lodash": "^4.17.15",
-    "tempy": "^0.7.0"
+    "tempy": "^1.0.0"
   },
   "devDependencies": {
     "@types/jest": "26.0.14",
