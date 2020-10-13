@@ -70,7 +70,7 @@
     "got": "11.7.0",
     "jest": "26.5.3",
     "lerna": "3.22.1",
-    "semantic-release": "17.1.2",
+    "semantic-release": "17.2.1",
     "stream-buffers": "3.0.2",
     "xo": "0.33.1"
   },
