@@ -68,7 +68,7 @@
     "delay": "4.4.0",
     "dockerode": "3.2.1",
     "got": "11.8.0",
-    "jest": "26.6.1",
+    "jest": "26.6.2",
     "lerna": "3.22.1",
     "semantic-release": "17.2.1",
     "stream-buffers": "3.0.2",
