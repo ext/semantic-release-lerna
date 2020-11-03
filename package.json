@@ -72,7 +72,7 @@
     "lerna": "3.22.1",
     "semantic-release": "17.2.1",
     "stream-buffers": "3.0.2",
-    "xo": "0.34.1"
+    "xo": "0.34.2"
   },
   "peerDependencies": {
     "lerna": ">= 3",
