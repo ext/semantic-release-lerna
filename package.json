@@ -64,7 +64,7 @@
   },
   "devDependencies": {
     "@types/jest": "26.0.15",
-    "codecov": "3.8.0",
+    "codecov": "3.8.1",
     "delay": "4.4.0",
     "dockerode": "3.2.1",
     "got": "11.8.0",
