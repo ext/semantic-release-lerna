@@ -62,7 +62,7 @@
     "tempy": "^1.0.0"
   },
   "devDependencies": {
-    "@semantic-release/npm": "7.0.5",
+    "@semantic-release/npm": "7.0.9",
     "@types/jest": "26.0.18",
     "codecov": "3.8.1",
     "delay": "4.4.0",
