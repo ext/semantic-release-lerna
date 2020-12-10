@@ -76,7 +76,7 @@
   },
   "peerDependencies": {
     "lerna": ">= 3",
-    "semantic-release": ">=16.0.0 <18.0.0"
+    "semantic-release": ">=15.0.0 <18.0.0"
   },
   "engines": {
     "node": ">=10.18"
