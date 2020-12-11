@@ -75,7 +75,7 @@
     "xo": "0.36.1"
   },
   "peerDependencies": {
-    "@semantic-release/npm": "^5 || >= 7",
+    "@semantic-release/npm": ">= 7",
     "lerna": ">= 3",
     "semantic-release": ">=15.0.0 <18.0.0"
   },
