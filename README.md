@@ -43,13 +43,25 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 
 ```json
 {
-  "plugins": [
-    "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    ["semantic-release-lerna", { "generateNotes": true }],
-    "@semantic-release/changelog",
-    "@semantic-release/git"
-  ]
+	"plugins": [
+		"@semantic-release/commit-analyzer",
+		["semantic-release-lerna", { "generateNotes": true }],
+		"@semantic-release/changelog",
+		[
+			"@semantic-release/git",
+			{
+				"assets": [
+					"CHANGELOG.md",
+					"lerna.json",
+					"package.json",
+					"package-lock.json",
+					"lerna.json",
+					"packages/*/package.json",
+					"packages/*/package-lock.json"
+				]
+			}
+		]
+	]
 }
 ```
 
@@ -60,3 +72,12 @@ To use legacy auth set `NPM_USERNAME`, `NPM_PASSWORD` and `NPM_EMAIL`.
 ### `npmVerifyAuth`
 
 Set to `false` to disable verifying NPM registry credentials.
+
+## Troubleshooting
+
+### Working tree has uncommitted changes
+
+> lerna ERR! EUNCOMMIT Working tree has uncommitted changes, please commit or remove the following changes before continuing:
+
+Configure `@semantic-release/git` to commit `lerna.json` and `package.json` from the package folders.
+See example configuration above.
