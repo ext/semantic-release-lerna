@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@semantic-release/npm": "7.0.9",
-    "@types/jest": "26.0.18",
+    "@types/jest": "26.0.19",
     "codecov": "3.8.1",
     "delay": "4.4.0",
     "dockerode": "3.2.1",
