@@ -164,7 +164,7 @@ test('should publish depender packages when dependee changes', async () => {
     name: bar.name,
     version: '0.1.0',
     dependencies: {
-      [foo.name]: '^0.0.0',
+      [foo.name]: '^0.1.0',
     },
   });
 });
