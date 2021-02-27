@@ -51,10 +51,10 @@
     "trailingComma": "es5"
   },
   "dependencies": {
-    "@lerna/child-process": "^3.16.5",
-    "@lerna/collect-updates": "^3.20.0",
-    "@lerna/package-graph": "^3.18.5",
-    "@lerna/project": "^3.21.0",
+    "@lerna/child-process": "^4.0.0",
+    "@lerna/collect-updates": "^4.0.0",
+    "@lerna/package-graph": "^4.0.0",
+    "@lerna/project": "^4.0.0",
     "aggregate-error": "^3.0.0",
     "execa": "^5.0.0",
     "fs-extra": "^9.0.0",
