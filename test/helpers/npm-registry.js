@@ -66,6 +66,7 @@ const authEnv = {
   NPM_USERNAME,
   NPM_PASSWORD,
   NPM_EMAIL,
+  NPM_TOKEN: Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toString('base64'),
 };
 
 /**
