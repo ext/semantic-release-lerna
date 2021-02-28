@@ -14,7 +14,7 @@ let context;
 
 async function initialPublish(cwd) {
   await execa('git', ['tag', 'v0.0.0'], {cwd});
-  await execa('lerna', ['publish', 'from-package', '--yes', '--loglevel', 'verbose', '--registry', npmRegistry.url], {
+  await execa('lerna', ['publish', 'from-package', '--yes', '--loglevel', 'verbose', '--registry', npmRegistry.url()], {
     cwd,
     env: npmRegistry.authEnv,
   });
@@ -27,7 +27,7 @@ async function initialPublish(cwd) {
  * @returns {Promise<string[]>}
  */
 async function getPublishedVersions(pkg) {
-  const response = await got(`${npmRegistry.url}/${pkg}`, {
+  const response = await got(`${npmRegistry.url()}/${pkg}`, {
     throwHttpErrors: false,
     responseType: 'json',
   });
@@ -52,12 +52,12 @@ async function run(project, options) {
 beforeAll(async () => {
   // Start the local NPM registry
   await npmRegistry.start();
-}, 30000);
+});
 
 afterAll(async () => {
   // Stop the local NPM registry
   await npmRegistry.stop();
-}, 30000);
+});
 
 beforeEach(() => {
   const log = jest.fn();

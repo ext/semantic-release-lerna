@@ -43,8 +43,8 @@ async function createProject(cwd, version) {
   await outputFile(
     path.resolve(cwd, '.npmrc'),
     [
-      `registry=${npmRegistry.url}`,
-      `//${npmRegistry.url}:_authToken=${authToken}`,
+      `registry=${npmRegistry.url()}`,
+      `//${npmRegistry.url()}:_authToken=${authToken}`,
       `_auth=${authToken}`,
       'email=${NPM_EMAIL}', // eslint-disable-line no-template-curly-in-string
     ].join('\n'),
