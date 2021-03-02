@@ -50,11 +50,15 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
+  "jest": {
+    "testTimeout": 10000
+  },
   "dependencies": {
-    "@lerna/child-process": "^3.16.5",
-    "@lerna/collect-updates": "^3.20.0",
-    "@lerna/package-graph": "^3.18.5",
-    "@lerna/project": "^3.21.0",
+    "@lerna/child-process": "^4.0.0",
+    "@lerna/collect-updates": "^4.0.0",
+    "@lerna/package": "^4.0.0",
+    "@lerna/package-graph": "^4.0.0",
+    "@lerna/project": "^4.0.0",
     "aggregate-error": "^3.0.0",
     "execa": "^5.0.0",
     "fs-extra": "^9.0.0",
@@ -66,22 +70,21 @@
     "@semantic-release/npm": "7.0.10",
     "@types/jest": "26.0.20",
     "codecov": "3.8.1",
-    "delay": "5.0.0",
-    "dockerode": "3.2.1",
     "got": "11.8.2",
     "jest": "26.6.3",
-    "lerna": "3.22.1",
+    "lerna": "4.0.0",
     "semantic-release": "17.4.0",
     "stream-buffers": "3.0.2",
+    "verdaccio": "^4.11.1",
     "xo": "0.38.2"
   },
   "peerDependencies": {
     "@semantic-release/npm": ">= 7",
-    "lerna": ">= 3",
+    "lerna": "^3.2 || ^4",
     "semantic-release": ">=15.0.0 <18.0.0"
   },
   "engines": {
-    "node": ">=12"
+    "node": ">= 12.10"
   },
   "publishConfig": {
     "access": "public"
@@ -90,8 +93,5 @@
     "extends": [
       "@html-validate"
     ]
-  },
-  "jest": {
-    "testTimeout": 10000
   }
 }
