@@ -71,7 +71,18 @@ To use legacy auth set `NPM_USERNAME`, `NPM_PASSWORD` and `NPM_EMAIL`.
 
 ### `npmVerifyAuth`
 
+- Type: `boolean`
+- Default: `true`
+
 Set to `false` to disable verifying NPM registry credentials.
+
+### `latch`
+
+- Type: `"major" | "minor" | "patch" | "none"`
+- Default: `"minor"`
+
+Latches package versions together.
+If the version bump is at least the given version all packages will be bumped regardless if the package has been touched or not.
 
 ## Troubleshooting
 

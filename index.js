@@ -18,6 +18,7 @@ const defaultConfig = {
   npmPublish: undefined,
   tarballDir: undefined,
   pkgRoot: undefined,
+  latch: 'minor',
 };
 
 async function verifyConditions(pluginConfig, context) {
@@ -47,6 +48,8 @@ async function verifyConditions(pluginConfig, context) {
 }
 
 async function prepare(pluginConfig, context) {
+  pluginConfig.latch = defaultTo(pluginConfig.latch, defaultConfig.latch);
+
   const errors = verified ? [] : verifyNpmConfig(pluginConfig);
 
   setLegacyToken(context);
