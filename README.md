@@ -11,11 +11,8 @@ The plugin works in the following way:
 - You manage a monorepo using lerna.
 - You use semantic-release to automate release handling.
 - The plugin will use lerna to check which packages has been updated.
-- Only changed packages gets a version bump.
-- Only changed packages is published to NPM.
+- Package versions are latched (default latching minor and greater), i.e. patches are only published for changed packages but minor and major bumps for all packages. Use `latch` option to configure this.
 - Changelog is generated in the project root by semantic-release.
-- Major releases will publish new releases of all packages, minor and patch only
-  publishes changed.
 
 As of now the following features from `@semantic-release/npm` is not supported/implemented:
 
