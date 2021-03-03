@@ -1,4 +1,3 @@
-const {defaultTo} = require('lodash');
 const AggregateError = require('aggregate-error');
 const tempy = require('tempy');
 const setLegacyToken = require('@semantic-release/npm/lib/set-legacy-token');
@@ -20,6 +19,16 @@ const defaultConfig = {
   pkgRoot: undefined,
   latch: 'minor',
 };
+
+/**
+ * @template T
+ * @param {T} value
+ * @param {T} defaultValue
+ * @returns {T}
+ */
+function defaultTo(value, defaultValue) {
+  return value === null || value === undefined ? defaultValue : value;
+}
 
 async function verifyConditions(pluginConfig, context) {
   pluginConfig.npmVerifyAuth = defaultTo(pluginConfig.npmVerifyAuth, defaultConfig.npmVerifyAuth);

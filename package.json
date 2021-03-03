@@ -62,7 +62,6 @@
     "aggregate-error": "^3.0.0",
     "execa": "^5.0.0",
     "fs-extra": "^9.0.0",
-    "lodash": "^4.17.15",
     "tempy": "^1.0.0",
     "write-json-file": "^4.0.0"
   },
