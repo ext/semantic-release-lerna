@@ -111,19 +111,54 @@ test('should publish only changed packages', async () => {
     stdout: context.stdout,
     stderr: context.stderr,
     logger: context.logger,
+    nextRelease: {version: '0.0.1'},
+  });
+
+  /* Verify published packages: only foo should have been published */
+  expect(await getPublishedVersions(project.name)).toEqual([]);
+  expect(await getPublishedVersions(foo.name)).toEqual(['0.0.0', '0.0.1']);
+  expect(await getPublishedVersions(bar.name)).toEqual(['0.0.0']);
+
+  /* Verify versions */
+  expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.0.1'}));
+  expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({version: '0.0.1'}));
+  expect(await readJson(foo.manifestLocation)).toEqual({name: foo.name, version: '0.0.1'});
+  expect(await readJson(bar.manifestLocation)).toEqual({name: bar.name, version: '0.0.0'});
+});
+
+test('should latch package versions', async () => {
+  const cwd = tempy.directory();
+  const env = npmRegistry.authEnv;
+  const project = await createProject(cwd, '0.0.0');
+  const foo = await createPackage(cwd, 'test-latched-foo', '0.0.0');
+  const bar = await createPackage(cwd, 'test-latched-bar', '0.0.0');
+  await initialPublish(cwd);
+
+  /* Make change to foo package */
+  await outputJson(foo.resolve('file.json'), {test: 1});
+  await project.commit('change foo');
+
+  /* Simulate semantic release */
+  await run(project, {
+    cwd,
+    env,
+    options: {},
+    stdout: context.stdout,
+    stderr: context.stderr,
+    logger: context.logger,
     nextRelease: {version: '0.1.0'},
   });
 
   /* Verify published packages: only foo should have been published */
   expect(await getPublishedVersions(project.name)).toEqual([]);
   expect(await getPublishedVersions(foo.name)).toEqual(['0.0.0', '0.1.0']);
-  expect(await getPublishedVersions(bar.name)).toEqual(['0.0.0']);
+  expect(await getPublishedVersions(bar.name)).toEqual(['0.0.0', '0.1.0']);
 
   /* Verify versions */
   expect(await readJson(project.manifestLocation)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({version: '0.1.0'}));
   expect(await readJson(foo.manifestLocation)).toEqual({name: foo.name, version: '0.1.0'});
-  expect(await readJson(bar.manifestLocation)).toEqual({name: bar.name, version: '0.0.0'});
+  expect(await readJson(bar.manifestLocation)).toEqual({name: bar.name, version: '0.1.0'});
 });
 
 test('should publish depender packages when dependee changes', async () => {
