@@ -60,8 +60,16 @@ async function createProject(cwd, version) {
     manifestLocation,
     lernaPath,
     async commit(message) {
-      await execa('git', ['add', 'packages', 'lerna.json', 'package.json'], {cwd, env: gitEnv});
+      await execa('git', ['add', '.'], {cwd, env: gitEnv});
       await execa('git', ['commit', '-m', message], {cwd, env: gitEnv});
+      const ref = await execa('git', ['rev-parse', '--short', 'HEAD'], {cwd, env: gitEnv});
+      return {
+        message,
+        hash: ref.stdout,
+      };
+    },
+    resolve(...parts) {
+      return path.resolve(cwd, ...parts);
     },
     async tag(version) {
       await execa('git', ['tag', version], {cwd, env: gitEnv});
