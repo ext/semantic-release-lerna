@@ -39,14 +39,17 @@ async function getPublishedVersions(pkg) {
   return Object.keys(response.body.versions);
 }
 
-async function run(project, options) {
-  await sut.prepare({}, options);
+async function run(project, pluginConfig, options) {
+  const generateNotes = await sut.generateNotes(pluginConfig, options);
+  const prepare = await sut.prepare(pluginConfig, options);
 
   /* Simulate @semantic-release/git */
   await project.commit('v0.1.0');
   await project.tag('v0.1.0');
 
-  await sut.publish({}, options);
+  const publish = await sut.publish(pluginConfig, options);
+
+  return {generateNotes, prepare, publish};
 }
 
 beforeAll(async () => {
@@ -104,7 +107,8 @@ test('should publish only changed packages', async () => {
   await project.commit('change foo');
 
   /* Simulate semantic release */
-  await run(project, {
+  const pluginConfig = {};
+  await run(project, pluginConfig, {
     cwd,
     env,
     options: {},
@@ -139,7 +143,8 @@ test('should latch package versions', async () => {
   await project.commit('change foo');
 
   /* Simulate semantic release */
-  await run(project, {
+  const pluginConfig = {};
+  await run(project, pluginConfig, {
     cwd,
     env,
     options: {},
@@ -176,7 +181,8 @@ test('should publish depender packages when dependee changes', async () => {
   await project.commit('change foo');
 
   /* Simulate semantic release */
-  await run(project, {
+  const pluginConfig = {};
+  await run(project, pluginConfig, {
     cwd,
     env,
     options: {},
@@ -202,4 +208,64 @@ test('should publish depender packages when dependee changes', async () => {
       [foo.name]: '^0.1.0',
     },
   });
+});
+
+test('should generate release notes', async () => {
+  const cwd = tempy.directory();
+  const env = npmRegistry.authEnv;
+  const project = await createProject(cwd, '0.0.0');
+  const foo = await createPackage(cwd, 'test-release-notes-foo', '0.0.0');
+  const bar = await createPackage(cwd, 'test-release-notes-bar', '0.0.0');
+  await initialPublish(cwd);
+
+  /* Make some changes */
+  await outputJson(foo.resolve('file.json'), {test: 1});
+  const fooCommit = await project.commit('feat: change foo');
+  await outputJson(project.resolve('other.json'), {test: 1});
+  const rootCommit = await project.commit('fix: fix bug');
+  await outputJson(bar.resolve('file.json'), {test: 1});
+  const barCommit = await project.commit('fix: another bug fixed');
+
+  /* Simulate semantic release */
+  const pluginConfig = {
+    generateNotes: true,
+  };
+  const {generateNotes} = await run(project, pluginConfig, {
+    commits: [fooCommit, rootCommit, barCommit],
+    cwd,
+    env,
+    options: {
+      repositoryUrl: 'https://git.example.net/test/release-notes.git',
+    },
+    stdout: context.stdout,
+    stderr: context.stderr,
+    logger: context.logger,
+    lastRelease: {version: '0.0.0', gitTag: 'v0.0.0'},
+    nextRelease: {version: '0.1.0'},
+  });
+
+  const releaseNotes = generateNotes
+    .replace(/\d{4}-\d{2}-\d{2}/, '1998-10-24')
+    .replace(fooCommit.hash, '{{commit 1}}')
+    .replace(rootCommit.hash, '{{commit 2}}')
+    .replace(barCommit.hash, '{{commit 3}}');
+
+  expect(releaseNotes).toMatchInlineSnapshot(`
+    "# 0.1.0 (1998-10-24)
+
+
+    ### Bug Fixes
+
+    * fix bug {{commit 2}}
+    * **test-release-notes-bar:** another bug fixed {{commit 3}}
+
+
+    ### Features
+
+    * **test-release-notes-foo:** change foo {{commit 1}}
+
+
+
+    "
+  `);
 });
