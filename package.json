@@ -75,7 +75,7 @@
     "semantic-release": "17.4.1",
     "semver": "7.3.4",
     "stream-buffers": "3.0.2",
-    "verdaccio": "4.11.1",
+    "verdaccio": "4.11.2",
     "xo": "0.38.2"
   },
   "peerDependencies": {
