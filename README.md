@@ -40,25 +40,25 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 
 ```json
 {
-	"plugins": [
-		"@semantic-release/commit-analyzer",
-		["semantic-release-lerna", { "generateNotes": true }],
-		"@semantic-release/changelog",
-		[
-			"@semantic-release/git",
-			{
-				"assets": [
-					"CHANGELOG.md",
-					"lerna.json",
-					"package.json",
-					"package-lock.json",
-					"lerna.json",
-					"packages/*/package.json",
-					"packages/*/package-lock.json"
-				]
-			}
-		]
-	]
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    ["semantic-release-lerna", { "generateNotes": true }],
+    "@semantic-release/changelog",
+    [
+      "@semantic-release/git",
+      {
+        "assets": [
+          "CHANGELOG.md",
+          "lerna.json",
+          "package.json",
+          "package-lock.json",
+          "lerna.json",
+          "packages/*/package.json",
+          "packages/*/package-lock.json"
+        ]
+      }
+    ]
+  ]
 }
 ```
 

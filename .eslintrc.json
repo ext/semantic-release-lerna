@@ -1,0 +1,11 @@
+{
+  "extends": ["@html-validate"],
+
+  "overrides": [
+    {
+      "files": "*.spec.[jt]s",
+      "excludedFiles": "cypress/**",
+      "extends": ["@html-validate/jest"]
+    }
+  ]
+}
