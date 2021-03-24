@@ -79,7 +79,7 @@
     "lerna": "4.0.0",
     "prettier": "2.2.1",
     "semantic-release": "17.4.2",
-    "semver": "7.3.4",
+    "semver": "7.3.5",
     "stream-buffers": "3.0.2",
     "verdaccio": "4.12.0"
   },
