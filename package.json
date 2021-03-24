@@ -54,7 +54,7 @@
     "@semantic-release/error": "^2.2.0",
     "@semantic-release/release-notes-generator": "^9.0.0",
     "aggregate-error": "^3.0.0",
-    "conventional-changelog-writer": "^4.1.0",
+    "conventional-changelog-writer": "^5.0.0",
     "conventional-commits-filter": "^2.0.0",
     "conventional-commits-parser": "^3.2.0",
     "debug": "^4.3.0",
