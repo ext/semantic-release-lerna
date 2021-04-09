@@ -69,7 +69,7 @@
     "@html-validate/eslint-config": "4.1.0",
     "@html-validate/eslint-config-jest": "4.0.0",
     "@html-validate/prettier-config": "1.1.0",
-    "@semantic-release/npm": "7.1.0",
+    "@semantic-release/npm": "7.1.1",
     "@types/jest": "26.0.22",
     "codecov": "3.8.1",
     "eslint": "7.23.0",
