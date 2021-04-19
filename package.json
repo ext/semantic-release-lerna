@@ -52,7 +52,7 @@
     "@lerna/package-graph": "^4.0.0",
     "@lerna/project": "^4.0.0",
     "@semantic-release/error": "^2.2.0",
-    "@semantic-release/release-notes-generator": "^9.0.0",
+    "@semantic-release/release-notes-generator": "^9.0.1",
     "aggregate-error": "^3.0.0",
     "conventional-changelog-writer": "^5.0.0",
     "conventional-commits-filter": "^2.0.0",
