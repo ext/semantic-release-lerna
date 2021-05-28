@@ -7,6 +7,7 @@ const npmRegistry = require("./npm-registry");
  * @typedef {Object} Project
  * @property {string} name - Package name
  * @property {string} manifestLocation - Path to package.json
+ * @property {string|null} lockfileLocation - Path to package-lock.json if present
  * @property {string} lernaPath - Path to lerna.json
  * @property {(message: string) => Promise<void>} commit - Create a new git commit
  * @property {(version: string) => Promise<void>} tag - Create a new git tag
@@ -23,13 +24,19 @@ function generateAuthToken() {
 /**
  * @param {string} cwd - Project directory
  * @param {string} version - Root project initial version
+ * @param {{lockfile: boolean, workspaces: boolean}} [options] - Package options
  * @returns {Promise<Project>}
  */
-async function createProject(cwd, version) {
+async function createProject(cwd, version, options = {}) {
 	const name = "root-pkg";
 	const manifestLocation = path.resolve(cwd, "package.json");
+	const lockfileLocation = path.resolve(cwd, "package-lock.json");
 	const lernaPath = path.resolve(cwd, "lerna.json");
 	const authToken = generateAuthToken();
+	const npmEnv = {
+		...process.env,
+		NPM_EMAIL: "mock-user@example.net",
+	};
 	const gitEnv = {
 		...process.env,
 		GIT_AUTHOR_NAME: "Mock user",
@@ -38,7 +45,16 @@ async function createProject(cwd, version) {
 		GIT_COMMITTER_EMAIL: "mock-user@example.net",
 	};
 
-	await outputJson(manifestLocation, { name, version: "0.0.0", publishConfig: {} });
+	await outputJson(
+		manifestLocation,
+		{
+			name,
+			version: "0.0.0",
+			publishConfig: {},
+			workspaces: options.workspaces ? ["packages/*"] : undefined,
+		},
+		{ spaces: 2 }
+	);
 	await outputJson(lernaPath, { version, packages: ["packages/*"] });
 	await outputFile(
 		path.resolve(cwd, ".npmrc"),
@@ -51,16 +67,30 @@ async function createProject(cwd, version) {
 		"utf-8"
 	);
 	await outputFile(path.resolve(cwd, ".gitignore"), ["node_modules"].join("\n"), "utf-8");
+
 	await execa("git", ["init"], { cwd, env: gitEnv });
 	await execa("git", ["add", ".npmrc", ".gitignore", "lerna.json", "package.json"], {
 		cwd,
 		env: gitEnv,
 	});
+
+	if (options.lockfile) {
+		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
+			cwd,
+			env: npmEnv,
+		});
+		await execa("git", ["add", "package-lock.json"], {
+			cwd,
+			env: gitEnv,
+		});
+	}
+
 	await execa("git", ["commit", "-m", "initial commit"], { cwd, env: gitEnv });
 
 	return {
 		name,
 		manifestLocation,
+		lockfileLocation: options.lockfile ? lockfileLocation : null,
 		lernaPath,
 		async commit(message) {
 			await execa("git", ["add", "."], { cwd, env: gitEnv });

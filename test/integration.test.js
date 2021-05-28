@@ -68,12 +68,13 @@ afterAll(async () => {
 
 beforeEach(() => {
 	const log = jest.fn();
+	const warn = jest.fn();
 	sut = require("..");
 	context = {
 		log,
 		stdout: new WritableStreamBuffer(),
 		stderr: new WritableStreamBuffer(),
-		logger: { log },
+		logger: { log, warn },
 	};
 });
 
@@ -222,6 +223,120 @@ test("should publish depender packages when dependee changes", async () => {
 	});
 });
 
+test("should update package-lock.json in root", async () => {
+	const cwd = tempy.directory();
+	const env = npmRegistry.authEnv;
+	const project = await createProject(cwd, "0.0.0", { lockfile: true });
+	const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0");
+	await initialPublish(cwd);
+
+	/* Make change to foo package */
+	await outputJson(foo.resolve("file.json"), { test: 1 });
+	await project.commit("change foo");
+
+	/* Simulate semantic release */
+	const pluginConfig = {};
+	await run(project, pluginConfig, {
+		cwd,
+		env,
+		options: {},
+		stdout: context.stdout,
+		stderr: context.stderr,
+		logger: context.logger,
+		nextRelease: { version: "0.0.1" },
+	});
+
+	/* Verify versions */
+	expect(await readJson(project.lockfileLocation)).toMatchInlineSnapshot(`
+		Object {
+		  "lockfileVersion": 2,
+		  "name": "root-pkg",
+		  "packages": Object {
+		    "": Object {
+		      "name": "root-pkg",
+		      "version": "0.0.1",
+		    },
+		  },
+		  "requires": true,
+		  "version": "0.0.1",
+		}
+	`);
+});
+
+test("should update package-lock.json in root with workspaces", async () => {
+	const cwd = tempy.directory();
+	const env = npmRegistry.authEnv;
+	const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
+	const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0");
+	const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0");
+	await bar.require(foo);
+	await project.commit("bar depends on foo");
+	await initialPublish(cwd);
+
+	/* Make change to foo package */
+	await outputJson(foo.resolve("file.json"), { test: 1 });
+	await project.commit("change foo");
+
+	/* Simulate semantic release */
+	const pluginConfig = {};
+	await run(project, pluginConfig, {
+		cwd,
+		env,
+		options: {},
+		stdout: context.stdout,
+		stderr: context.stderr,
+		logger: context.logger,
+		nextRelease: { version: "0.0.1" },
+	});
+
+	/* Verify versions */
+	expect(await readJson(project.lockfileLocation)).toMatchInlineSnapshot(`
+		Object {
+		  "dependencies": Object {
+		    "test-root-workspace-bar": Object {
+		      "requires": Object {
+		        "test-root-workspace-foo": "^0.0.1",
+		      },
+		      "version": "file:packages/test-root-workspace-bar",
+		    },
+		    "test-root-workspace-foo": Object {
+		      "version": "file:packages/test-root-workspace-foo",
+		    },
+		  },
+		  "lockfileVersion": 2,
+		  "name": "root-pkg",
+		  "packages": Object {
+		    "": Object {
+		      "name": "root-pkg",
+		      "version": "0.0.1",
+		      "workspaces": Array [
+		        "packages/*",
+		      ],
+		    },
+		    "node_modules/test-root-workspace-bar": Object {
+		      "link": true,
+		      "resolved": "packages/test-root-workspace-bar",
+		    },
+		    "node_modules/test-root-workspace-foo": Object {
+		      "link": true,
+		      "resolved": "packages/test-root-workspace-foo",
+		    },
+		    "packages/test-root-workspace-bar": Object {
+		      "dependencies": Object {
+		        "test-root-workspace-foo": "^0.0.1",
+		      },
+		      "version": "0.0.1",
+		    },
+		    "packages/test-root-workspace-foo": Object {
+		      "version": "0.0.1",
+		    },
+		  },
+		  "requires": true,
+		  "version": "0.0.1",
+		}
+	`);
+});
+
 test("should generate release notes", async () => {
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
@@ -263,21 +378,21 @@ test("should generate release notes", async () => {
 		.replace(barCommit.hash, "{{commit 3}}");
 
 	expect(releaseNotes).toMatchInlineSnapshot(`
-    "# 0.1.0 (1998-10-24)
+		    "# 0.1.0 (1998-10-24)
 
 
-    ### Bug Fixes
+		    ### Bug Fixes
 
-    * fix bug {{commit 2}}
-    * **test-release-notes-bar:** another bug fixed {{commit 3}}
-
-
-    ### Features
-
-    * **test-release-notes-foo:** change foo {{commit 1}}
+		    * fix bug {{commit 2}}
+		    * **test-release-notes-bar:** another bug fixed {{commit 3}}
 
 
+		    ### Features
 
-    "
-  `);
+		    * **test-release-notes-foo:** change foo {{commit 1}}
+
+
+
+		    "
+	  `);
 });
