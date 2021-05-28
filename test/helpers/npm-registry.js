@@ -1,4 +1,5 @@
 const fs = require("fs");
+const path = require("path");
 const startServer = require("verdaccio").default;
 const tempy = require("tempy");
 
@@ -8,6 +9,12 @@ const NPM_EMAIL = "integration@example.net";
 
 const config = {
 	storage: tempy.directory(),
+	self_path: __dirname, // eslint-disable-line camelcase
+	auth: {
+		htpasswd: {
+			file: path.join(__dirname, "htpasswd"),
+		},
+	},
 	uplinks: {},
 	packages: {
 		"@*/*": {
