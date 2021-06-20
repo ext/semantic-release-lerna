@@ -78,7 +78,8 @@ beforeEach(() => {
 	};
 });
 
-test("should setup testable environment", async () => {
+it("should setup testable environment", async () => {
+	expect.assertions(7);
 	const cwd = tempy.directory();
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-initial-foo", "0.0.0");
@@ -101,7 +102,8 @@ test("should setup testable environment", async () => {
 	expect(await readJson(bar.manifestLocation)).toEqual({ name: bar.name, version: "0.0.0" });
 });
 
-test("should publish only changed packages", async () => {
+it("should publish only changed packages", async () => {
+	expect.assertions(7);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
@@ -139,7 +141,8 @@ test("should publish only changed packages", async () => {
 	expect(await readJson(bar.manifestLocation)).toEqual({ name: bar.name, version: "0.0.0" });
 });
 
-test("should latch package versions", async () => {
+it("should latch package versions", async () => {
+	expect.assertions(7);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
@@ -177,7 +180,8 @@ test("should latch package versions", async () => {
 	expect(await readJson(bar.manifestLocation)).toEqual({ name: bar.name, version: "0.1.0" });
 });
 
-test("should publish depender packages when dependee changes", async () => {
+it("should publish depender packages when dependee changes", async () => {
+	expect.assertions(7);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
@@ -223,7 +227,8 @@ test("should publish depender packages when dependee changes", async () => {
 	});
 });
 
-test("should update package-lock.json in root", async () => {
+it("should update package-lock.json in root", async () => {
+	expect.assertions(1);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0", { lockfile: true });
@@ -263,7 +268,8 @@ test("should update package-lock.json in root", async () => {
 	`);
 });
 
-test("should update package-lock.json in root with workspaces", async () => {
+it("should update package-lock.json in root with workspaces", async () => {
+	expect.assertions(1);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
@@ -337,7 +343,8 @@ test("should update package-lock.json in root with workspaces", async () => {
 	`);
 });
 
-test("should generate release notes", async () => {
+it("should generate release notes", async () => {
+	expect.assertions(1);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");

@@ -2,6 +2,9 @@ const path = require("path");
 const execa = require("execa");
 const { outputJson } = require("fs-extra");
 
+const MOCK_NAME = "Mock user";
+const MOCK_EMAIL = "mock-user@example.net";
+
 /**
  * @typedef {Object} Package
  * @property {string} name - Package name
@@ -24,14 +27,14 @@ async function createPackage(cwd, name, version, options = {}) {
 	const lockfileLocation = path.resolve(cwd, pkgRoot, "package-lock.json");
 	const npmEnv = {
 		...process.env,
-		NPM_EMAIL: "mock-user@example.net",
+		NPM_EMAIL: MOCK_EMAIL,
 	};
 	const gitEnv = {
 		...process.env,
-		GIT_AUTHOR_NAME: "Mock user",
-		GIT_AUTHOR_EMAIL: "mock-user@example.net",
-		GIT_COMMITTER_NAME: "Mock user",
-		GIT_COMMITTER_EMAIL: "mock-user@example.net",
+		GIT_AUTHOR_NAME: MOCK_NAME,
+		GIT_AUTHOR_EMAIL: MOCK_EMAIL,
+		GIT_COMMITTER_NAME: MOCK_NAME,
+		GIT_COMMITTER_EMAIL: MOCK_EMAIL,
 	};
 
 	await outputJson(manifestLocation, { name, version });

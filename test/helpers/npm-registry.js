@@ -76,6 +76,7 @@ async function start() {
  */
 async function stop() {
 	return new Promise((resolve, reject) => {
+		/* eslint-disable-next-line security/detect-non-literal-fs-filename */
 		fs.rmdirSync(config.storage, { recursive: true });
 		if (server) {
 			server.close((error) => {

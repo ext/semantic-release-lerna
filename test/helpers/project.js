@@ -3,6 +3,9 @@ const execa = require("execa");
 const { outputJson, outputFile } = require("fs-extra");
 const npmRegistry = require("./npm-registry");
 
+const MOCK_NAME = "Mock user";
+const MOCK_EMAIL = "mock-user@example.net";
+
 /**
  * @typedef {Object} Project
  * @property {string} name - Package name
@@ -35,14 +38,14 @@ async function createProject(cwd, version, options = {}) {
 	const authToken = generateAuthToken();
 	const npmEnv = {
 		...process.env,
-		NPM_EMAIL: "mock-user@example.net",
+		NPM_EMAIL: MOCK_EMAIL,
 	};
 	const gitEnv = {
 		...process.env,
-		GIT_AUTHOR_NAME: "Mock user",
-		GIT_AUTHOR_EMAIL: "mock-user@example.net",
-		GIT_COMMITTER_NAME: "Mock user",
-		GIT_COMMITTER_EMAIL: "mock-user@example.net",
+		GIT_AUTHOR_NAME: MOCK_NAME,
+		GIT_AUTHOR_EMAIL: MOCK_EMAIL,
+		GIT_COMMITTER_NAME: MOCK_NAME,
+		GIT_COMMITTER_EMAIL: MOCK_EMAIL,
 	};
 
 	await outputJson(
