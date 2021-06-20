@@ -28,6 +28,15 @@ As of now the following features from `@semantic-release/npm` is not supported/i
 | `prepare`       | Update the `package.json` version and [create](https://docs.npmjs.com/cli/pack) the npm package tarball.                                                                                                                                                                                          |
 | `publish`       | [Publish the npm package](https://docs.npmjs.com/cli/publish) to the registry.                                                                                                                                                                                                                    |
 
+## Dependencies
+
+If a package version is bumped all the packages depending (`dependencies`, `devDependencies` and `peerDependencies`) on it will also have the range updated if the range has one of the following formats:
+
+- `1.2.3`
+- `^1.2.3`
+- `^1.2`
+- `^1`
+
 ## Install
 
 ```bash

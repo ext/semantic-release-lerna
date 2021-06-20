@@ -62,6 +62,7 @@
     "get-stream": "^6.0.0",
     "into-stream": "^6.0.0",
     "read-pkg-up": "^7.0.0",
+    "semver": "^7.0.0",
     "tempy": "^1.0.0",
     "write-json-file": "^4.0.0"
   },
@@ -79,7 +80,6 @@
     "lerna": "4.0.0",
     "prettier": "2.3.1",
     "semantic-release": "17.4.4",
-    "semver": "7.3.5",
     "stream-buffers": "3.0.2",
     "verdaccio": "5.1.1"
   },
