@@ -1,9 +1,13 @@
 {
   "extends": ["@html-validate"],
 
+  "rules": {
+    "security/detect-object-injection": "off"
+  },
+
   "overrides": [
     {
-      "files": "*.spec.[jt]s",
+      "files": "*.test.[jt]s",
       "excludedFiles": "cypress/**",
       "extends": ["@html-validate/jest"]
     }
