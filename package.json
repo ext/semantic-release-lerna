@@ -76,7 +76,7 @@
     "eslint": "7.29.0",
     "fs-extra": "10.0.0",
     "got": "11.8.2",
-    "jest": "27.0.5",
+    "jest": "27.0.6",
     "lerna": "4.0.0",
     "prettier": "2.3.2",
     "semantic-release": "17.4.4",
