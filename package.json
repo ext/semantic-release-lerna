@@ -79,7 +79,7 @@
     "jest": "27.0.6",
     "lerna": "4.0.0",
     "prettier": "2.3.2",
-    "semantic-release": "17.4.6",
+    "semantic-release": "17.4.7",
     "stream-buffers": "3.0.2",
     "verdaccio": "5.1.3"
   },
