@@ -78,7 +78,7 @@
     "got": "11.8.2",
     "jest": "27.2.0",
     "lerna": "4.0.0",
-    "prettier": "2.4.0",
+    "prettier": "2.4.1",
     "semantic-release": "17.4.7",
     "stream-buffers": "3.0.2",
     "verdaccio": "5.1.4"
