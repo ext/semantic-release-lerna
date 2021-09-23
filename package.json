@@ -51,8 +51,8 @@
     "@lerna/package": "^4.0.0",
     "@lerna/package-graph": "^4.0.0",
     "@lerna/project": "^4.0.0",
-    "@semantic-release/error": "^2.2.0",
-    "@semantic-release/release-notes-generator": "^9.0.1",
+    "@semantic-release/error": "^3.0.0",
+    "@semantic-release/release-notes-generator": "^10.0.0",
     "aggregate-error": "^3.1.0",
     "conventional-changelog-writer": "^5.0.0",
     "conventional-commits-filter": "^2.0.0",
@@ -70,7 +70,7 @@
     "@html-validate/eslint-config": "4.4.8",
     "@html-validate/eslint-config-jest": "4.4.2",
     "@html-validate/prettier-config": "2.0.0",
-    "@semantic-release/npm": "7.1.3",
+    "@semantic-release/npm": "8.0.0",
     "@types/jest": "27.0.2",
     "codecov": "3.8.3",
     "eslint": "7.32.0",
@@ -79,14 +79,14 @@
     "jest": "27.2.1",
     "lerna": "4.0.0",
     "prettier": "2.4.1",
-    "semantic-release": "17.4.7",
+    "semantic-release": "18.0.0",
     "stream-buffers": "3.0.2",
     "verdaccio": "5.1.6"
   },
   "peerDependencies": {
     "@semantic-release/npm": ">= 7",
     "lerna": "^3.2 || ^4",
-    "semantic-release": ">=15.0.0 <18.0.0"
+    "semantic-release": ">=15.0.0 <19.0.0"
   },
   "engines": {
     "node": ">= 12.10"
