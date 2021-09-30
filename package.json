@@ -63,7 +63,7 @@
     "into-stream": "^6.0.0",
     "read-pkg-up": "^7.0.0",
     "semver": "^7.0.0",
-    "tempy": "^1.0.0",
+    "tempy": "^2.0.0",
     "write-json-file": "^4.0.0"
   },
   "devDependencies": {
