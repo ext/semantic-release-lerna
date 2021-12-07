@@ -67,13 +67,12 @@
     "write-json-file": "^4.0.0"
   },
   "devDependencies": {
-    "@html-validate/eslint-config": "4.4.12",
-    "@html-validate/eslint-config-jest": "4.4.11",
+    "@html-validate/eslint-config": "5.2.1",
+    "@html-validate/eslint-config-jest": "5.2.0",
     "@html-validate/prettier-config": "2.0.0",
     "@semantic-release/npm": "8.0.3",
     "@types/jest": "27.0.3",
     "codecov": "3.8.3",
-    "eslint": "7.32.0",
     "fs-extra": "10.0.0",
     "got": "11.8.3",
     "jest": "27.4.3",
