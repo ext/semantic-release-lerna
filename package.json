@@ -95,7 +95,7 @@
   },
   "renovate": {
     "extends": [
-      "@html-validate"
+      "gitlab>html-validate/renovate-config"
     ]
   }
 }
