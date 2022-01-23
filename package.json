@@ -80,7 +80,7 @@
     "prettier": "2.5.1",
     "semantic-release": "19.0.2",
     "stream-buffers": "3.0.2",
-    "verdaccio": "5.4.0"
+    "verdaccio": "5.5.0"
   },
   "peerDependencies": {
     "@semantic-release/npm": ">= 7",
