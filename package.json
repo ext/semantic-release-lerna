@@ -73,7 +73,7 @@
     "@semantic-release/npm": "9.0.1",
     "@types/jest": "27.4.1",
     "codecov": "3.8.3",
-    "fs-extra": "10.0.1",
+    "fs-extra": "10.1.0",
     "got": "11.8.3",
     "jest": "27.5.1",
     "lerna": "4.0.0",
