@@ -61,6 +61,7 @@
     "execa": "^5.0.0",
     "get-stream": "^6.0.0",
     "into-stream": "^6.0.0",
+    "libnpmversion": "^3.0.0",
     "read-pkg-up": "^7.0.0",
     "semver": "^7.0.0",
     "tempy": "^1.0.0",
