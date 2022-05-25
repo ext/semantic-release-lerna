@@ -46,11 +46,11 @@
     "testTimeout": 10000
   },
   "dependencies": {
-    "@lerna/child-process": "^4.0.0",
-    "@lerna/collect-updates": "^4.0.0",
-    "@lerna/package": "^4.0.0",
-    "@lerna/package-graph": "^4.0.0",
-    "@lerna/project": "^4.0.0",
+    "@lerna/child-process": "^5.0.0",
+    "@lerna/collect-updates": "^5.0.0",
+    "@lerna/package": "^5.0.0",
+    "@lerna/package-graph": "^5.0.0",
+    "@lerna/project": "^5.0.0",
     "@semantic-release/error": "^3.0.0",
     "@semantic-release/release-notes-generator": "^10.0.0",
     "aggregate-error": "^3.1.0",
@@ -77,7 +77,7 @@
     "fs-extra": "10.1.0",
     "got": "11.8.3",
     "jest": "28.1.0",
-    "lerna": "4.0.0",
+    "lerna": "5.0.0",
     "prettier": "2.6.2",
     "semantic-release": "19.0.2",
     "stream-buffers": "3.0.2",
@@ -85,7 +85,7 @@
   },
   "peerDependencies": {
     "@semantic-release/npm": ">= 7",
-    "lerna": "^3.2 || ^4",
+    "lerna": "^3.2 || ^4 || ^5",
     "semantic-release": ">=15.0.0 <20.0.0"
   },
   "engines": {
