@@ -72,7 +72,7 @@
     "@html-validate/eslint-config-jest": "5.4.8",
     "@html-validate/prettier-config": "2.2.0",
     "@semantic-release/npm": "9.0.1",
-    "@types/jest": "27.5.1",
+    "@types/jest": "27.5.2",
     "codecov": "3.8.3",
     "fs-extra": "10.1.0",
     "got": "11.8.5",
