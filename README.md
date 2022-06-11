@@ -23,7 +23,7 @@ As of now the following features from `@semantic-release/npm` is not supported/i
 - Only rudimentary support for private packages.
 
 | Step            | Description                                                                                                                                                                                                                                                                                       |
-|-----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `generateNotes` | If the plugin option `generateNotes` is true this plugin generate release notes with the commit scope set to a list of affected packages (unless otherwise specificed by the commit message). This option replaces `@semantic-release/release-notes-generator`, do not use both at the same time. |
 | `prepare`       | Update the `package.json` version and [create](https://docs.npmjs.com/cli/pack) the npm package tarball.                                                                                                                                                                                          |
 | `publish`       | [Publish the npm package](https://docs.npmjs.com/cli/publish) to the registry.                                                                                                                                                                                                                    |
@@ -74,11 +74,11 @@ To use legacy auth set `NPM_USERNAME`, `NPM_PASSWORD` and `NPM_EMAIL`.
 
 ## Options
 
-| Option          | Description                                                                                                                                                                                              | Default   |
-|-----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------|
-| `npmVerifyAuth` | Set to `false` to disable verifying NPM registry credentials.                                                                                                                                            | `true`    |
-| `latch`         | Latches package versions together. If the version bump is at least the given version all packages will be bumped regardless if the package has been touched or not. `"major", "minor",  "patch", "none"` | `"minor"` |
-| `rootVersion`   | Allow to update version on root `package.json`.                                                                                                                                                          | `true`    |
+| Option          | Description                                                                                                                                                                                             | Default   |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `npmVerifyAuth` | Set to `false` to disable verifying NPM registry credentials.                                                                                                                                           | `true`    |
+| `latch`         | Latches package versions together. If the version bump is at least the given version all packages will be bumped regardless if the package has been touched or not. `"major", "minor", "patch", "none"` | `"minor"` |
+| `rootVersion`   | Allow to update version on root `package.json`.                                                                                                                                                         | `true`    |
 
 ## Troubleshooting
 
