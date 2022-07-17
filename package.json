@@ -69,7 +69,7 @@
   },
   "devDependencies": {
     "@html-validate/eslint-config": "5.4.14",
-    "@html-validate/eslint-config-jest": "5.4.11",
+    "@html-validate/eslint-config-jest": "5.4.16",
     "@html-validate/prettier-config": "2.3.0",
     "@semantic-release/npm": "9.0.1",
     "@types/jest": "28.1.6",
