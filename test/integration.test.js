@@ -253,11 +253,11 @@ it("should update package-lock.json in root", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.lockfileLocation)).toMatchInlineSnapshot(`
-		Object {
+		{
 		  "lockfileVersion": 2,
 		  "name": "root-pkg",
-		  "packages": Object {
-		    "": Object {
+		  "packages": {
+		    "": {
 		      "name": "root-pkg",
 		      "version": "0.0.1",
 		    },
@@ -297,43 +297,43 @@ it("should update package-lock.json in root with workspaces", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.lockfileLocation)).toMatchInlineSnapshot(`
-		Object {
-		  "dependencies": Object {
-		    "test-root-workspace-bar": Object {
-		      "requires": Object {
+		{
+		  "dependencies": {
+		    "test-root-workspace-bar": {
+		      "requires": {
 		        "test-root-workspace-foo": "^0.0.1",
 		      },
 		      "version": "file:packages/test-root-workspace-bar",
 		    },
-		    "test-root-workspace-foo": Object {
+		    "test-root-workspace-foo": {
 		      "version": "file:packages/test-root-workspace-foo",
 		    },
 		  },
 		  "lockfileVersion": 2,
 		  "name": "root-pkg",
-		  "packages": Object {
-		    "": Object {
+		  "packages": {
+		    "": {
 		      "name": "root-pkg",
 		      "version": "0.0.1",
-		      "workspaces": Array [
+		      "workspaces": [
 		        "packages/*",
 		      ],
 		    },
-		    "node_modules/test-root-workspace-bar": Object {
+		    "node_modules/test-root-workspace-bar": {
 		      "link": true,
 		      "resolved": "packages/test-root-workspace-bar",
 		    },
-		    "node_modules/test-root-workspace-foo": Object {
+		    "node_modules/test-root-workspace-foo": {
 		      "link": true,
 		      "resolved": "packages/test-root-workspace-foo",
 		    },
-		    "packages/test-root-workspace-bar": Object {
-		      "dependencies": Object {
+		    "packages/test-root-workspace-bar": {
+		      "dependencies": {
 		        "test-root-workspace-foo": "^0.0.1",
 		      },
 		      "version": "0.0.1",
 		    },
-		    "packages/test-root-workspace-foo": Object {
+		    "packages/test-root-workspace-foo": {
 		      "version": "0.0.1",
 		    },
 		  },
