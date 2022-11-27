@@ -70,7 +70,7 @@
   "devDependencies": {
     "@html-validate/eslint-config": "5.5.11",
     "@html-validate/eslint-config-jest": "5.5.12",
-    "@html-validate/prettier-config": "2.3.0",
+    "@html-validate/prettier-config": "2.3.1",
     "@semantic-release/npm": "9.0.1",
     "@types/jest": "29.2.3",
     "codecov": "3.8.3",
