@@ -18,7 +18,7 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @param {string} cwd - Project directory
  * @param {string} name - Package name
  * @param {string} version - Package initial version
- * @param {{lockfile: boolean}} [options] - Package options
+ * @param {{private: boolean, lockfile: boolean}} [options] - Package options
  * @returns {Promise<Package>}
  */
 async function createPackage(cwd, name, version, options = {}) {
@@ -37,7 +37,7 @@ async function createPackage(cwd, name, version, options = {}) {
 		GIT_COMMITTER_EMAIL: MOCK_EMAIL,
 	};
 
-	await outputJson(manifestLocation, { name, version });
+	await outputJson(manifestLocation, { name, version, private: options.private });
 	if (options.lockfile) {
 		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
 			cwd: path.resolve(cwd, pkgRoot),
