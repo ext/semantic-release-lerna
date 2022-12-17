@@ -359,13 +359,16 @@ it("should generate release notes", async () => {
 	const rootCommit = await project.commit("fix: fix bug");
 	await outputJson(bar.resolve("file.json"), { test: 1 });
 	const barCommit = await project.commit("fix: another bug fixed");
+	await outputJson(foo.resolve("file.json"), { test: 2 });
+	await outputJson(bar.resolve("file.json"), { test: 2 });
+	const sharedCommit = await project.commit("fix: fixed bug across two packages");
 
 	/* Simulate semantic release */
 	const pluginConfig = {
 		generateNotes: true,
 	};
 	const { generateNotes } = await run(project, pluginConfig, {
-		commits: [fooCommit, rootCommit, barCommit],
+		commits: [fooCommit, rootCommit, barCommit, sharedCommit],
 		cwd,
 		env,
 		options: {
@@ -382,24 +385,92 @@ it("should generate release notes", async () => {
 		.replace(/\d{4}-\d{2}-\d{2}/, "1998-10-24")
 		.replace(fooCommit.hash, "{{commit 1}}")
 		.replace(rootCommit.hash, "{{commit 2}}")
-		.replace(barCommit.hash, "{{commit 3}}");
+		.replace(barCommit.hash, "{{commit 3}}")
+		.replace(sharedCommit.hash, "{{commit 4}}");
 
 	expect(releaseNotes).toMatchInlineSnapshot(`
-		    "# 0.1.0 (1998-10-24)
+		"# 0.1.0 (1998-10-24)
 
 
-		    ### Bug Fixes
+		### Bug Fixes
 
-		    * fix bug {{commit 2}}
-		    * **test-release-notes-bar:** another bug fixed {{commit 3}}
-
-
-		    ### Features
-
-		    * **test-release-notes-foo:** change foo {{commit 1}}
+		* fix bug {{commit 2}}
+		* **test-release-notes-bar, test-release-notes-foo:** fixed bug across two packages {{commit 4}}
+		* **test-release-notes-bar:** another bug fixed {{commit 3}}
 
 
+		### Features
 
-		    "
-	  `);
+		* **test-release-notes-foo:** change foo {{commit 1}}
+
+
+
+		"
+	`);
+});
+
+it("should skip private packages in release notes", async () => {
+	expect.assertions(1);
+	const cwd = tempy.directory();
+	const env = npmRegistry.authEnv;
+	const project = await createProject(cwd, "0.0.0");
+	const foo = await createPackage(cwd, "test-skip-private-foo", "0.0.0");
+	const bar = await createPackage(cwd, "test-skip-private-bar", "0.0.0", { private: true });
+	await initialPublish(cwd);
+
+	/* Make some changes */
+	await outputJson(foo.resolve("file.json"), { test: 1 });
+	const fooCommit = await project.commit("feat: change foo");
+	await outputJson(project.resolve("other.json"), { test: 1 });
+	const rootCommit = await project.commit("fix: fix bug");
+	await outputJson(bar.resolve("file.json"), { test: 1 });
+	const barCommit = await project.commit("fix: another bug fixed");
+	await outputJson(foo.resolve("file.json"), { test: 2 });
+	await outputJson(bar.resolve("file.json"), { test: 2 });
+	const sharedCommit = await project.commit("fix: fixed bug across two packages");
+
+	/* Simulate semantic release */
+	const pluginConfig = {
+		generateNotes: true,
+	};
+	const { generateNotes } = await run(project, pluginConfig, {
+		commits: [fooCommit, rootCommit, barCommit, sharedCommit],
+		cwd,
+		env,
+		options: {
+			repositoryUrl: "https://git.example.net/test/release-notes.git",
+		},
+		stdout: context.stdout,
+		stderr: context.stderr,
+		logger: context.logger,
+		lastRelease: { version: "0.0.0", gitTag: "v0.0.0" },
+		nextRelease: { version: "0.1.0" },
+	});
+
+	const releaseNotes = generateNotes
+		.replace(/\d{4}-\d{2}-\d{2}/, "1998-10-24")
+		.replace(fooCommit.hash, "{{commit 1}}")
+		.replace(rootCommit.hash, "{{commit 2}}")
+		.replace(barCommit.hash, "{{commit 3}}")
+		.replace(sharedCommit.hash, "{{commit 4}}");
+
+	expect(releaseNotes).toMatchInlineSnapshot(`
+		"# 0.1.0 (1998-10-24)
+
+
+		### Bug Fixes
+
+		* another bug fixed {{commit 3}}
+		* fix bug {{commit 2}}
+		* **test-skip-private-foo:** fixed bug across two packages {{commit 4}}
+
+
+		### Features
+
+		* **test-skip-private-foo:** change foo {{commit 1}}
+
+
+
+		"
+	`);
 });
