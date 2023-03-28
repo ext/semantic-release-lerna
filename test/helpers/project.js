@@ -65,7 +65,7 @@ async function createProject(cwd, version, options = {}) {
 			`registry=${npmRegistry.url()}`,
 			`//${npmRegistry.url()}:_authToken=${authToken}`,
 			`_auth=${authToken}`,
-			"email=${NPM_EMAIL}", // eslint-disable-line no-template-curly-in-string
+			"email=${NPM_EMAIL}",
 		].join("\n"),
 		"utf-8"
 	);
