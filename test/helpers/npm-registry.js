@@ -1,3 +1,5 @@
+/* eslint-disable camelcase -- environmental variables use snakecase */
+
 const fs = require("fs");
 const path = require("path");
 const startServer = require("verdaccio").default;
@@ -9,7 +11,7 @@ const NPM_EMAIL = "integration@example.net";
 
 const config = {
 	storage: tempy.directory(),
-	self_path: __dirname, // eslint-disable-line camelcase
+	self_path: __dirname,
 	auth: {
 		htpasswd: {
 			file: path.join(__dirname, "htpasswd"),
@@ -30,7 +32,6 @@ const config = {
 };
 
 const authEnv = {
-	/* eslint-disable-next-line camelcase */
 	npm_config_registry: null /* set via start verdaccio */,
 	NPM_USERNAME,
 	NPM_PASSWORD,
@@ -50,7 +51,7 @@ function startVerdaccio() {
 			startServer(config, 0, {}, "1.0.0", "verdaccio", (webServer, addr) => {
 				webServer.listen(addr.port || addr.path, addr.host, () => {
 					registryUrl = `${addr.proto}://${addr.host}:${addr.port}`;
-					authEnv.npm_config_registry = registryUrl; /* eslint-disable-line camelcase */
+					authEnv.npm_config_registry = registryUrl;
 					resolve(webServer);
 				});
 			});
@@ -76,7 +77,6 @@ async function start() {
  */
 async function stop() {
 	return new Promise((resolve, reject) => {
-		/* eslint-disable-next-line security/detect-non-literal-fs-filename */
 		fs.rmdirSync(config.storage, { recursive: true });
 		if (server) {
 			server.close((error) => {
