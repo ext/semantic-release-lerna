@@ -68,7 +68,7 @@
     "write-json-file": "^4.0.0"
   },
   "devDependencies": {
-    "@html-validate/eslint-config": "5.7.2",
+    "@html-validate/eslint-config": "5.7.3",
     "@html-validate/eslint-config-jest": "5.7.0",
     "@html-validate/prettier-config": "2.3.8",
     "@semantic-release/npm": "9.0.2",
