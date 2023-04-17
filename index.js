@@ -11,7 +11,6 @@ import publishNpm from "./lib/publish.cjs";
 
 export { default as generateNotes } from "./lib/generate-notes";
 
-
 let verified;
 const npmrc = file({ name: ".npmrc" });
 

@@ -1,7 +1,8 @@
-const path = require("path");
-const execa = require("execa");
-const { outputJson, outputFile } = require("fs-extra");
-const npmRegistry = require("./npm-registry.cjs");
+import { resolve as _resolve } from "path";
+import execa from "execa";
+import fse from "fs-extra";
+// import { fse.outputJson, fse.outputFile } from "fs-extra";
+import { authEnv, url } from "./npm-registry.cjs";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
@@ -20,7 +21,7 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @returns {string}
  */
 function generateAuthToken() {
-	const content = `${npmRegistry.authEnv.NPM_USERNAME}:${npmRegistry.authEnv.NPM_PASSWORD}`;
+	const content = `${authEnv.NPM_USERNAME}:${authEnv.NPM_PASSWORD}`;
 	return Buffer.from(content, "utf8").toString("base64");
 }
 
@@ -30,11 +31,11 @@ function generateAuthToken() {
  * @param {{lockfile: boolean, workspaces: boolean}} [options] - Package options
  * @returns {Promise<Project>}
  */
-async function createProject(cwd, version, options = {}) {
+export async function createProject(cwd, version, options = {}) {
 	const name = "root-pkg";
-	const manifestLocation = path.resolve(cwd, "package.json");
-	const lockfileLocation = path.resolve(cwd, "package-lock.json");
-	const lernaPath = path.resolve(cwd, "lerna.json");
+	const manifestLocation = _resolve(cwd, "package.json");
+	const lockfileLocation = _resolve(cwd, "package-lock.json");
+	const lernaPath = _resolve(cwd, "lerna.json");
 	const authToken = generateAuthToken();
 	const npmEnv = {
 		...process.env,
@@ -48,7 +49,7 @@ async function createProject(cwd, version, options = {}) {
 		GIT_COMMITTER_EMAIL: MOCK_EMAIL,
 	};
 
-	await outputJson(
+	await fse.outputJson(
 		manifestLocation,
 		{
 			name,
@@ -58,18 +59,18 @@ async function createProject(cwd, version, options = {}) {
 		},
 		{ spaces: 2 }
 	);
-	await outputJson(lernaPath, { version, packages: ["packages/*"] });
-	await outputFile(
-		path.resolve(cwd, ".npmrc"),
+	await fse.outputJson(lernaPath, { version, packages: ["packages/*"] });
+	await fse.outputFile(
+		_resolve(cwd, ".npmrc"),
 		[
-			`registry=${npmRegistry.url()}`,
-			`//${npmRegistry.url()}:_authToken=${authToken}`,
+			`registry=${url()}`,
+			`//${url()}:_authToken=${authToken}`,
 			`_auth=${authToken}`,
 			"email=${NPM_EMAIL}",
 		].join("\n"),
 		"utf-8"
 	);
-	await outputFile(path.resolve(cwd, ".gitignore"), ["node_modules"].join("\n"), "utf-8");
+	await fse.outputFile(_resolve(cwd, ".gitignore"), ["node_modules"].join("\n"), "utf-8");
 
 	await execa("git", ["init"], { cwd, env: gitEnv });
 	await execa("git", ["add", ".npmrc", ".gitignore", "lerna.json", "package.json"], {
@@ -105,12 +106,10 @@ async function createProject(cwd, version, options = {}) {
 			};
 		},
 		resolve(...parts) {
-			return path.resolve(cwd, ...parts);
+			return _resolve(cwd, ...parts);
 		},
 		async tag(version) {
 			await execa("git", ["tag", version], { cwd, env: gitEnv });
 		},
 	};
 }
-
-module.exports = { createProject };

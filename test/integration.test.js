@@ -17,7 +17,7 @@ import { directory } from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as sut from "..";
 import { url, authEnv, start, stop } from "./helpers/npm-registry.cjs";
-import { createProject } from "./helpers/project.cjs";
+import { createProject } from "./helpers/project";
 import { createPackage } from "./helpers/package.cjs";
 
 const npmRegistry = { url, authEnv, start, stop };
