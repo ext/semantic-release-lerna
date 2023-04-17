@@ -39,7 +39,8 @@
     "prettier:write": "prettier --write .",
     "semantic-release": "semantic-release",
     "pretest": "npm run eslint",
-    "test": "jest --collectCoverage"
+    "test": "jest --collectCoverage",
+    "test:yes": "jest --collectCoverage -t 'should publish only changed packages'"
   },
   "prettier": "@html-validate/prettier-config",
   "jest": {
@@ -94,6 +95,7 @@
   "publishConfig": {
     "access": "public"
   },
+  "type": "module",
   "renovate": {
     "extends": [
       "gitlab>html-validate/renovate-config"

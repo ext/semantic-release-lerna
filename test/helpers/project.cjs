@@ -1,7 +1,7 @@
 const path = require("path");
 const execa = require("execa");
 const { outputJson, outputFile } = require("fs-extra");
-const npmRegistry = require("./npm-registry");
+const npmRegistry = require("./npm-registry.cjs");
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
