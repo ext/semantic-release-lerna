@@ -6,7 +6,7 @@ import verifyNpmConfig from "@semantic-release/npm/lib/verify-config";
 import verifyNpmAuth from "./lib/verify-auth";
 import verifyGit from "./lib/verify-git.cjs";
 import prepareNpm from "./lib/prepare.cjs";
-import publishNpm from "./lib/publish.cjs";
+import publishNpm from "./lib/publish";
 // import generateNotes from "./lib/generate-notes";
 
 export { default as generateNotes } from "./lib/generate-notes";
