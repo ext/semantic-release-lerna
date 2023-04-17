@@ -15,7 +15,7 @@ import execa from "execa";
 import got from "got";
 import { directory } from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
-import * as sut from "../index.cjs"; // update this
+import * as sut from "..";
 import { url, authEnv, start, stop } from "./helpers/npm-registry.cjs";
 import { createProject } from "./helpers/project.cjs";
 import { createPackage } from "./helpers/package.cjs";

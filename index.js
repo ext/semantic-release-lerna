@@ -1,16 +1,19 @@
-const AggregateError = require("aggregate-error");
-const tempy = require("tempy");
-const setLegacyToken = require("@semantic-release/npm/lib/set-legacy-token");
-const getPkg = require("@semantic-release/npm/lib/get-pkg");
-const verifyNpmConfig = require("@semantic-release/npm/lib/verify-config");
-const verifyNpmAuth = require("./lib/verify-auth");
-const verifyGit = require("./lib/verify-git");
-const prepareNpm = require("./lib/prepare");
-const publishNpm = require("./lib/publish");
-const generateNotes = require("./lib/generate-notes");
+import AggregateError from "aggregate-error";
+import { file } from "tempy";
+import setLegacyToken from "@semantic-release/npm/lib/set-legacy-token";
+import getPkg from "@semantic-release/npm/lib/get-pkg";
+import verifyNpmConfig from "@semantic-release/npm/lib/verify-config";
+import verifyNpmAuth from "./lib/verify-auth.cjs";
+import verifyGit from "./lib/verify-git.cjs";
+import prepareNpm from "./lib/prepare.cjs";
+import publishNpm from "./lib/publish.cjs";
+// import generateNotes from "./lib/generate-notes";
+
+export { default as generateNotes } from "./lib/generate-notes";
+
 
 let verified;
-const npmrc = tempy.file({ name: ".npmrc" });
+const npmrc = file({ name: ".npmrc" });
 
 const defaultConfig = {
 	npmVerifyAuth: true,
@@ -30,7 +33,7 @@ function defaultTo(value, defaultValue) {
 	return value === null || value === undefined ? defaultValue : value;
 }
 
-async function verifyConditions(pluginConfig, context) {
+export async function verifyConditions(pluginConfig, context) {
 	pluginConfig.npmVerifyAuth = defaultTo(pluginConfig.npmVerifyAuth, defaultConfig.npmVerifyAuth);
 	pluginConfig.npmPublish = defaultTo(pluginConfig.npmPublish, defaultConfig.npmPublish);
 	pluginConfig.tarballDir = defaultTo(pluginConfig.tarballDir, defaultConfig.tarballDir);
@@ -56,7 +59,7 @@ async function verifyConditions(pluginConfig, context) {
 	verified = true;
 }
 
-async function prepare(pluginConfig, context) {
+export async function prepare(pluginConfig, context) {
 	pluginConfig.latch = defaultTo(pluginConfig.latch, defaultConfig.latch);
 
 	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
@@ -79,7 +82,7 @@ async function prepare(pluginConfig, context) {
 	await prepareNpm(npmrc, pluginConfig, context);
 }
 
-async function publish(pluginConfig, context) {
+export async function publish(pluginConfig, context) {
 	let pkg;
 	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
 
@@ -102,9 +105,9 @@ async function publish(pluginConfig, context) {
 	return publishNpm(npmrc, pluginConfig, pkg, context);
 }
 
-module.exports = {
-	verifyConditions,
-	prepare,
-	publish,
-	generateNotes,
-};
+// export default {
+// 	verifyConditions,
+// 	prepare,
+// 	publish,
+// 	generateNotes,
+// };
