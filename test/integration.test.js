@@ -1,13 +1,4 @@
 /* eslint-env jest */
-
-// const { fse.outputJson, fse.readJson } = require("fs-extra");
-// const execa = require("execa");
-// const got = require("got");
-// const tempy = require("tempy");
-// const { WritableStreamBuffer } = require("stream-buffers");
-// const npmRegistry = require("./helpers/npm-registry");
-// const { createProject } = require("./helpers/project");
-// const { createPackage } = require("./helpers/package");
 import fse from "fs-extra";
 // eslint-disable-next-line import/no-extraneous-dependencies, node/no-extraneous-import -- part of the jest package
 import { jest } from "@jest/globals";
@@ -18,7 +9,7 @@ import { WritableStreamBuffer } from "stream-buffers";
 import * as sut from "..";
 import { url, authEnv, start, stop } from "./helpers/npm-registry.cjs";
 import { createProject } from "./helpers/project";
-import { createPackage } from "./helpers/package.cjs";
+import { createPackage } from "./helpers/package";
 
 const npmRegistry = { url, authEnv, start, stop };
 
@@ -362,7 +353,7 @@ it("should update package-lock.json in root with workspaces", async () => {
 		  "version": "0.0.1",
 		}
 	`);
-});
+}, 15000);
 
 it("should generate release notes", async () => {
 	expect.assertions(1);

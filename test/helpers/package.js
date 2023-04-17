@@ -1,6 +1,6 @@
-const path = require("path");
-const execa = require("execa");
-const { outputJson } = require("fs-extra");
+import { resolve as _resolve } from "path";
+import execa from "execa";
+import fse from "fs-extra";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
@@ -21,10 +21,10 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @param {{private: boolean, lockfile: boolean}} [options] - Package options
  * @returns {Promise<Package>}
  */
-async function createPackage(cwd, name, version, options = {}) {
+export async function createPackage(cwd, name, version, options = {}) {
 	const pkgRoot = `packages/${name}`;
-	const manifestLocation = path.resolve(cwd, pkgRoot, "package.json");
-	const lockfileLocation = path.resolve(cwd, pkgRoot, "package-lock.json");
+	const manifestLocation = _resolve(cwd, pkgRoot, "package.json");
+	const lockfileLocation = _resolve(cwd, pkgRoot, "package-lock.json");
 	const npmEnv = {
 		...process.env,
 		NPM_EMAIL: MOCK_EMAIL,
@@ -37,10 +37,10 @@ async function createPackage(cwd, name, version, options = {}) {
 		GIT_COMMITTER_EMAIL: MOCK_EMAIL,
 	};
 
-	await outputJson(manifestLocation, { name, version, private: options.private });
+	await fse.outputJson(manifestLocation, { name, version, private: options.private });
 	if (options.lockfile) {
 		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
-			cwd: path.resolve(cwd, pkgRoot),
+			cwd: _resolve(cwd, pkgRoot),
 			env: npmEnv,
 		});
 	}
@@ -56,9 +56,9 @@ async function createPackage(cwd, name, version, options = {}) {
 			await execa("lerna", ["add", dep.name, "--scope", this.name], { cwd });
 		},
 		resolve(...parts) {
-			return path.resolve(cwd, pkgRoot, ...parts);
+			return _resolve(cwd, pkgRoot, ...parts);
 		},
 	};
 }
 
-module.exports = { createPackage };
+// export default { createPackage };
