@@ -3,7 +3,7 @@ import { file } from "tempy";
 import setLegacyToken from "@semantic-release/npm/lib/set-legacy-token";
 import getPkg from "@semantic-release/npm/lib/get-pkg";
 import verifyNpmConfig from "@semantic-release/npm/lib/verify-config";
-import verifyNpmAuth from "./lib/verify-auth.cjs";
+import verifyNpmAuth from "./lib/verify-auth";
 import verifyGit from "./lib/verify-git.cjs";
 import prepareNpm from "./lib/prepare.cjs";
 import publishNpm from "./lib/publish.cjs";
