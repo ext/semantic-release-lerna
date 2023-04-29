@@ -70,8 +70,6 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 }
 ```
 
-To use legacy auth set `NPM_USERNAME`, `NPM_PASSWORD` and `NPM_EMAIL`.
-
 ## Options
 
 | Option          | Description                                                                                                                                                                                             | Default   |

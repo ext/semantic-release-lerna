@@ -1,6 +1,5 @@
 const AggregateError = require("aggregate-error");
 const tempy = require("tempy");
-const setLegacyToken = require("@semantic-release/npm/lib/set-legacy-token");
 const getPkg = require("@semantic-release/npm/lib/get-pkg");
 const verifyNpmConfig = require("@semantic-release/npm/lib/verify-config");
 const verifyNpmAuth = require("./lib/verify-auth");
@@ -38,8 +37,6 @@ async function verifyConditions(pluginConfig, context) {
 
 	const errors = [...verifyNpmConfig(pluginConfig), ...(await verifyGit(context))];
 
-	setLegacyToken(context);
-
 	try {
 		if (pluginConfig.npmVerifyAuth) {
 			const pkg = await getPkg(pluginConfig, context);
@@ -61,8 +58,6 @@ async function prepare(pluginConfig, context) {
 
 	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
 
-	setLegacyToken(context);
-
 	try {
 		if (pluginConfig.npmVerifyAuth) {
 			const pkg = await getPkg(pluginConfig, context);
@@ -82,8 +77,6 @@ async function prepare(pluginConfig, context) {
 async function publish(pluginConfig, context) {
 	let pkg;
 	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
-
-	setLegacyToken(context);
 
 	try {
 		// Reload package.json in case a previous external step updated it
