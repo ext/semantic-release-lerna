@@ -72,11 +72,11 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 
 ## Options
 
-| Option          | Description                                                                                                                                                                                             | Default   |
-| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
-| `npmVerifyAuth` | Set to `false` to disable verifying NPM registry credentials.                                                                                                                                           | `true`    |
+| Option          | Description                                                                                                                                                                                                           | Default   |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `npmVerifyAuth` | Set to `false` to disable verifying NPM registry credentials.                                                                                                                                                         | `true`    |
 | `latch`         | Latches package versions together. If the version bump is at least the given version all packages will be bumped regardless if the package has been touched or not. `"major", "minor", "patch", "prerelease", "none"` | `"minor"` |
-| `rootVersion`   | Allow to update version on root `package.json`.                                                                                                                                                         | `true`    |
+| `rootVersion`   | Allow to update version on root `package.json`.                                                                                                                                                                       | `true`    |
 
 ## Troubleshooting
 

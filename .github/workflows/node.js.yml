@@ -41,3 +41,25 @@ jobs:
           npm ls lerna
       - name: Integration test
         run: npm exec jest --no-coverage integration
+
+  semantic-release:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        sr-version: [20.x, 21.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js 16
+        uses: actions/setup-node@v3
+      - name: Build
+        run: |
+          npm ci
+          npm run build --if-present
+      - name: Install semantic-release v${{ matrix.sr-version }}
+        run: |
+          npm install $(npx -y npm-min-peer semantic-release --major ${{ matrix.sr-version }} --with-name)
+          npm ls semantic-release
+      - name: Integration test
+        run: npm exec jest --no-coverage integration
