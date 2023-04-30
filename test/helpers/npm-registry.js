@@ -4,17 +4,19 @@ const fs = require("fs");
 const path = require("path");
 const startServer = require("verdaccio").default;
 const tempy = require("tempy");
+const got = require("got");
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
 const NPM_EMAIL = "integration@example.net";
 
+const storage = tempy.directory();
 const config = {
-	storage: tempy.directory(),
+	storage,
 	self_path: __dirname,
 	auth: {
 		htpasswd: {
-			file: path.join(__dirname, "htpasswd"),
+			file: path.join(storage, "htpasswd"),
 		},
 	},
 	uplinks: {},
@@ -32,15 +34,27 @@ const config = {
 };
 
 const authEnv = {
+	/** @type {string} */
 	npm_config_registry: null /* set via start verdaccio */,
+
+	/** @type {string} */
 	NPM_USERNAME,
+
+	/** @type {string} */
 	NPM_PASSWORD,
+
+	/** @type {string} */
 	NPM_EMAIL,
-	NPM_TOKEN: Buffer.from(`${NPM_USERNAME}:${NPM_PASSWORD}`).toString("base64"),
+
+	/** @type {string} */
+	NPM_TOKEN: null /* set via start verdaccio */,
 };
 
 /** @type {import("http").Server} */
 let server;
+
+/** @type {string} */
+let registryHost;
 
 /** @type {string} */
 let registryUrl;
@@ -50,7 +64,8 @@ function startVerdaccio() {
 		try {
 			startServer(config, 0, {}, "1.0.0", "verdaccio", (webServer, addr) => {
 				webServer.listen(addr.port || addr.path, addr.host, () => {
-					registryUrl = `${addr.proto}://${addr.host}:${addr.port}`;
+					registryHost = `${addr.host}:${addr.port}`;
+					registryUrl = `${addr.proto}://${registryHost}`;
 					authEnv.npm_config_registry = registryUrl;
 					resolve(webServer);
 				});
@@ -62,6 +77,35 @@ function startVerdaccio() {
 }
 
 /**
+ * Register a new user in the NPM registry.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @param {string} email
+ * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
+ */
+async function registerUser(username, password, email) {
+	await got(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
+		method: "PUT",
+		json: {
+			_id: `org.couchdb.user:${username}`,
+			name: username,
+			roles: [],
+			type: "user",
+			password,
+			email,
+		},
+	});
+	return await got(`${registryUrl}/-/npm/v1/tokens`, {
+		username,
+		password,
+		method: "POST",
+		headers: { "content-type": "application/json" },
+		json: { password, readonly: false, cidr_whitelist: [] },
+	}).json();
+}
+
+/**
  * Start local NPM registry
  */
 async function start() {
@@ -70,6 +114,9 @@ async function start() {
 	}
 
 	server = await startVerdaccio();
+
+	const { token } = await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
+	authEnv.NPM_TOKEN = token;
 }
 
 /**
@@ -92,6 +139,24 @@ async function stop() {
 }
 
 /**
+ * Get auth token for user.
+ *
+ * @returns {string}
+ */
+function getAuthToken() {
+	return authEnv.NPM_TOKEN;
+}
+
+/**
+ * Get registry host (hostname + port)
+ *
+ * @returns {string}
+ */
+function getRegistryHost() {
+	return registryHost;
+}
+
+/**
  * Get registry url
  *
  * @returns {string}
@@ -100,4 +165,4 @@ function url() {
 	return registryUrl;
 }
 
-module.exports = { start, stop, authEnv, url };
+module.exports = { start, stop, authEnv, getAuthToken, getRegistryHost, url };
