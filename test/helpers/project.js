@@ -78,7 +78,14 @@ async function createProject(cwd, version, options = {}) {
 	});
 
 	if (options.lockfile) {
-		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
+		const args = [
+			"install",
+			"--package-lock-only",
+			"--lockfile-version=2",
+			"--ignore-scripts",
+			"--no-audit",
+		];
+		await execa("npm", args, {
 			cwd,
 			env: npmEnv,
 		});
