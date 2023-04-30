@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+const fs = require("node:fs/promises");
+const path = require("node:path");
 const startServer = require("verdaccio").default;
 const tempy = require("tempy");
 
@@ -75,9 +75,8 @@ async function start() {
  * Stop local NPM registry
  */
 async function stop() {
+	await fs.rm(config.storage, { recursive: true });
 	return new Promise((resolve, reject) => {
-		/* eslint-disable-next-line security/detect-non-literal-fs-filename */
-		fs.rmdirSync(config.storage, { recursive: true });
 		if (server) {
 			server.close((error) => {
 				if (error) {
