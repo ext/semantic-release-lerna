@@ -26,7 +26,7 @@ const config = {
 			publish: "$all",
 		},
 	},
-	logs: [{ type: "stdout", format: "pretty", level: "error" }],
+	logs: { type: "stdout", format: "pretty", level: "error" },
 };
 
 const authEnv = {
