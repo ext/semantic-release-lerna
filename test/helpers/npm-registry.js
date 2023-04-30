@@ -17,6 +17,7 @@ const config = {
 	auth: {
 		htpasswd: {
 			file: path.join(storage, "htpasswd"),
+			algorithm: "bcrypt",
 		},
 	},
 	uplinks: {},
