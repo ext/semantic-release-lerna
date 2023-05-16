@@ -67,7 +67,7 @@
     "read-pkg-up": "^7.0.0",
     "semver": "^7.0.0",
     "tempy": "^1.0.0",
-    "write-json-file": "^4.0.0"
+    "write-json-file": "^5.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.21.5",
