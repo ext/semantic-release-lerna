@@ -1,6 +1,5 @@
 import { outputJson, readJson } from "fs-extra";
 import execa from "execa";
-import got from "got";
 import tempy from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../index";
@@ -34,16 +33,16 @@ async function initialPublish(cwd) {
  * @returns {Promise<string[]>}
  */
 async function getPublishedVersions(pkg) {
-	const response = await got(`${npmRegistry.getRegistryUrl()}/${pkg}`, {
+	const response = await fetch(`${npmRegistry.getRegistryUrl()}/${pkg}`, {
 		throwHttpErrors: false,
-		responseType: "json",
 	});
 
-	if (response.statusCode === 404) {
+	if (!response.ok) {
 		return [];
 	}
 
-	return Object.keys(response.body.versions);
+  const body = await response.json();
+	return Object.keys(body.versions);
 }
 
 async function run(project, pluginConfig, options) {

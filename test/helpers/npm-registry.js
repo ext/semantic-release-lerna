@@ -4,7 +4,6 @@ import fs from "node:fs/promises";
 import path from "node:path";
 import startServer from "verdaccio";
 import tempy from "tempy";
-import got from "got";
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
@@ -83,27 +82,44 @@ function startVerdaccio() {
  * @param {string} username
  * @param {string} password
  * @param {string} email
- * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
+ * @returns {void}
  */
 async function registerUser(username, password, email) {
-	await got(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
+	const response = await fetch(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
 		method: "PUT",
-		json: {
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
 			_id: `org.couchdb.user:${username}`,
 			name: username,
 			roles: [],
 			type: "user",
 			password,
 			email,
-		},
+		}),
 	});
-	return await got(`${registryUrl}/-/npm/v1/tokens`, {
-		username,
-		password,
+	if (!response.ok) {
+		throw new Error(`Failed to register user "${username}"`);
+	}
+}
+
+/**
+ * Register a new user in the NPM registry.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
+ */
+async function getUserToken(username, password) {
+	const authToken = Buffer.from(`${username}:${password}`).toString("base64");
+	const response = await fetch(`${registryUrl}/-/npm/v1/tokens`, {
 		method: "POST",
-		headers: { "content-type": "application/json" },
-		json: { password, readonly: false, cidr_whitelist: [] },
-	}).json();
+		headers: { Authorization: `Basic ${authToken}`, "Content-Type": "application/json" },
+		body: JSON.stringify({ password, readonly: false, cidr_whitelist: [] }),
+	});
+	if (!response.ok) {
+		throw new Error(`Failed to get NPM token for user "${username}"`);
+	}
+	return await response.json();
 }
 
 /**
@@ -116,7 +132,8 @@ export async function start() {
 
 	server = await startVerdaccio();
 
-	const { token } = await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
+	await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
+	const { token } = await getUserToken(NPM_USERNAME, NPM_PASSWORD);
 	authEnv.NPM_TOKEN = token;
 }
 
