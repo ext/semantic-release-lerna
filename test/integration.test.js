@@ -1,6 +1,6 @@
 import { outputJson, readJson } from "fs-extra";
 import execa from "execa";
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../index";
 import * as npmRegistry from "./helpers/npm-registry";
@@ -81,7 +81,7 @@ beforeEach(() => {
 
 it("should setup testable environment", async () => {
 	expect.assertions(7);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-initial-foo", "0.0.0");
 	const bar = await createPackage(cwd, "test-initial-bar", "0.0.0");
@@ -105,7 +105,7 @@ it("should setup testable environment", async () => {
 
 it("should publish only changed packages", async () => {
 	expect.assertions(7);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-single-foo", "0.0.0");
@@ -144,7 +144,7 @@ it("should publish only changed packages", async () => {
 
 it("should latch package versions", async () => {
 	expect.assertions(7);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-latched-foo", "0.0.0");
@@ -183,7 +183,7 @@ it("should latch package versions", async () => {
 
 it("should publish depender packages when dependee changes", async () => {
 	expect.assertions(7);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-dependant-foo", "0.0.0");
@@ -230,7 +230,7 @@ it("should publish depender packages when dependee changes", async () => {
 
 it("should update package-lock.json in root", async () => {
 	expect.assertions(1);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0", { lockfile: true });
 	const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0");
@@ -271,7 +271,7 @@ it("should update package-lock.json in root", async () => {
 
 it("should update package-lock.json in root with workspaces", async () => {
 	expect.assertions(1);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
 	const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0");
@@ -346,7 +346,7 @@ it("should update package-lock.json in root with workspaces", async () => {
 
 it("should generate release notes", async () => {
 	expect.assertions(1);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-release-notes-foo", "0.0.0");
@@ -412,7 +412,7 @@ it("should generate release notes", async () => {
 
 it("should skip private packages in release notes", async () => {
 	expect.assertions(1);
-	const cwd = tempy.directory();
+	const cwd = temporaryDirectory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0");
 	const foo = await createPackage(cwd, "test-skip-private-foo", "0.0.0");

@@ -1,5 +1,5 @@
 import AggregateError from "aggregate-error";
-import tempy from "tempy";
+import { temporaryFile } from "tempy";
 import getPkg from "@semantic-release/npm/lib/get-pkg.js";
 import verifyNpmConfig from "@semantic-release/npm/lib/verify-config.js";
 import verifyNpmAuth from "./lib/verify-auth.js";
@@ -10,7 +10,7 @@ import publishNpm from "./lib/publish.js";
 export { generateNotes } from "./lib/generate-notes.js";
 
 let verified;
-const npmrc = tempy.file({ name: ".npmrc" });
+const npmrc = temporaryFile({ name: ".npmrc" });
 
 const defaultConfig = {
 	npmVerifyAuth: true,
