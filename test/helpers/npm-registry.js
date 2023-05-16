@@ -1,10 +1,10 @@
 /* eslint-disable camelcase -- environmental variables use snakecase */
 
-const fs = require("node:fs/promises");
-const path = require("node:path");
-const startServer = require("verdaccio").default;
-const tempy = require("tempy");
-const got = require("got");
+import fs from "node:fs/promises";
+import path from "node:path";
+import startServer from "verdaccio";
+import tempy from "tempy";
+import got from "got";
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
@@ -34,7 +34,7 @@ const config = {
 	logs: { type: "stdout", format: "pretty", level: "error" },
 };
 
-const authEnv = {
+export const authEnv = {
 	/** @type {string} */
 	npm_config_registry: null /* set via start verdaccio */,
 
@@ -109,7 +109,7 @@ async function registerUser(username, password, email) {
 /**
  * Start local NPM registry
  */
-async function start() {
+export async function start() {
 	if (server) {
 		throw new Error("server already started");
 	}
@@ -123,7 +123,7 @@ async function start() {
 /**
  * Stop local NPM registry
  */
-async function stop() {
+export async function stop() {
 	await fs.rm(config.storage, { recursive: true });
 	return new Promise((resolve, reject) => {
 		if (server) {
@@ -144,7 +144,7 @@ async function stop() {
  *
  * @returns {string}
  */
-function getAuthToken() {
+export function getAuthToken() {
 	return authEnv.NPM_TOKEN;
 }
 
@@ -153,7 +153,7 @@ function getAuthToken() {
  *
  * @returns {string}
  */
-function getRegistryHost() {
+export function getRegistryHost() {
 	return registryHost;
 }
 
@@ -162,8 +162,6 @@ function getRegistryHost() {
  *
  * @returns {string}
  */
-function url() {
+export function getRegistryUrl() {
 	return registryUrl;
 }
-
-module.exports = { start, stop, authEnv, getAuthToken, getRegistryHost, url };

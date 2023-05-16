@@ -1,6 +1,6 @@
-const path = require("path");
-const execa = require("execa");
-const { outputJson } = require("fs-extra");
+import path from "node:path";
+import execa from "execa";
+import { outputJson } from "fs-extra";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
@@ -21,7 +21,7 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @param {{private: boolean, lockfile: boolean}} [options] - Package options
  * @returns {Promise<Package>}
  */
-async function createPackage(cwd, name, version, options = {}) {
+export async function createPackage(cwd, name, version, options = {}) {
 	const pkgRoot = `packages/${name}`;
 	const manifestLocation = path.resolve(cwd, pkgRoot, "package.json");
 	const lockfileLocation = path.resolve(cwd, pkgRoot, "package-lock.json");
@@ -60,5 +60,3 @@ async function createPackage(cwd, name, version, options = {}) {
 		},
 	};
 }
-
-module.exports = { createPackage };
