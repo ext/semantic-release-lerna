@@ -1,5 +1,5 @@
 import path from "node:path";
-import execa from "execa";
+import { execa } from "execa";
 import { outputJson } from "fs-extra";
 
 const MOCK_NAME = "Mock user";
