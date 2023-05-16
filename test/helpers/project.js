@@ -1,5 +1,5 @@
 import path from "node:path";
-import execa from "execa";
+import { execa } from "execa";
 import { outputJson, outputFile } from "fs-extra";
 import * as npmRegistry from "./npm-registry";
 
