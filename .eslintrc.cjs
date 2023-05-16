@@ -7,6 +7,14 @@ module.exports = {
 	root: true,
 	extends: ["@html-validate"],
 
+	parserOptions: {
+		ecmaVersion: 2022,
+	},
+
+	rules: {
+		"import/extensions": "off",
+	},
+
 	overrides: [
 		{
 			/* ensure cjs and mjs files are linted too */

@@ -41,7 +41,7 @@ async function getPublishedVersions(pkg) {
 		return [];
 	}
 
-  const body = await response.json();
+	const body = await response.json();
 	return Object.keys(body.versions);
 }
 
