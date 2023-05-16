@@ -3,13 +3,13 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import startServer from "verdaccio";
-import tempy from "tempy";
+import { temporaryDirectory } from "tempy";
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
 const NPM_EMAIL = "integration@example.net";
 
-const storage = tempy.directory();
+const storage = temporaryDirectory();
 const config = {
 	storage,
 	self_path: __dirname,
