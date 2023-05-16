@@ -1,10 +1,9 @@
 /* eslint-disable camelcase -- environmental variables use snakecase */
 
-const fs = require("node:fs/promises");
-const path = require("node:path");
-const startServer = require("verdaccio").default;
-const tempy = require("tempy");
-const got = require("got");
+import fs from "node:fs/promises";
+import path from "node:path";
+import startServer from "verdaccio";
+import tempy from "tempy";
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
@@ -34,7 +33,7 @@ const config = {
 	logs: { type: "stdout", format: "pretty", level: "error" },
 };
 
-const authEnv = {
+export const authEnv = {
 	/** @type {string} */
 	npm_config_registry: null /* set via start verdaccio */,
 
@@ -83,47 +82,65 @@ function startVerdaccio() {
  * @param {string} username
  * @param {string} password
  * @param {string} email
- * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
+ * @returns {void}
  */
 async function registerUser(username, password, email) {
-	await got(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
+	const response = await fetch(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
 		method: "PUT",
-		json: {
+		headers: { "Content-Type": "application/json" },
+		body: JSON.stringify({
 			_id: `org.couchdb.user:${username}`,
 			name: username,
 			roles: [],
 			type: "user",
 			password,
 			email,
-		},
+		}),
 	});
-	return await got(`${registryUrl}/-/npm/v1/tokens`, {
-		username,
-		password,
+	if (!response.ok) {
+		throw new Error(`Failed to register user "${username}"`);
+	}
+}
+
+/**
+ * Register a new user in the NPM registry.
+ *
+ * @param {string} username
+ * @param {string} password
+ * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
+ */
+async function getUserToken(username, password) {
+	const authToken = Buffer.from(`${username}:${password}`).toString("base64");
+	const response = await fetch(`${registryUrl}/-/npm/v1/tokens`, {
 		method: "POST",
-		headers: { "content-type": "application/json" },
-		json: { password, readonly: false, cidr_whitelist: [] },
-	}).json();
+		headers: { Authorization: `Basic ${authToken}`, "Content-Type": "application/json" },
+		body: JSON.stringify({ password, readonly: false, cidr_whitelist: [] }),
+	});
+	if (!response.ok) {
+		throw new Error(`Failed to get NPM token for user "${username}"`);
+	}
+	return await response.json();
 }
 
 /**
  * Start local NPM registry
  */
-async function start() {
+export async function start() {
 	if (server) {
 		throw new Error("server already started");
 	}
 
 	server = await startVerdaccio();
 
-	const { token } = await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
+	await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
+	const { token } = await getUserToken(NPM_USERNAME, NPM_PASSWORD);
 	authEnv.NPM_TOKEN = token;
 }
 
 /**
  * Stop local NPM registry
  */
-async function stop() {
+export async function stop() {
 	await fs.rm(config.storage, { recursive: true });
 	return new Promise((resolve, reject) => {
 		if (server) {
@@ -144,7 +161,7 @@ async function stop() {
  *
  * @returns {string}
  */
-function getAuthToken() {
+export function getAuthToken() {
 	return authEnv.NPM_TOKEN;
 }
 
@@ -153,7 +170,7 @@ function getAuthToken() {
  *
  * @returns {string}
  */
-function getRegistryHost() {
+export function getRegistryHost() {
 	return registryHost;
 }
 
@@ -162,8 +179,6 @@ function getRegistryHost() {
  *
  * @returns {string}
  */
-function url() {
+export function getRegistryUrl() {
 	return registryUrl;
 }
-
-module.exports = { start, stop, authEnv, getAuthToken, getRegistryHost, url };

@@ -1,7 +1,7 @@
-const path = require("path");
-const execa = require("execa");
-const { outputJson, outputFile } = require("fs-extra");
-const npmRegistry = require("./npm-registry");
+import path from "node:path";
+import execa from "execa";
+import { outputJson, outputFile } from "fs-extra";
+import * as npmRegistry from "./npm-registry";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
@@ -21,7 +21,7 @@ const MOCK_EMAIL = "mock-user@example.net";
  */
 function generateNpmrc() {
 	return [
-		`registry=${npmRegistry.url()}`,
+		`registry=${npmRegistry.getRegistryUrl()}`,
 		`//${npmRegistry.getRegistryHost()}/:_authToken=${npmRegistry.getAuthToken()}`,
 		"email=${NPM_EMAIL}",
 	].join("\n");
@@ -33,7 +33,7 @@ function generateNpmrc() {
  * @param {{lockfile: boolean, workspaces: boolean}} [options] - Package options
  * @returns {Promise<Project>}
  */
-async function createProject(cwd, version, options = {}) {
+export async function createProject(cwd, version, options = {}) {
 	const name = "root-pkg";
 	const manifestLocation = path.resolve(cwd, "package.json");
 	const lockfileLocation = path.resolve(cwd, "package-lock.json");
@@ -112,5 +112,3 @@ async function createProject(cwd, version, options = {}) {
 		},
 	};
 }
-
-module.exports = { createProject };

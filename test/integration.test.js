@@ -1,22 +1,24 @@
-/* eslint-env jest */
+import { outputJson, readJson } from "fs-extra";
+import execa from "execa";
+import tempy from "tempy";
+import { WritableStreamBuffer } from "stream-buffers";
+import * as semanticReleaseLerna from "../index";
+import * as npmRegistry from "./helpers/npm-registry";
+import { createPackage, createProject } from "./helpers";
 
-const { outputJson, readJson } = require("fs-extra");
-const execa = require("execa");
-const got = require("got");
-const tempy = require("tempy");
-const { WritableStreamBuffer } = require("stream-buffers");
-const npmRegistry = require("./helpers/npm-registry");
-const { createProject } = require("./helpers/project");
-const { createPackage } = require("./helpers/package");
-
-let sut;
 let context;
 
 async function initialPublish(cwd) {
 	await execa("git", ["tag", "v0.0.0"], { cwd });
 	await execa(
 		"lerna",
-		["publish", "from-package", "--yes", "--loglevel", "verbose", "--registry", npmRegistry.url()],
+		[
+			"publish",
+			"from-package",
+			"--yes",
+			["--loglevel", "verbose"].join("="),
+			["--registry", npmRegistry.getRegistryUrl()].join("="),
+		],
 		{
 			cwd,
 			env: npmRegistry.authEnv,
@@ -31,27 +33,27 @@ async function initialPublish(cwd) {
  * @returns {Promise<string[]>}
  */
 async function getPublishedVersions(pkg) {
-	const response = await got(`${npmRegistry.url()}/${pkg}`, {
+	const response = await fetch(`${npmRegistry.getRegistryUrl()}/${pkg}`, {
 		throwHttpErrors: false,
-		responseType: "json",
 	});
 
-	if (response.statusCode === 404) {
+	if (!response.ok) {
 		return [];
 	}
 
-	return Object.keys(response.body.versions);
+  const body = await response.json();
+	return Object.keys(body.versions);
 }
 
 async function run(project, pluginConfig, options) {
-	const generateNotes = await sut.generateNotes(pluginConfig, options);
-	const prepare = await sut.prepare(pluginConfig, options);
+	const generateNotes = await semanticReleaseLerna.generateNotes(pluginConfig, options);
+	const prepare = await semanticReleaseLerna.prepare(pluginConfig, options);
 
 	/* Simulate @semantic-release/git */
 	await project.commit("v0.1.0");
 	await project.tag("v0.1.0");
 
-	const publish = await sut.publish(pluginConfig, options);
+	const publish = await semanticReleaseLerna.publish(pluginConfig, options);
 
 	return { generateNotes, prepare, publish };
 }
@@ -69,7 +71,6 @@ afterAll(async () => {
 beforeEach(() => {
 	const log = jest.fn();
 	const warn = jest.fn();
-	sut = require("..");
 	context = {
 		log,
 		stdout: new WritableStreamBuffer(),
