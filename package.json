@@ -58,7 +58,7 @@
     "aggregate-error": "^4.0.0",
     "conventional-changelog-writer": "^6.0.0",
     "conventional-commits-filter": "^3.0.0",
-    "conventional-commits-parser": "^3.2.0",
+    "conventional-commits-parser": "^4.0.0",
     "debug": "^4.3.0",
     "execa": "^7.0.0",
     "get-stream": "^7.0.0",
