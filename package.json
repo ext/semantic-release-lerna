@@ -80,7 +80,7 @@
     "babel-plugin-transform-import-meta": "2.2.0",
     "codecov": "3.8.3",
     "fs-extra": "11.1.1",
-    "jest": "29.5.0",
+    "jest": "29.6.0",
     "lerna": "6.6.2",
     "npm-pkg-lint": "1.14.1",
     "prettier": "2.8.8",
