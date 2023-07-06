@@ -84,7 +84,7 @@
     "lerna": "6.6.2",
     "npm-pkg-lint": "1.14.1",
     "prettier": "2.8.8",
-    "semantic-release": "21.0.6",
+    "semantic-release": "21.0.7",
     "stream-buffers": "3.0.2",
     "verdaccio": "5.25.0"
   },
