@@ -48,7 +48,7 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@lerna/child-process": "^6.0.0",
+    "@lerna/child-process": "^7.0.0",
     "@lerna/collect-updates": "^6.0.0",
     "@lerna/package": "^6.0.0",
     "@lerna/package-graph": "^6.0.0",
@@ -81,7 +81,7 @@
     "codecov": "3.8.3",
     "fs-extra": "11.1.1",
     "jest": "29.6.0",
-    "lerna": "6.6.2",
+    "lerna": "7.1.4",
     "npm-pkg-lint": "1.14.1",
     "prettier": "2.8.8",
     "semantic-release": "21.0.7",
@@ -90,7 +90,7 @@
   },
   "peerDependencies": {
     "@semantic-release/npm": ">= 10",
-    "lerna": "^3.2 || ^4 || ^5 || ^6",
+    "lerna": "^3.2 || ^4 || ^5 || ^6 || ^7",
     "semantic-release": "^20.1 || 21"
   },
   "engines": {

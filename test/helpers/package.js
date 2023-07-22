@@ -53,7 +53,7 @@ export async function createPackage(cwd, name, version, options = {}) {
 		manifestLocation,
 		lockfileLocation: options.lockfile ? lockfileLocation : null,
 		async require(dep) {
-			await execa("lerna", ["add", dep.name, "--scope", this.name], { cwd });
+			await execa("npm", ["install", "--workspace", this.name, dep.name], { cwd });
 		},
 		resolve(...parts) {
 			return path.resolve(cwd, pkgRoot, ...parts);
