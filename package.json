@@ -61,7 +61,7 @@
     "conventional-commits-parser": "^4.0.0",
     "debug": "^4.3.0",
     "execa": "^7.0.0",
-    "get-stream": "^7.0.0",
+    "get-stream": "^8.0.0",
     "into-stream": "^8.0.0",
     "libnpmversion": "^4.0.0",
     "read-pkg-up": "^10.0.0",
