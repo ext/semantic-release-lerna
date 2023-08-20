@@ -19,9 +19,12 @@ const MOCK_EMAIL = "mock-user@example.net";
 /**
  * @returns {string}
  */
-function generateAuthToken() {
-	const content = `${npmRegistry.authEnv.NPM_USERNAME}:${npmRegistry.authEnv.NPM_PASSWORD}`;
-	return Buffer.from(content, "utf8").toString("base64");
+function generateNpmrc() {
+	return [
+		`registry=${npmRegistry.url()}`,
+		`//${npmRegistry.getRegistryHost()}/:_authToken=${npmRegistry.getAuthToken()}`,
+		"email=${NPM_EMAIL}",
+	].join("\n");
 }
 
 /**
@@ -35,7 +38,6 @@ async function createProject(cwd, version, options = {}) {
 	const manifestLocation = path.resolve(cwd, "package.json");
 	const lockfileLocation = path.resolve(cwd, "package-lock.json");
 	const lernaPath = path.resolve(cwd, "lerna.json");
-	const authToken = generateAuthToken();
 	const npmEnv = {
 		...process.env,
 		NPM_EMAIL: MOCK_EMAIL,
@@ -59,16 +61,7 @@ async function createProject(cwd, version, options = {}) {
 		{ spaces: 2 }
 	);
 	await outputJson(lernaPath, { version, packages: ["packages/*"] });
-	await outputFile(
-		path.resolve(cwd, ".npmrc"),
-		[
-			`registry=${npmRegistry.url()}`,
-			`//${npmRegistry.url()}:_authToken=${authToken}`,
-			`_auth=${authToken}`,
-			"email=${NPM_EMAIL}", // eslint-disable-line no-template-curly-in-string
-		].join("\n"),
-		"utf-8"
-	);
+	await outputFile(path.resolve(cwd, ".npmrc"), generateNpmrc(), "utf-8");
 	await outputFile(path.resolve(cwd, ".gitignore"), ["node_modules"].join("\n"), "utf-8");
 
 	await execa("git", ["init"], { cwd, env: gitEnv });
@@ -78,7 +71,14 @@ async function createProject(cwd, version, options = {}) {
 	});
 
 	if (options.lockfile) {
-		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
+		const args = [
+			"install",
+			"--package-lock-only",
+			"--lockfile-version=2",
+			"--ignore-scripts",
+			"--no-audit",
+		];
+		await execa("npm", args, {
 			cwd,
 			env: npmEnv,
 		});
