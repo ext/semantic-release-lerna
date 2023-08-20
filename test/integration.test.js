@@ -184,9 +184,9 @@ it("should publish depender packages when dependee changes", async () => {
 	expect.assertions(7);
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
-	const project = await createProject(cwd, "0.0.0");
-	const foo = await createPackage(cwd, "test-dependant-foo", "0.0.0");
-	const bar = await createPackage(cwd, "test-dependant-bar", "0.0.0");
+	const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
+	const foo = await createPackage(cwd, "test-dependant-foo", "0.0.0", { lockfile: true });
+	const bar = await createPackage(cwd, "test-dependant-bar", "0.0.0", { lockfile: true });
 	await bar.require(foo);
 	await project.commit("bar depends on foo");
 	await initialPublish(cwd);
@@ -273,8 +273,8 @@ it("should update package-lock.json in root with workspaces", async () => {
 	const cwd = tempy.directory();
 	const env = npmRegistry.authEnv;
 	const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
-	const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0");
-	const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0");
+	const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0", { lockfile: true });
+	const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0", { lockfile: true });
 	await bar.require(foo);
 	await project.commit("bar depends on foo");
 	await initialPublish(cwd);
