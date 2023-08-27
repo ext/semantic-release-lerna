@@ -74,7 +74,7 @@
     "@babel/preset-env": "7.22.10",
     "@html-validate/eslint-config": "5.10.9",
     "@html-validate/eslint-config-jest": "5.10.0",
-    "@html-validate/prettier-config": "2.4.6",
+    "@html-validate/prettier-config": "2.4.7",
     "@semantic-release/npm": "10.0.5",
     "@types/jest": "29.5.4",
     "babel-plugin-transform-import-meta": "2.2.1",
