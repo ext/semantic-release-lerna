@@ -81,7 +81,7 @@
     "codecov": "3.8.3",
     "fs-extra": "11.1.1",
     "jest": "29.6.4",
-    "lerna": "7.1.5",
+    "lerna": "7.2.0",
     "npm-pkg-lint": "2.0.2",
     "semantic-release": "21.1.1",
     "stream-buffers": "3.0.2",
