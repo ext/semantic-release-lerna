@@ -70,8 +70,8 @@
     "write-json-file": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.22.11",
-    "@babel/preset-env": "7.22.14",
+    "@babel/core": "7.22.15",
+    "@babel/preset-env": "7.22.15",
     "@html-validate/eslint-config": "5.10.9",
     "@html-validate/eslint-config-jest": "5.10.0",
     "@html-validate/prettier-config": "2.4.7",
