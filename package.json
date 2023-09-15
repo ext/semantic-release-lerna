@@ -75,7 +75,7 @@
     "@html-validate/eslint-config": "5.11.1",
     "@html-validate/eslint-config-jest": "5.11.0",
     "@html-validate/prettier-config": "2.4.7",
-    "@semantic-release/npm": "10.0.5",
+    "@semantic-release/npm": "10.0.6",
     "@types/jest": "29.5.4",
     "babel-plugin-transform-import-meta": "2.2.1",
     "codecov": "3.8.3",
