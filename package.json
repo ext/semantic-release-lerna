@@ -70,7 +70,7 @@
     "write-json-file": "^5.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.23.0",
+    "@babel/core": "7.23.2",
     "@babel/preset-env": "7.23.2",
     "@html-validate/eslint-config": "5.11.5",
     "@html-validate/eslint-config-jest": "5.11.4",
