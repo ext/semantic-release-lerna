@@ -72,8 +72,8 @@
   "devDependencies": {
     "@babel/core": "7.23.2",
     "@babel/preset-env": "7.23.2",
-    "@html-validate/eslint-config": "5.11.5",
-    "@html-validate/eslint-config-jest": "5.11.4",
+    "@html-validate/eslint-config": "5.11.7",
+    "@html-validate/eslint-config-jest": "5.11.7",
     "@html-validate/prettier-config": "2.4.7",
     "@semantic-release/npm": "11.0.0",
     "@types/jest": "29.5.6",
