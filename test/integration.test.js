@@ -22,7 +22,7 @@ async function initialPublish(cwd) {
 		{
 			cwd,
 			env: npmRegistry.authEnv,
-		}
+		},
 	);
 }
 
@@ -96,7 +96,7 @@ it("should setup testable environment", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.manifestLocation)).toEqual(
-		expect.objectContaining({ version: "0.0.0" })
+		expect.objectContaining({ version: "0.0.0" }),
 	);
 	expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({ version: "0.0.0" }));
 	expect(await readJson(foo.manifestLocation)).toEqual({ name: foo.name, version: "0.0.0" });
@@ -135,7 +135,7 @@ it("should publish only changed packages", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.manifestLocation)).toEqual(
-		expect.objectContaining({ version: "0.0.1" })
+		expect.objectContaining({ version: "0.0.1" }),
 	);
 	expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({ version: "0.0.1" }));
 	expect(await readJson(foo.manifestLocation)).toEqual({ name: foo.name, version: "0.0.1" });
@@ -174,7 +174,7 @@ it("should latch package versions", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.manifestLocation)).toEqual(
-		expect.objectContaining({ version: "0.1.0" })
+		expect.objectContaining({ version: "0.1.0" }),
 	);
 	expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({ version: "0.1.0" }));
 	expect(await readJson(foo.manifestLocation)).toEqual({ name: foo.name, version: "0.1.0" });
@@ -215,7 +215,7 @@ it("should publish depender packages when dependee changes", async () => {
 
 	/* Verify versions */
 	expect(await readJson(project.manifestLocation)).toEqual(
-		expect.objectContaining({ version: "0.1.0" })
+		expect.objectContaining({ version: "0.1.0" }),
 	);
 	expect(await readJson(project.lernaPath)).toEqual(expect.objectContaining({ version: "0.1.0" }));
 	expect(await readJson(foo.manifestLocation)).toEqual({ name: foo.name, version: "0.1.0" });

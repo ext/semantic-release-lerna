@@ -39,7 +39,7 @@
     "prettier:check": "prettier --check .",
     "prettier:write": "prettier --write .",
     "semantic-release": "semantic-release",
-    "pretest": "npm run eslint",
+    "pretest": "npm run eslint && npm run prettier:check",
     "test": "jest --collectCoverage"
   },
   "prettier": "@html-validate/prettier-config",

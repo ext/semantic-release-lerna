@@ -58,7 +58,7 @@ export async function createProject(cwd, version, options = {}) {
 			publishConfig: {},
 			workspaces: options.workspaces ? ["packages/*"] : undefined,
 		},
-		{ spaces: 2 }
+		{ spaces: 2 },
 	);
 	await outputJson(lernaPath, { version, packages: ["packages/*"] });
 	await outputFile(path.resolve(cwd, ".npmrc"), generateNpmrc(), "utf-8");
