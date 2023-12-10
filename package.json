@@ -48,7 +48,6 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@lerna/child-process": "^7.0.0",
     "@lerna/collect-updates": "^6.0.0",
     "@lerna/package": "^6.0.0",
     "@lerna/package-graph": "^6.0.0",
