@@ -52,7 +52,7 @@ jobs:
 
     strategy:
       matrix:
-        sr-version: [22.x]
+        sr-version: [22.x, 23.x]
 
     steps:
       - uses: actions/checkout@v4
