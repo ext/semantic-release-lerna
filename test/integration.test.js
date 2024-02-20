@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import { outputJson, readJson } from "fs-extra";
 import { execa } from "execa";
 import { temporaryDirectory } from "tempy";
@@ -343,6 +344,111 @@ it("should update package-lock.json in root with workspaces", async () => {
 		}
 	`);
 });
+
+if (process.env.LERNA_VERSION !== "5.x")
+	it("should update pnpm-lock.yaml in root", async () => {
+		expect.assertions(1);
+		const cwd = temporaryDirectory();
+		const env = npmRegistry.authEnv;
+		const project = await createProject(cwd, "0.0.0", { lockfile: true, packageManager: "pnpm" });
+		const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0", { packageManager: "pnpm" });
+		const bar = await createPackage(cwd, "test-root-lock-bar", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		await bar.require(foo);
+		await project.commit("bar depends on foo");
+		await initialPublish(cwd);
+
+		/* Make change to foo package */
+		await outputJson(foo.resolve("file.json"), { test: 1 });
+		await project.commit("change foo");
+
+		/* Simulate semantic release */
+		const pluginConfig = {};
+		await run(project, pluginConfig, {
+			cwd,
+			env,
+			options: {},
+			stdout: context.stdout,
+			stderr: context.stderr,
+			logger: context.logger,
+			nextRelease: { version: "0.0.1" },
+		});
+
+		/* Verify versions */
+		expect(await readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
+			.toMatchInlineSnapshot(`
+    "lockfileVersion: '6.0'
+
+    settings:
+      autoInstallPeers: true
+      excludeLinksFromLockfile: false
+    "
+	`);
+	});
+
+if (process.env.LERNA_VERSION !== "5.x")
+	it("should update pnpm-lock.yaml in root with workspaces", async () => {
+		expect.assertions(1);
+		const cwd = temporaryDirectory();
+		const env = npmRegistry.authEnv;
+		const project = await createProject(cwd, "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+			workspaces: true,
+		});
+		const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		await bar.require(foo);
+		await project.commit("bar depends on foo");
+		await initialPublish(cwd);
+
+		/* Make change to foo package */
+		await outputJson(foo.resolve("file.json"), { test: 1 });
+		await project.commit("change foo");
+
+		/* Simulate semantic release */
+		const pluginConfig = {};
+		await run(project, pluginConfig, {
+			cwd,
+			env,
+			options: {},
+			stdout: context.stdout,
+			stderr: context.stderr,
+			logger: context.logger,
+			nextRelease: { version: "0.0.1" },
+		});
+
+		/* Verify versions */
+		expect(readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
+			.toMatchInlineSnapshot(`
+    "lockfileVersion: '6.0'
+
+    settings:
+      autoInstallPeers: true
+      excludeLinksFromLockfile: false
+
+    importers:
+
+      .: {}
+
+      packages/test-root-workspace-bar:
+        dependencies:
+          test-root-workspace-foo:
+            specifier: workspace:^
+            version: link:../test-root-workspace-foo
+
+      packages/test-root-workspace-foo: {}
+    "
+	`);
+	});
 
 it("should generate release notes", async () => {
 	expect.assertions(1);
