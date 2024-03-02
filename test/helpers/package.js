@@ -1,6 +1,10 @@
 import path from "node:path";
 import { execa } from "execa";
 import { outputJson } from "fs-extra";
+import {
+	getLockFileFromPackageManager,
+	getUpdateLockFileCommand,
+} from "../../lib/utils/package-manager-commands.js";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
@@ -18,13 +22,15 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @param {string} cwd - Project directory
  * @param {string} name - Package name
  * @param {string} version - Package initial version
- * @param {{private: boolean, lockfile: boolean}} [options] - Package options
+ * @param {{private?: boolean, lockfile?: boolean, packageManager?: 'npm' | 'pnpm' | 'yarn', workspaces?: boolean}} [options] - Package options
  * @returns {Promise<Package>}
  */
 export async function createPackage(cwd, name, version, options = {}) {
 	const pkgRoot = `packages/${name}`;
 	const manifestLocation = path.resolve(cwd, pkgRoot, "package.json");
-	const lockfileLocation = path.resolve(cwd, pkgRoot, "package-lock.json");
+	const { lockfile, packageManager = "npm" } = options;
+	const lockFileName = getLockFileFromPackageManager(packageManager);
+	const lockfileLocation = lockfile ? path.resolve(cwd, pkgRoot, lockFileName) : null;
 	const npmEnv = {
 		...process.env,
 		NPM_EMAIL: MOCK_EMAIL,
@@ -38,8 +44,18 @@ export async function createPackage(cwd, name, version, options = {}) {
 	};
 
 	await outputJson(manifestLocation, { name, version, private: options.private });
+
 	if (options.lockfile) {
-		await execa("npm", ["install", "--package-lock-only", "--ignore-scripts", "--no-audit"], {
+		const [command, ...args] = getUpdateLockFileCommand(
+			packageManager,
+			path.resolve(cwd, ".npmrc"),
+		);
+
+		if (packageManager === "pnpm" && options.workspaces) {
+			args.push("-w");
+		}
+
+		await execa(command, args, {
 			cwd: path.resolve(cwd, pkgRoot),
 			env: npmEnv,
 		});
@@ -51,9 +67,21 @@ export async function createPackage(cwd, name, version, options = {}) {
 	return {
 		name,
 		manifestLocation,
-		lockfileLocation: options.lockfile ? lockfileLocation : null,
+		lockfileLocation,
 		async require(dep) {
-			await execa("npm", ["install", "--workspace", this.name, dep.name], { cwd });
+			let args;
+			switch (packageManager) {
+				case "npm":
+					args = ["install", "--workspace", this.name, dep.name];
+					break;
+				case "pnpm":
+					args = ["add", "--workspace", "--filter", this.name, dep.name];
+					break;
+				case "yarn":
+					args = ["add", this.name, dep.name];
+					break;
+			}
+			await execa(packageManager, args, { cwd });
 		},
 		resolve(...parts) {
 			return path.resolve(cwd, pkgRoot, ...parts);

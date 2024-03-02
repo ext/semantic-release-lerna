@@ -1,6 +1,10 @@
 import path from "node:path";
 import { execa } from "execa";
 import { outputJson, outputFile } from "fs-extra";
+import {
+	getLockFileFromPackageManager,
+	getUpdateLockFileCommand,
+} from "../../lib/utils/package-manager-commands.js";
 import * as npmRegistry from "./npm-registry";
 
 const MOCK_NAME = "Mock user";
@@ -27,16 +31,20 @@ function generateNpmrc() {
 	].join("\n");
 }
 
+const WORKSPACES = ["packages/*"];
+
 /**
  * @param {string} cwd - Project directory
  * @param {string} version - Root project initial version
- * @param {{lockfile: boolean, workspaces: boolean}} [options] - Package options
+ * @param {{private?: boolean, lockfile?: boolean, packageManager?: 'npm' | 'pnpm' | 'yarn', workspaces?: boolean}} [options] - Package options
  * @returns {Promise<Project>}
  */
 export async function createProject(cwd, version, options = {}) {
 	const name = "root-pkg";
 	const manifestLocation = path.resolve(cwd, "package.json");
-	const lockfileLocation = path.resolve(cwd, "package-lock.json");
+	const { lockfile, packageManager = "npm" } = options;
+	const lockFileName = getLockFileFromPackageManager(packageManager);
+	const lockfileLocation = lockfile ? path.resolve(cwd, lockFileName) : null;
 	const lernaPath = path.resolve(cwd, "lerna.json");
 	const npmEnv = {
 		...process.env,
@@ -56,11 +64,22 @@ export async function createProject(cwd, version, options = {}) {
 			name,
 			version: "0.0.0",
 			publishConfig: {},
-			workspaces: options.workspaces ? ["packages/*"] : undefined,
+			workspaces: options.workspaces ? WORKSPACES : undefined,
 		},
 		{ spaces: 2 },
 	);
-	await outputJson(lernaPath, { version, packages: ["packages/*"] });
+
+	if (packageManager === "pnpm" && options.workspaces) {
+		await outputJson(
+			path.resolve(cwd, "pnpm-workspace.yaml"),
+			{
+				packages: WORKSPACES,
+			},
+			{ spaces: 2 },
+		);
+	}
+
+	await outputJson(lernaPath, { version, packages: WORKSPACES });
 	await outputFile(path.resolve(cwd, ".npmrc"), generateNpmrc(), "utf-8");
 	await outputFile(path.resolve(cwd, ".gitignore"), ["node_modules"].join("\n"), "utf-8");
 
@@ -71,18 +90,22 @@ export async function createProject(cwd, version, options = {}) {
 	});
 
 	if (options.lockfile) {
-		const args = [
-			"install",
-			"--package-lock-only",
-			"--lockfile-version=2",
-			"--ignore-scripts",
-			"--no-audit",
-		];
-		await execa("npm", args, {
+		const [command, ...args] = getUpdateLockFileCommand(
+			packageManager,
+			path.resolve(cwd, ".npmrc"),
+		);
+
+		if (packageManager === "npm") {
+			args.push("--lockfile-version=2");
+		} else if (packageManager === "pnpm" && options.workspaces) {
+			args.push("-w");
+		}
+
+		await execa(command, args, {
 			cwd,
 			env: npmEnv,
 		});
-		await execa("git", ["add", "package-lock.json"], {
+		await execa("git", ["add", lockFileName], {
 			cwd,
 			env: gitEnv,
 		});
@@ -93,7 +116,7 @@ export async function createProject(cwd, version, options = {}) {
 	return {
 		name,
 		manifestLocation,
-		lockfileLocation: options.lockfile ? lockfileLocation : null,
+		lockfileLocation,
 		lernaPath,
 		async commit(message) {
 			await execa("git", ["add", "."], { cwd, env: gitEnv });
