@@ -61,7 +61,7 @@
     "debug": "4.3.4",
     "execa": "8.0.1",
     "get-stream": "8.0.1",
-    "into-stream": "8.0.0",
+    "into-stream": "8.0.1",
     "libnpmversion": "^5.0.0",
     "minimatch": "9.0.3",
     "nerf-dart": "1.0.0",
