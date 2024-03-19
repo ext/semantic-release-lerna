@@ -65,7 +65,7 @@
     "libnpmversion": "^5.0.0",
     "minimatch": "9.0.3",
     "nerf-dart": "1.0.0",
-    "normalize-url": "8.0.0",
+    "normalize-url": "8.0.1",
     "npmlog": "7.0.1",
     "rc": "1.2.8",
     "read-pkg": "9.0.1",
