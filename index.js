@@ -1,7 +1,7 @@
 import AggregateError from "aggregate-error";
 import { temporaryFile } from "tempy";
-import getPkg from "@semantic-release/npm/lib/get-pkg.js";
-import verifyNpmConfig from "@semantic-release/npm/lib/verify-config.js";
+import getPkg from "./lib/get-pkg.js";
+import verifyNpmConfig from "./lib/verify-config.js";
 import verifyNpmAuth from "./lib/verify-auth.js";
 import verifyGit from "./lib/verify-git.js";
 import prepareNpm from "./lib/prepare.js";
