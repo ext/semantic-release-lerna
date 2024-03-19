@@ -29,7 +29,7 @@ const debug = debugFactory("semantic-release:release-notes-generator");
  *
  * @returns {String} The changelog for all the commits in `context.commits`.
  */
-/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- technical debt */
+/* eslint-disable-next-line complexity -- technical debt */
 export async function generateNotes(pluginConfig, context) {
 	const { commits, lastRelease, nextRelease, options, cwd, logger } = context;
 	const { generateNotes = false } = pluginConfig;
