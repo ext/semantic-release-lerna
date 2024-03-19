@@ -59,7 +59,6 @@
     "conventional-commits-parser": "^5.0.0",
     "debug": "^4.3.0",
     "execa": "^8.0.0",
-    "fs-extra": "^11.0.0",
     "get-stream": "^8.0.0",
     "into-stream": "^8.0.0",
     "libnpmversion": "^5.0.0",
