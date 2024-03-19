@@ -4,7 +4,7 @@ import { outputJson } from "fs-extra";
 import {
 	getLockFileFromPackageManager,
 	getUpdateLockFileCommand,
-} from "../../lib/utils/package-manager-commands.js";
+} from "../../src/utils/package-manager-commands.js";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";

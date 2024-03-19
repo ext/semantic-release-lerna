@@ -4,7 +4,7 @@ import { outputJson, outputFile } from "fs-extra";
 import {
 	getLockFileFromPackageManager,
 	getUpdateLockFileCommand,
-} from "../../lib/utils/package-manager-commands.js";
+} from "../../src/utils/package-manager-commands.js";
 import * as npmRegistry from "./npm-registry";
 
 const MOCK_NAME = "Mock user";

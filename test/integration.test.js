@@ -3,7 +3,7 @@ import { outputJson, readJson } from "fs-extra";
 import { execa } from "execa";
 import { temporaryDirectory } from "tempy";
 import { WritableStreamBuffer } from "stream-buffers";
-import * as semanticReleaseLerna from "../index";
+import * as semanticReleaseLerna from "../dist/index.js";
 import * as npmRegistry from "./helpers/npm-registry";
 import { createPackage, createProject } from "./helpers";
 

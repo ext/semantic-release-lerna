@@ -24,7 +24,7 @@ jobs:
       - name: Build
         run: |
           npm run --if-present build
-          node index.js
+          node dist/index.js
           npm pack
           npm exec npm-pkg-lint
       - run: npm test
