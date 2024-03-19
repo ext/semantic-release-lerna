@@ -1,10 +1,6 @@
-import { dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
-import { readPackageSync } from "read-pkg";
+import { homepage as pkgHomepage } from "../../package.json";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const pkg = readPackageSync({ cwd: resolve(__dirname, "../../") });
-const [homepage] = pkg.homepage.split("#");
+const [homepage] = pkgHomepage.split("#");
 const linkify = (file) => `${homepage}/blob/master/${file}`;
 
 export function EDIRTYWC({ files }) {

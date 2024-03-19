@@ -8,7 +8,7 @@ import prepare from "./prepare";
 let context;
 let mockChangedPackages;
 
-jest.mock("../lib/get-changed-packages", () => {
+jest.mock("./get-changed-packages", () => {
 	function getChangedPackagesMock() {
 		return mockChangedPackages;
 	}
