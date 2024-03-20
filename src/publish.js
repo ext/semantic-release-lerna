@@ -1,4 +1,3 @@
-import { createRequire } from "node:module";
 import { execa } from "execa";
 import getRegistry from "./get-registry.js";
 import getChannel from "./get-channel.js";
