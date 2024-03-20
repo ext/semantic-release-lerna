@@ -4,10 +4,10 @@ import { existsSync } from "node:fs";
 import { format } from "node:util";
 import { execa } from "execa";
 import npmVersion from "libnpmversion";
-import { Project } from "@lerna/project";
-import { Package } from "@lerna/package";
 import { writeJsonFile } from "write-json-file";
 import semverParse from "semver/functions/parse.js";
+import { Package } from "./lerna/package";
+import { Project } from "./lerna/project";
 import getChangedPackages from "./get-changed-packages.js";
 import {
 	getLockFileFromPackageManager,
