@@ -1,12 +1,12 @@
 /* eslint-disable sonarjs/no-duplicate-string -- inherited */
 
 import fs from "node:fs";
+import fsp from "node:fs/promises";
 import path from "node:path";
 import { ValidationError } from "@lerna/validation-error";
 import { cosmiconfigSync } from "cosmiconfig";
 import globby from "globby";
 import { load } from "js-yaml";
-import loadJsonFile from "load-json-file";
 import log from "npmlog";
 import pMap from "p-map";
 import { writeJsonFile } from "write-json-file";
@@ -22,6 +22,14 @@ import { Package } from "./package";
  */
 
 const PACKAGE_GLOB = "packages/*";
+
+async function loadJsonFile(filePath) {
+	return JSON.parse(await fsp.readFile(filePath, "utf-8"));
+}
+
+function loadJsonFileSync(filePath) {
+	return JSON.parse(fs.readFileSync(filePath, "utf-8"));
+}
 
 /**
  * @param {string[]} results
@@ -169,7 +177,7 @@ export class Project {
 
 		const npmConfigLocation = path.join(this.rootPath, "package.json");
 		if (fs.existsSync(npmConfigLocation)) {
-			const { workspaces } = loadJsonFile.sync(npmConfigLocation);
+			const { workspaces } = loadJsonFileSync(npmConfigLocation);
 			if (workspaces) {
 				return workspaces;
 			}
@@ -177,7 +185,7 @@ export class Project {
 
 		const lernaConfigLocation = path.join(this.rootPath, "lerna.json");
 		if (fs.existsSync(lernaConfigLocation)) {
-			const { packages } = loadJsonFile.sync(lernaConfigLocation);
+			const { packages } = loadJsonFileSync(lernaConfigLocation);
 			if (packages) {
 				return packages;
 			}
