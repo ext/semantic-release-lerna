@@ -120,7 +120,8 @@
     "conventional-commits-parser",
     "cosmiconfig",
     "libnpmversion",
-    "registry-auth-token"
+    "registry-auth-token",
+    "write-json-file"
   ],
   "renovate": {
     "extends": [

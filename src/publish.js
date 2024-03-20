@@ -27,7 +27,6 @@ export default async function (npmrc, config, pkg, context) {
 
 		logger.log("Publishing version %s to npm registry", version);
 
-		const require = createRequire(import.meta.url);
 		const lerna = require.resolve("lerna/cli");
 		const result = execa(
 			"node",
