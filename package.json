@@ -84,7 +84,7 @@
     "@html-validate/eslint-config": "5.15.1",
     "@html-validate/eslint-config-jest": "5.15.0",
     "@html-validate/prettier-config": "2.4.12",
-    "@html-validate/release-scripts": "6.2.0",
+    "@html-validate/release-scripts": "6.3.0",
     "@types/jest": "29.5.12",
     "@types/npmlog": "7.0.0",
     "babel-plugin-transform-import-meta": "2.2.1",
