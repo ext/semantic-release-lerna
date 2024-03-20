@@ -15,9 +15,13 @@ build({
 	external: externalDependencies,
 	banner: {
 		js: `
+import { dirname as _dirname_} from "node:path";
 import { createRequire as _createRequire_ } from "node:module";
+import { fileURLToPath as _fileURLToPath_} from "node:url";
 
 const require = _createRequire_(import.meta.url);
+const __filename = _fileURLToPath_(import.meta.url);
+const __dirname = _dirname_(__filename);
 `,
 	},
 });
