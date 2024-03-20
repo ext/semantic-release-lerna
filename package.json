@@ -49,7 +49,6 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@lerna/package": "^6.0.0",
     "@lerna/validation-error": "6.4.1",
     "@semantic-release/error": "^4.0.0",
     "@semantic-release/release-notes-generator": "^12.0.0",
@@ -110,7 +109,6 @@
     "access": "public"
   },
   "externalDependencies": [
-    "@lerna/package",
     "@lerna/validation-error",
     "@semantic-release/error",
     "@semantic-release/release-notes-generator",

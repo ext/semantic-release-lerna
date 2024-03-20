@@ -9,7 +9,7 @@ const PKG = Symbol("pkg");
  */
 class PackageGraphNode {
 	/**
-	 * @param {import("@lerna/package").Package} pkg
+	 * @param {import("./package").Package} pkg
 	 */
 	constructor(pkg) {
 		this.name = pkg.name;
@@ -62,7 +62,7 @@ class PackageGraphNode {
  */
 export class PackageGraph extends Map {
 	/**
-	 * @param {import("@lerna/package").Package[]} packages An array of Packages to build the graph out of.
+	 * @param {import("./package").Package[]} packages An array of Packages to build the graph out of.
 	 * @param {'allDependencies'|'dependencies'} [graphType]
 	 *    Pass "dependencies" to create a graph of only dependencies,
 	 *    excluding the devDependencies that would normally be included.

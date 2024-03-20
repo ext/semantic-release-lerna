@@ -2,7 +2,6 @@
 
 import fs from "node:fs";
 import path from "node:path";
-import { Package } from "@lerna/package";
 import { ValidationError } from "@lerna/validation-error";
 import { cosmiconfigSync } from "cosmiconfig";
 import globby from "globby";
@@ -11,6 +10,7 @@ import loadJsonFile from "load-json-file";
 import log from "npmlog";
 import pMap from "p-map";
 import { writeJsonFile } from "write-json-file";
+import { Package } from "./package";
 
 /**
  * @typedef {object} ProjectConfig
