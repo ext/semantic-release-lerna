@@ -71,7 +71,7 @@
     "read-pkg": "9.0.1",
     "read-pkg-up": "10.1.0",
     "registry-auth-token": "^5.0.0",
-    "semver": "7.5.3",
+    "semver": "7.6.0",
     "tempy": "3.0.0",
     "write-json-file": "5.0.0"
   },
