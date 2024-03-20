@@ -1,7 +1,7 @@
 import { format } from "node:util";
 import { PackageGraph } from "@lerna/package-graph";
-import { Project } from "@lerna/project";
 import { execaSync } from "execa";
+import { Project } from "./lerna/project";
 import { shouldLatch } from "./should-latch.js";
 import { collectPackages, hasTags, makeDiffPredicate } from "./utils/index.js";
 

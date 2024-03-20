@@ -8,7 +8,7 @@ import { readPackageUp } from "read-pkg-up";
 import debugFactory from "debug";
 import loadChangelogConfig from "@semantic-release/release-notes-generator/lib/load-changelog-config.js";
 import HOSTS_CONFIG from "@semantic-release/release-notes-generator/lib/hosts-config.js";
-import { Project } from "@lerna/project";
+import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
 
 const debug = debugFactory("semantic-release:release-notes-generator");
