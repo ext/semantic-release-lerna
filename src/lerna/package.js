@@ -1,12 +1,10 @@
 import path from "node:path";
-import npa from "npm-package-arg";
 
 // symbol used to "hide" internal state
 const PKG = Symbol("pkg");
 
 // private fields
 const _location = Symbol("location");
-const _resolved = Symbol("resolved");
 const _rootPath = Symbol("rootPath");
 const _scripts = Symbol("scripts");
 
@@ -35,9 +33,6 @@ export class Package {
 	 * @param {string} [rootPath]
 	 */
 	constructor(pkg, location, rootPath = location) {
-		// npa will throw an error if the name is invalid
-		const resolved = npa.resolve(pkg.name, `file:${path.relative(rootPath, location)}`, rootPath);
-
 		this.name = pkg.name;
 		this[PKG] = pkg;
 
@@ -45,7 +40,6 @@ export class Package {
 		Object.defineProperty(this, PKG, { enumerable: false, writable: true });
 
 		this[_location] = location;
-		this[_resolved] = resolved;
 		this[_rootPath] = rootPath;
 		this[_scripts] = { ...pkg.scripts };
 	}
@@ -57,10 +51,6 @@ export class Package {
 
 	get private() {
 		return Boolean(this[PKG].private);
-	}
-
-	get resolved() {
-		return this[_resolved];
 	}
 
 	get rootPath() {

@@ -1,5 +1,5 @@
-import semver from "semver";
+import validRange from "semver/ranges/valid";
 
 export default function (channel) {
-	return channel ? (semver.validRange(channel) ? `release-${channel}` : channel) : "latest";
+	return channel ? (validRange(channel) ? `release-${channel}` : channel) : "latest";
 }

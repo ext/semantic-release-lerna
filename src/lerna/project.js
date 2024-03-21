@@ -3,13 +3,11 @@
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
-import { ValidationError } from "@lerna/validation-error";
 import { cosmiconfigSync } from "cosmiconfig";
 import globby from "globby";
 import { load } from "js-yaml";
-import log from "npmlog";
 import pMap from "p-map";
-import { writeJsonFile } from "write-json-file";
+import { writeJsonFile } from "../utils";
 import { Package } from "./package";
 
 /**
@@ -48,10 +46,7 @@ function getGlobOpts(rootPath, packageConfigs) {
 
 	if (packageConfigs.some((cfg) => cfg.indexOf("**") > -1)) {
 		if (packageConfigs.some((cfg) => cfg.indexOf("node_modules") > -1)) {
-			throw new ValidationError(
-				"EPKGCONFIG",
-				"An explicit node_modules package path does not allow globstars (**)",
-			);
+			throw new Error("An explicit node_modules package path does not allow globstars (**)");
 		}
 
 		globOpts.ignore = [
@@ -104,7 +99,8 @@ export class Project {
 	/**
 	 * @param {string} [cwd] Defaults to process.cwd()
 	 */
-	constructor(cwd) {
+	constructor(cwd, logger) {
+		this.logger = logger;
 		const explorer = cosmiconfigSync("lerna", {
 			searchPlaces: ["lerna.json", "package.json"],
 			transform(obj) {
@@ -124,19 +120,7 @@ export class Project {
 			},
 		});
 
-		let loaded;
-
-		try {
-			loaded = explorer.search(cwd);
-		} catch (err) {
-			// redecorate JSON syntax errors, avoid debug dump
-			if (err.name === "JSONError") {
-				throw new ValidationError(err.name, err.message);
-			}
-
-			// re-throw other errors, could be ours or third-party
-			throw err;
-		}
+		const loaded = explorer.search(cwd);
 
 		/** @type {ProjectConfig} */
 		this.config = loaded.config;
@@ -144,7 +128,7 @@ export class Project {
 		this.rootConfigLocation = loaded.filepath;
 		this.rootPath = path.dirname(loaded.filepath);
 
-		log.verbose("rootPath", this.rootPath);
+		this.logger.log(`lerna rootPath: ${this.rootPath}`);
 	}
 
 	get version() {
@@ -158,16 +142,14 @@ export class Project {
 	get packageConfigs() {
 		const pnpmConfigLocation = path.join(this.rootPath, "pnpm-workspace.yaml");
 		if (fs.existsSync(pnpmConfigLocation)) {
-			log.verbose(
-				"packageConfigs",
+			this.logger.log(
 				"Package manager 'pnpm' detected. Resolving packages using 'pnpm-workspace.yaml'.",
 			);
 			const configContent = fs.readFileSync(pnpmConfigLocation);
 			const { packages } = load(configContent);
 
 			if (!packages) {
-				throw new ValidationError(
-					"EWORKSPACES",
+				throw new Error(
 					"No 'packages' property found in pnpm-workspace.yaml. See https://pnpm.io/workspaces for help configuring workspaces in pnpm.",
 				);
 			}
@@ -179,6 +161,7 @@ export class Project {
 		if (fs.existsSync(npmConfigLocation)) {
 			const { workspaces } = loadJsonFileSync(npmConfigLocation);
 			if (workspaces) {
+				this.logger.log(`Resolving packages from package.json workspaces: ${workspaces}`);
 				return workspaces;
 			}
 		}
@@ -187,14 +170,12 @@ export class Project {
 		if (fs.existsSync(lernaConfigLocation)) {
 			const { packages } = loadJsonFileSync(lernaConfigLocation);
 			if (packages) {
+				this.logger.log("EPACKAGES", `Resolving packages from lerna.json: ${packages}`);
 				return packages;
 			}
 		}
 
-		log.warn(
-			"EPACKAGES",
-			`No packages defined in lerna.json. Defaulting to packages in ${PACKAGE_GLOB}`,
-		);
+		this.logger.log(`No packages defined in lerna.json. Defaulting to packages in ${PACKAGE_GLOB}`);
 		return [PACKAGE_GLOB];
 	}
 
@@ -212,9 +193,6 @@ export class Project {
 	}
 
 	serializeConfig() {
-		return writeJsonFile(this.rootConfigLocation, this.config, {
-			indent: 2,
-			detectIndent: true,
-		});
+		return writeJsonFile(this.rootConfigLocation, this.config);
 	}
 }
