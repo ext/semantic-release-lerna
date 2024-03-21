@@ -7,7 +7,6 @@ import { ValidationError } from "@lerna/validation-error";
 import { cosmiconfigSync } from "cosmiconfig";
 import globby from "globby";
 import { load } from "js-yaml";
-import log from "npmlog";
 import pMap from "p-map";
 import { writeJsonFile } from "../utils";
 import { Package } from "./package";
@@ -104,7 +103,8 @@ export class Project {
 	/**
 	 * @param {string} [cwd] Defaults to process.cwd()
 	 */
-	constructor(cwd) {
+	constructor(cwd, logger) {
+		this.logger = logger;
 		const explorer = cosmiconfigSync("lerna", {
 			searchPlaces: ["lerna.json", "package.json"],
 			transform(obj) {
@@ -144,7 +144,7 @@ export class Project {
 		this.rootConfigLocation = loaded.filepath;
 		this.rootPath = path.dirname(loaded.filepath);
 
-		log.verbose("rootPath", this.rootPath);
+		this.logger.log(`lerna rootPath: ${this.rootPath}`);
 	}
 
 	get version() {
@@ -158,8 +158,7 @@ export class Project {
 	get packageConfigs() {
 		const pnpmConfigLocation = path.join(this.rootPath, "pnpm-workspace.yaml");
 		if (fs.existsSync(pnpmConfigLocation)) {
-			log.verbose(
-				"packageConfigs",
+			this.logger.log(
 				"Package manager 'pnpm' detected. Resolving packages using 'pnpm-workspace.yaml'.",
 			);
 			const configContent = fs.readFileSync(pnpmConfigLocation);
@@ -167,7 +166,6 @@ export class Project {
 
 			if (!packages) {
 				throw new ValidationError(
-					"EWORKSPACES",
 					"No 'packages' property found in pnpm-workspace.yaml. See https://pnpm.io/workspaces for help configuring workspaces in pnpm.",
 				);
 			}
@@ -179,6 +177,7 @@ export class Project {
 		if (fs.existsSync(npmConfigLocation)) {
 			const { workspaces } = loadJsonFileSync(npmConfigLocation);
 			if (workspaces) {
+				this.logger.log(`Resolving packages from package.json workspaces: ${workspaces}`);
 				return workspaces;
 			}
 		}
@@ -187,14 +186,12 @@ export class Project {
 		if (fs.existsSync(lernaConfigLocation)) {
 			const { packages } = loadJsonFileSync(lernaConfigLocation);
 			if (packages) {
+				this.logger.log("EPACKAGES", `Resolving packages from lerna.json: ${packages}`);
 				return packages;
 			}
 		}
 
-		log.warn(
-			"EPACKAGES",
-			`No packages defined in lerna.json. Defaulting to packages in ${PACKAGE_GLOB}`,
-		);
+		this.logger.log(`No packages defined in lerna.json. Defaulting to packages in ${PACKAGE_GLOB}`);
 		return [PACKAGE_GLOB];
 	}
 

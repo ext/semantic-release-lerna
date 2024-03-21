@@ -1,16 +1,16 @@
 import path from "node:path/posix";
 import { execaSync } from "execa";
-import log from "npmlog";
 import * as minimatch from "minimatch";
 
 /**
  * @param {string} committish
  * @param {import("execa").SyncOptions} [execOpts]
- * @param {string[]} ignorePatterns
  */
-export function makeDiffPredicate(committish, execOpts, ignorePatterns = []) {
+export function makeDiffPredicate(committish, execOpts, context) {
+	const { ignoreChanges, logger } = context;
+
 	const ignoreFilters = new Set(
-		ignorePatterns.map((p) =>
+		ignoreChanges.map((p) =>
 			minimatch.filter(`!${p}`, {
 				matchBase: true,
 				// dotfiles inside ignored directories should also match
@@ -20,18 +20,16 @@ export function makeDiffPredicate(committish, execOpts, ignorePatterns = []) {
 	);
 
 	if (ignoreFilters.size) {
-		log.info("ignoring diff in paths matching", ignorePatterns);
+		logger.log("ignoring diff in paths matching", ignoreChanges);
 	}
 
 	return function hasDiffSinceThatIsntIgnored(node) {
 		const diff = diffSinceIn(committish, node.location, execOpts);
 
 		if (diff === "") {
-			log.silly("", "no diff found in %s", node.name);
 			return false;
 		}
 
-		log.silly("found diff in", diff);
 		let changedFiles = diff.split("\n");
 
 		if (ignoreFilters.size) {
@@ -41,9 +39,9 @@ export function makeDiffPredicate(committish, execOpts, ignorePatterns = []) {
 		}
 
 		if (changedFiles.length) {
-			log.verbose("filtered diff", changedFiles);
+			logger.log("filtered diff", changedFiles);
 		} else {
-			log.verbose("", "no diff found in %s (after filtering)", node.name);
+			logger.log("", "no diff found in %s (after filtering)", node.name);
 		}
 
 		return changedFiles.length > 0;
@@ -64,6 +62,5 @@ function diffSinceIn(committish, location, opts) {
 		args.push("--", formattedLocation);
 	}
 
-	log.silly("checking diff", formattedLocation);
 	return execaSync("git", args, opts).stdout;
 }

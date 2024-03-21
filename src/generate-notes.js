@@ -42,7 +42,7 @@ export async function generateNotes(pluginConfig, context) {
 	const repositoryUrl = options.repositoryUrl.replace(/\.git$/i, "");
 	const { parserOpts, writerOpts } = await loadChangelogConfig(pluginConfig, context);
 
-	const project = new Project(cwd);
+	const project = new Project(cwd, logger);
 	const packages = await project.getPackages();
 
 	function fillScope(parsedCommit) {
@@ -50,7 +50,11 @@ export async function generateNotes(pluginConfig, context) {
 			return parsedCommit;
 		}
 
-		const hasDiff = makeDiffPredicate(`${parsedCommit.hash}^!`, { cwd });
+		const hasDiff = makeDiffPredicate(
+			`${parsedCommit.hash}^!`,
+			{ cwd },
+			{ logger, ignoreChanges: [] },
+		);
 		const scope = packages.filter((pkg) => !pkg.private && hasDiff(pkg)).map((pkg) => pkg.name);
 		if (scope.length > 0) {
 			parsedCommit.scope = scope.join(", ");

@@ -52,7 +52,7 @@ function collectUpdates(filteredPackages, packageGraph, execOptions, commandOpti
 
 	let committish;
 
-	if (hasTags(execOptions)) {
+	if (hasTags(execOptions, logger)) {
 		// Describe the last annotated tag in the current branch
 		const { refCount, lastTagName } = describeRefSync(execOptions);
 
@@ -79,7 +79,7 @@ function collectUpdates(filteredPackages, packageGraph, execOptions, commandOpti
 
 	logger.log(`Looking for changed packages since ${committish}`);
 
-	const hasDiff = makeDiffPredicate(committish, execOptions, commandOptions.ignoreChanges);
+	const hasDiff = makeDiffPredicate(committish, execOptions, commandOptions);
 
 	return collectPackages(packages, {
 		isCandidate: (node) => hasDiff(node),
@@ -93,7 +93,7 @@ function collectUpdates(filteredPackages, packageGraph, execOptions, commandOpti
  */
 export default async function getChangedPackages(latch, context) {
 	const { cwd, logger, version } = context;
-	const project = new Project(cwd);
+	const project = new Project(cwd, logger);
 	const packages = await project.getPackages();
 	const packageGraph = new PackageGraph(packages);
 	logger.log(
@@ -106,7 +106,7 @@ export default async function getChangedPackages(latch, context) {
 		packageGraph.rawPackageList,
 		packageGraph,
 		{ cwd },
-		{ logger, version, latch },
+		{ logger, version, latch, ignoreChanges: [] },
 	);
 
 	return updates.map((node) => packages.find((pkg) => pkg.name === node.name));

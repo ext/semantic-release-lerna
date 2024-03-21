@@ -36,7 +36,7 @@ async function updateLernaJson(basePath, context) {
 		nextRelease: { version },
 	} = context;
 	logger.log("Write version %s to lerna.json in %s", version, basePath);
-	const project = new Project(basePath);
+	const project = new Project(basePath, logger);
 	project.version = version;
 	await project.serializeConfig();
 }
