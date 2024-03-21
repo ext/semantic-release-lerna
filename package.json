@@ -75,8 +75,8 @@
     "tempy": "3.0.0"
   },
   "devDependencies": {
-    "@babel/core": "7.24.1",
-    "@babel/preset-env": "7.24.1",
+    "@babel/core": "7.24.3",
+    "@babel/preset-env": "7.24.3",
     "@html-validate/eslint-config": "5.15.1",
     "@html-validate/eslint-config-jest": "5.15.0",
     "@html-validate/prettier-config": "2.4.12",
