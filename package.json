@@ -58,6 +58,7 @@
     "conventional-commits-parser": "^5.0.0",
     "cosmiconfig": "^7.0.0",
     "debug": "4.3.4",
+    "detect-indent": "7.0.1",
     "execa": "8.0.1",
     "get-stream": "8.0.1",
     "globby": "^11.0.2",
@@ -75,8 +76,7 @@
     "read-pkg-up": "10.1.0",
     "registry-auth-token": "^5.0.0",
     "semver": "7.6.0",
-    "tempy": "3.0.0",
-    "write-json-file": "5.0.0"
+    "tempy": "3.0.0"
   },
   "devDependencies": {
     "@babel/core": "7.24.1",
@@ -115,8 +115,7 @@
     "conventional-commits-parser",
     "cosmiconfig",
     "libnpmversion",
-    "registry-auth-token",
-    "write-json-file"
+    "registry-auth-token"
   ],
   "renovate": {
     "extends": [

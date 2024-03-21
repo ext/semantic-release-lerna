@@ -9,7 +9,7 @@ import globby from "globby";
 import { load } from "js-yaml";
 import log from "npmlog";
 import pMap from "p-map";
-import { writeJsonFile } from "write-json-file";
+import { writeJsonFile } from "../utils";
 import { Package } from "./package";
 
 /**
@@ -212,9 +212,6 @@ export class Project {
 	}
 
 	serializeConfig() {
-		return writeJsonFile(this.rootConfigLocation, this.config, {
-			indent: 2,
-			detectIndent: true,
-		});
+		return writeJsonFile(this.rootConfigLocation, this.config);
 	}
 }

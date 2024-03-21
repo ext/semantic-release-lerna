@@ -4,11 +4,11 @@ import { existsSync } from "node:fs";
 import { format } from "node:util";
 import { execa } from "execa";
 import npmVersion from "libnpmversion";
-import { writeJsonFile } from "write-json-file";
 import semverParse from "semver/functions/parse.js";
 import { Package } from "./lerna/package";
 import { Project } from "./lerna/project";
 import getChangedPackages from "./get-changed-packages.js";
+import { writeJsonFile } from "./utils";
 import {
 	getLockFileFromPackageManager,
 	getPackageManagerFromLockFile,
@@ -165,7 +165,7 @@ async function updatePackageDependencies(pkg, newVersion, currentVersions) {
 	bumpDependency(pkgData.devDependencies || {}, newVersion, currentVersions);
 	bumpDependency(pkgData.peerDependencies || {}, newVersion, currentVersions);
 
-	await writeJsonFile(pkg.manifestLocation, pkgData, { indent: 2, detectIndent: true });
+	await writeJsonFile(pkg.manifestLocation, pkgData);
 }
 
 /**
