@@ -70,7 +70,6 @@
     "npm-package-arg": "8.1.5",
     "p-map": "^4.0.0",
     "rc": "1.2.8",
-    "read-pkg": "9.0.1",
     "read-pkg-up": "10.1.0",
     "registry-auth-token": "^5.0.0",
     "semver": "7.6.0",
