@@ -3,7 +3,6 @@
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
-import { ValidationError } from "@lerna/validation-error";
 import { cosmiconfigSync } from "cosmiconfig";
 import globby from "globby";
 import { load } from "js-yaml";
@@ -47,10 +46,7 @@ function getGlobOpts(rootPath, packageConfigs) {
 
 	if (packageConfigs.some((cfg) => cfg.indexOf("**") > -1)) {
 		if (packageConfigs.some((cfg) => cfg.indexOf("node_modules") > -1)) {
-			throw new ValidationError(
-				"EPKGCONFIG",
-				"An explicit node_modules package path does not allow globstars (**)",
-			);
+			throw new Error("An explicit node_modules package path does not allow globstars (**)");
 		}
 
 		globOpts.ignore = [
@@ -124,19 +120,7 @@ export class Project {
 			},
 		});
 
-		let loaded;
-
-		try {
-			loaded = explorer.search(cwd);
-		} catch (err) {
-			// redecorate JSON syntax errors, avoid debug dump
-			if (err.name === "JSONError") {
-				throw new ValidationError(err.name, err.message);
-			}
-
-			// re-throw other errors, could be ours or third-party
-			throw err;
-		}
+		const loaded = explorer.search(cwd);
 
 		/** @type {ProjectConfig} */
 		this.config = loaded.config;
@@ -165,7 +149,7 @@ export class Project {
 			const { packages } = load(configContent);
 
 			if (!packages) {
-				throw new ValidationError(
+				throw new Error(
 					"No 'packages' property found in pnpm-workspace.yaml. See https://pnpm.io/workspaces for help configuring workspaces in pnpm.",
 				);
 			}

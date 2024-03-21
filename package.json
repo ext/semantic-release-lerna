@@ -49,7 +49,6 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@lerna/validation-error": "6.4.1",
     "@semantic-release/error": "^4.0.0",
     "@semantic-release/release-notes-generator": "^12.0.0",
     "aggregate-error": "5.0.0",

@@ -1,4 +1,3 @@
-import { ValidationError } from "@lerna/validation-error";
 import npa from "npm-package-arg";
 import semver from "semver";
 
@@ -84,8 +83,7 @@ export class PackageGraph extends Map {
 
 			for (const [name, locations] of seen) {
 				if (locations.length > 1) {
-					throw new ValidationError(
-						"ENAME",
+					throw new Error(
 						[`Package name "${name}" used in multiple packages:`, ...locations].join("\n\t"),
 					);
 				}
@@ -148,8 +146,7 @@ export class PackageGraph extends Map {
 				} else {
 					if (isWorkspaceSpec) {
 						// pnpm refuses to resolve remote dependencies when using the workspace: protocol, so lerna does too. See: https://pnpm.io/workspaces#workspace-protocol-workspace.
-						throw new ValidationError(
-							"EWORKSPACE",
+						throw new Error(
 							`Package specification "${depName}@${spec}" could not be resolved within the workspace. To reference a non-matching, remote version of a local dependency, remove the 'workspace:' prefix.`,
 						);
 					}
