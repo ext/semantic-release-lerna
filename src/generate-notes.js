@@ -5,13 +5,10 @@ import { sync as parser } from "conventional-commits-parser";
 import writer from "conventional-changelog-writer";
 import filter from "conventional-commits-filter";
 import { readPackageUp } from "read-pkg-up";
-import debugFactory from "debug";
 import loadChangelogConfig from "@semantic-release/release-notes-generator/lib/load-changelog-config.js";
 import HOSTS_CONFIG from "@semantic-release/release-notes-generator/lib/hosts-config.js";
 import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
-
-const debug = debugFactory("semantic-release:release-notes-generator");
 
 /**
  * Generate the changelog for all the commits in `options.commits`.
@@ -79,9 +76,8 @@ export async function generateNotes(pluginConfig, context) {
 		Object.values(HOSTS_CONFIG).find((conf) => conf.hostname === hostname) || HOSTS_CONFIG.default;
 	const parsedCommits = filter(
 		commits
-			.filter(({ message, hash }) => {
+			.filter(({ message }) => {
 				if (!message.trim()) {
-					debug("Skip commit %s with empty message", hash);
 					return false;
 				}
 
@@ -123,16 +119,6 @@ export async function generateNotes(pluginConfig, context) {
 		issue: issueConfig,
 	};
 	const changelogContext = { ...defaultContext, ...userConfig };
-
-	debug("version: %o", changelogContext.version);
-	debug("host: %o", changelogContext.hostname);
-	debug("owner: %o", changelogContext.owner);
-	debug("repository: %o", changelogContext.repository);
-	debug("previousTag: %o", changelogContext.previousTag);
-	debug("currentTag: %o", changelogContext.currentTag);
-	debug("linkReferences: %o", changelogContext.linkReferences);
-	debug("issue: %o", changelogContext.issue);
-	debug("commit: %o", changelogContext.commit);
 
 	return getStream(intoStream.object(parsedCommits).pipe(writer(changelogContext, writerOpts)));
 }

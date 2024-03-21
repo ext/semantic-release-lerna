@@ -56,7 +56,6 @@
     "conventional-commits-filter": "^4.0.0",
     "conventional-commits-parser": "^5.0.0",
     "cosmiconfig": "^7.0.0",
-    "debug": "4.3.4",
     "detect-indent": "7.0.1",
     "execa": "8.0.1",
     "get-stream": "8.0.1",
