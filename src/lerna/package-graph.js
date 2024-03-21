@@ -1,5 +1,5 @@
 import npa from "npm-package-arg";
-import semver from "semver";
+import satisfies from "semver/functions/satisfies";
 
 const PKG = Symbol("pkg");
 
@@ -41,7 +41,7 @@ class PackageGraphNode {
 	 * @returns {Boolean}
 	 */
 	satisfies({ gitCommittish, gitRange, fetchSpec }) {
-		return semver.satisfies(this.version, gitCommittish || gitRange || fetchSpec);
+		return satisfies(this.version, gitCommittish || gitRange || fetchSpec);
 	}
 
 	/**
