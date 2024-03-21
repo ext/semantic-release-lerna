@@ -4,7 +4,7 @@ import intoStream from "into-stream";
 import { sync as parser } from "conventional-commits-parser";
 import writer from "conventional-changelog-writer";
 import filter from "conventional-commits-filter";
-import { readPackageUp } from "read-pkg-up";
+import { readPackageUp } from "read-package-up";
 import loadChangelogConfig from "@semantic-release/release-notes-generator/lib/load-changelog-config.js";
 import HOSTS_CONFIG from "@semantic-release/release-notes-generator/lib/hosts-config.js";
 import { Project } from "./lerna/project";
