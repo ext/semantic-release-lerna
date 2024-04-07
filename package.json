@@ -91,7 +91,7 @@
     "npm-pkg-lint": "2.3.0",
     "semantic-release": "23.0.7",
     "stream-buffers": "3.0.2",
-    "verdaccio": "5.30.2"
+    "verdaccio": "5.30.3"
   },
   "peerDependencies": {
     "lerna": "^5 || ^6 || ^7 || ^8",
