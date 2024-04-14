@@ -1,14 +1,53 @@
-import { format } from "node:url";
+import { dirname } from "node:path";
+import { fileURLToPath, format } from "node:url";
+import conventionalChangelogAngular from "conventional-changelog-angular";
 import getStream from "get-stream";
+import importFrom from "import-from-esm";
 import intoStream from "into-stream";
 import { sync as parser } from "conventional-commits-parser";
 import writer from "conventional-changelog-writer";
 import filter from "conventional-commits-filter";
 import { readPackageUp } from "read-package-up";
-import loadChangelogConfig from "@semantic-release/release-notes-generator/lib/load-changelog-config.js";
-import HOSTS_CONFIG from "@semantic-release/release-notes-generator/lib/hosts-config.js";
 import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
+import HOSTS_CONFIG from "./hosts-config.js";
+
+/**
+ * Load `conventional-changelog-parser` options. Handle presets that return either a `Promise<Array>` or a `Promise<Function>`.
+ *
+ * @param {Object} pluginConfig The plugin configuration.
+ * @param {Object} pluginConfig.preset conventional-changelog preset ('angular', 'atom', 'codemirror', 'ember', 'eslint', 'express', 'jquery', 'jscs', 'jshint')
+ * @param {string} pluginConfig.config Requireable npm package with a custom conventional-changelog preset
+ * @param {Object} pluginConfig.parserOpts Additional `conventional-changelog-parser` options that will overwrite ones loaded by `preset` or `config`.
+ * @param {Object} pluginConfig.writerOpts Additional `conventional-changelog-writer` options that will overwrite ones loaded by `preset` or `config`.
+ * @param {Object} context The semantic-release context.
+ * @param {Array<Object>} context.commits The commits to analyze.
+ * @param {String} context.cwd The current working directory.
+ *
+ * @return {Promise<Object>} a `Promise` that resolve to the `conventional-changelog-core` config.
+ */
+async function loadChangelogConfig(pluginConfig, context) {
+	const { preset, config, parserOpts, writerOpts, presetConfig } = pluginConfig;
+	const { cwd } = context;
+	let loadedConfig;
+	const __dirname = dirname(fileURLToPath(import.meta.url));
+
+	if (preset) {
+		const presetPackage = `conventional-changelog-${preset.toLowerCase()}`;
+		loadedConfig = await (
+			importFrom.silent(__dirname, presetPackage) || importFrom(cwd, presetPackage)
+		)(presetConfig);
+	} else if (config) {
+		loadedConfig = await (importFrom.silent(__dirname, config) || importFrom(cwd, config))();
+	} else {
+		loadedConfig = await conventionalChangelogAngular();
+	}
+
+	return {
+		parserOpts: { ...loadedConfig.parserOpts, ...parserOpts },
+		writerOpts: { ...loadedConfig.writerOpts, ...writerOpts },
+	};
+}
 
 /**
  * Generate the changelog for all the commits in `options.commits`.
