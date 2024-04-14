@@ -2,12 +2,25 @@
 
 import fs from "node:fs/promises";
 import path from "node:path";
+import os from "node:os";
+import { mkdirSync, realpathSync } from "node:fs";
+import { randomBytes } from "node:crypto";
 import startServer from "verdaccio";
-import { temporaryDirectory } from "tempy";
+
+const tempdir = realpathSync(os.tmpdir());
 
 const NPM_USERNAME = "integration";
 const NPM_PASSWORD = "suchsecure";
 const NPM_EMAIL = "integration@example.net";
+
+/**
+ * @returns {string}
+ */
+function temporaryDirectory() {
+	const testPath = path.join(tempdir, randomBytes(16).toString("hex"));
+	mkdirSync(testPath);
+	return testPath;
+}
 
 const storage = temporaryDirectory();
 const config = {
