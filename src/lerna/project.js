@@ -4,7 +4,7 @@ import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
 import { cosmiconfigSync } from "cosmiconfig";
-import globby from "globby";
+import { globby } from "globby";
 import { load } from "js-yaml";
 import pMap from "p-map";
 import { writeJsonFile } from "../utils";
