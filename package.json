@@ -45,6 +45,10 @@
   },
   "prettier": "@html-validate/prettier-config",
   "jest": {
+    "coveragePathIgnorePatterns": [
+      "/dist/",
+      "/node_modules/"
+    ],
     "testTimeout": 30000,
     "transformIgnorePatterns": []
   },
@@ -71,8 +75,7 @@
     "rc": "1.2.8",
     "read-package-up": "11.0.0",
     "registry-auth-token": "^5.0.0",
-    "semver": "7.6.0",
-    "tempy": "3.0.0"
+    "semver": "7.6.0"
   },
   "devDependencies": {
     "@babel/core": "7.24.4",

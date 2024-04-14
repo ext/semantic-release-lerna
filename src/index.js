@@ -1,5 +1,8 @@
+import fs, { realpathSync } from "node:fs";
+import path from "node:path";
+import os from "node:os";
+import { randomBytes } from "node:crypto";
 import AggregateError from "aggregate-error";
-import { temporaryFile } from "tempy";
 import getPkg from "./get-pkg.js";
 import verifyNpmConfig from "./verify-config.js";
 import verifyNpmAuth from "./verify-auth.js";
@@ -10,6 +13,8 @@ import publishNpm from "./publish.js";
 export { generateNotes } from "./generate-notes.js";
 
 let verified;
+
+const tempdir = realpathSync(os.tmpdir());
 const npmrc = temporaryFile({ name: ".npmrc" });
 
 const defaultConfig = {
@@ -19,6 +24,17 @@ const defaultConfig = {
 	pkgRoot: undefined,
 	latch: "minor",
 };
+
+/**
+ * @param {{ name: string }}  options
+ * @returns {string}
+ */
+function temporaryFile(options) {
+	const { name } = options;
+	const directory = path.join(tempdir, randomBytes(16).toString("hex"));
+	fs.mkdirSync(directory);
+	return path.join(directory, name);
+}
 
 /**
  * @template T
