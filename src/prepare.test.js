@@ -13,9 +13,15 @@ let mockChangedPackages;
 
 const tempdir = realpathSync(os.tmpdir());
 
+globalThis.useRealGetChangedPackages = false;
+
 jest.mock("./get-changed-packages", () => {
-	function getChangedPackagesMock() {
-		return mockChangedPackages;
+	const realGetChangedPackages = jest.requireActual("./get-changed-packages").default;
+	function getChangedPackagesMock(...args) {
+		if (!globalThis.useRealGetChangedPackages) {
+			return mockChangedPackages;
+		}
+		return realGetChangedPackages(...args);
 	}
 
 	return getChangedPackagesMock;
@@ -92,6 +98,7 @@ beforeEach(() => {
 		stderr: new WritableStreamBuffer(),
 	};
 	mockChangedPackages = [];
+	globalThis.useRealGetChangedPackages = false;
 });
 
 it("Update lerna.json and root package.json when no package has changed", () => {
@@ -517,4 +524,61 @@ it("Handle dependencies from root package", async () => {
 			},
 		);
 	}).not.toThrow();
+});
+
+describe("getChangedPackages", () => {
+	beforeEach(() => {
+		globalThis.useRealGetChangedPackages = true;
+	});
+
+	it("should run without any reference error if the repository has not yet any tag", async () => {
+		expect.assertions(1);
+		const cwd = await temporaryDirectory();
+		const npmrc = await temporaryFile({ name: ".npmrc" });
+		await createProject(cwd, "0.0.1", {
+			devDependencies: {
+				"external-dependency": "1.2.3",
+			},
+		});
+
+		await createPackage(
+			cwd,
+			"foo",
+			"0.0.0",
+			{
+				changed: true,
+			},
+			{
+				dependencies: {
+					a: "0.0.0",
+				},
+			},
+		);
+
+		await execa("git", ["config", "--global", "user.email", "you@example.com"], { cwd });
+		await execa("git", ["config", "--global", "user.name", "Sample User"], { cwd });
+
+		await execa("git", ["init"], { cwd });
+		await execa("git", ["add", "."], { cwd });
+		await execa("git", ["commit", "-m", "'feat:initial commit'"], { cwd });
+
+		await execa("touch", ["test.txt"], { cwd });
+		await execa("git", ["add", "."], { cwd });
+		await execa("git", ["commit", "-m", "'fix:commit msg'"], { cwd });
+
+		expect(async () => {
+			await prepare(
+				npmrc,
+				{},
+				{
+					cwd,
+					env: {},
+					stdout: context.stdout,
+					stderr: context.stderr,
+					nextRelease: { version: "0.0.2" },
+					logger: context.logger,
+				},
+			);
+		}).not.toThrow();
+	});
 });
