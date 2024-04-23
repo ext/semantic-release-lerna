@@ -30,9 +30,9 @@ function parse(stdout, options = {}) {
 		const [, sha, isDirty] = minimalShaRegex.exec(stdout);
 
 		// Count number of commits since beginning of time
-		const refCount = childProcess.execSync("git", ["rev-list", "--count", sha], options);
+		const revListResponse = execaSync("git", ["rev-list", "--count", sha], options);
 
-		return { refCount, sha, isDirty: Boolean(isDirty) };
+		return { refCount: revListResponse.stdout, sha, isDirty: Boolean(isDirty) };
 	}
 
 	/* eslint-disable-next-line security/detect-unsafe-regex -- technical debt  */
