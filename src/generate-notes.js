@@ -35,10 +35,12 @@ async function loadChangelogConfig(pluginConfig, context) {
 	if (preset) {
 		const presetPackage = `conventional-changelog-${preset.toLowerCase()}`;
 		loadedConfig = await (
-			importFrom.silent(__dirname, presetPackage) || importFrom(cwd, presetPackage)
+			(await importFrom.silent(__dirname, presetPackage)) || (await importFrom(cwd, presetPackage))
 		)(presetConfig);
 	} else if (config) {
-		loadedConfig = await (importFrom.silent(__dirname, config) || importFrom(cwd, config))();
+		loadedConfig = await (
+			(await importFrom.silent(__dirname, config)) || (await importFrom(cwd, config))
+		)();
 	} else {
 		loadedConfig = await conventionalChangelogAngular();
 	}
