@@ -66,7 +66,6 @@ async function updatePackage(npmrc, pkg, context, currentVersions) {
 		signGitTag: false,
 		force: false,
 		ignoreScripts: false,
-		silent: false,
 	});
 
 	/* Bump dependencies */
