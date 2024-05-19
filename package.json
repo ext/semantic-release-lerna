@@ -61,7 +61,7 @@
     "conventional-commits-parser": "^5.0.0",
     "cosmiconfig": "^9.0.0",
     "detect-indent": "7.0.1",
-    "execa": "8.0.1",
+    "execa": "9.1.0",
     "get-stream": "9.0.1",
     "globby": "^14.0.0",
     "import-from-esm": "^1.0.3",
@@ -102,7 +102,7 @@
     "semantic-release": "^22 || ^23"
   },
   "engines": {
-    "node": ">= 18.17"
+    "node": ">= 18.18"
   },
   "publishConfig": {
     "access": "public"
