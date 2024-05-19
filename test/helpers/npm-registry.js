@@ -98,6 +98,7 @@ function startVerdaccio() {
  * @returns {void}
  */
 async function registerUser(username, password, email) {
+	/* eslint-disable-next-line n/no-unsupported-features/node-builtins -- testcases only and appears to work fine under earlier node versions */
 	const response = await fetch(`${registryUrl}/-/user/org.couchdb.user:${username}`, {
 		method: "PUT",
 		headers: { "Content-Type": "application/json" },
@@ -124,6 +125,7 @@ async function registerUser(username, password, email) {
  */
 async function getUserToken(username, password) {
 	const authToken = Buffer.from(`${username}:${password}`).toString("base64");
+	/* eslint-disable-next-line n/no-unsupported-features/node-builtins -- testcases only and appears to work fine under earlier node versions */
 	const response = await fetch(`${registryUrl}/-/npm/v1/tokens`, {
 		method: "POST",
 		headers: { Authorization: `Basic ${authToken}`, "Content-Type": "application/json" },

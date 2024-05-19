@@ -53,6 +53,7 @@ async function initialPublish(cwd) {
  * @returns {Promise<string[]>}
  */
 async function getPublishedVersions(pkg) {
+	/* eslint-disable-next-line n/no-unsupported-features/node-builtins -- testcases only and appears to work fine under earlier node versions */
 	const response = await fetch(`${npmRegistry.getRegistryUrl()}/${pkg}`, {
 		throwHttpErrors: false,
 	});
