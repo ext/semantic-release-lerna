@@ -6,7 +6,7 @@ import importFrom from "import-from-esm";
 import intoStream from "into-stream";
 import { sync as parser } from "conventional-commits-parser";
 import * as writerModule from "conventional-changelog-writer";
-import filter from "conventional-commits-filter";
+import { filterRevertedCommitsSync } from "conventional-commits-filter";
 import { readPackageUp } from "read-package-up";
 import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
@@ -125,7 +125,7 @@ export async function generateNotes(pluginConfig, context) {
 
 	const { issue, commit, referenceActions, issuePrefixes } =
 		Object.values(HOSTS_CONFIG).find((conf) => conf.hostname === hostname) || HOSTS_CONFIG.default;
-	const parsedCommits = filter(
+	const parsedCommits = filterRevertedCommitsSync(
 		commits
 			.filter(({ message }) => {
 				if (!message.trim()) {
