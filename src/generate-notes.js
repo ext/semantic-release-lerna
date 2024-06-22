@@ -5,12 +5,22 @@ import getStream from "get-stream";
 import importFrom from "import-from-esm";
 import intoStream from "into-stream";
 import { sync as parser } from "conventional-commits-parser";
-import writer from "conventional-changelog-writer";
+import * as writerModule from "conventional-changelog-writer";
 import filter from "conventional-commits-filter";
 import { readPackageUp } from "read-package-up";
 import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
 import HOSTS_CONFIG from "./hosts-config.js";
+
+function getWriteChangelogStream() {
+	if (writerModule.writeChangelog) {
+		return writerModule.writeChangelogStream;
+	} else {
+		return writerModule;
+	}
+}
+
+const writer = getWriteChangelogStream();
 
 /**
  * Load `conventional-changelog-parser` options. Handle presets that return either a `Promise<Array>` or a `Promise<Function>`.
@@ -46,8 +56,8 @@ async function loadChangelogConfig(pluginConfig, context) {
 	}
 
 	return {
-		parserOpts: { ...loadedConfig.parserOpts, ...parserOpts },
-		writerOpts: { ...loadedConfig.writerOpts, ...writerOpts },
+		parserOpts: { ...(loadedConfig.parserOpts ?? loadedConfig.parser), ...parserOpts },
+		writerOpts: { ...(loadedConfig.writerOpts ?? loadedConfig.writer), ...writerOpts },
 	};
 }
 
