@@ -3,9 +3,10 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import os from "node:os";
+import { fileURLToPath } from "node:url";
 import { mkdirSync, realpathSync } from "node:fs";
 import { randomBytes } from "node:crypto";
-import startServer from "verdaccio";
+import { startVerdaccio as startServer } from "verdaccio";
 
 const tempdir = realpathSync(os.tmpdir());
 
@@ -25,7 +26,7 @@ function temporaryDirectory() {
 const storage = temporaryDirectory();
 const config = {
 	storage,
-	self_path: __dirname,
+	self_path: path.dirname(fileURLToPath(import.meta.url)),
 	auth: {
 		htpasswd: {
 			file: path.join(storage, "htpasswd"),
