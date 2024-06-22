@@ -53,7 +53,9 @@ jobs:
           npm install $(npx -y npm-min-peer lerna --major ${{ matrix.lerna-version }} --with-name)
           npm ls lerna
       - name: Integration test
-        run: LERNA_VERSION=${{ matrix.lerna-version }} node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage integration
+        env:
+          ENABLE_PNPM_TESTS: ${{ matrix.lerna-version != '5.x' && '1' || '' }}
+        run: node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage integration
 
   semantic-release:
     runs-on: ubuntu-latest
