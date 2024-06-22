@@ -1,9 +1,8 @@
 import fs from "node:fs/promises";
+import { existsSync, realpathSync } from "node:fs";
 import path from "node:path";
 import os from "node:os";
-import { realpathSync } from "node:fs";
 import { randomBytes } from "node:crypto";
-import { outputJson, readJson } from "fs-extra";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
 import prepare from "./prepare";
@@ -26,6 +25,24 @@ jest.mock("./get-changed-packages", () => {
 
 	return getChangedPackagesMock;
 });
+
+async function outputFile(file, data) {
+	const dir = path.dirname(file);
+	if (!existsSync(dir)) {
+		await fs.mkdir(dir, { recursive: true });
+	}
+	await fs.writeFile(file, data, "utf-8");
+}
+
+async function outputJson(file, data) {
+	const str = JSON.stringify(data);
+	await outputFile(file, `${str}\n`);
+}
+
+async function readJson(file) {
+	const content = await fs.readFile(file, "utf-8");
+	return JSON.parse(content);
+}
 
 /**
  * @returns {Promise<string>}
