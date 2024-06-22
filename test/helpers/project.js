@@ -1,11 +1,12 @@
 import path from "node:path";
 import { execa } from "execa";
-import { outputJson, outputFile } from "fs-extra";
 import {
 	getLockFileFromPackageManager,
 	getUpdateLockFileCommand,
 } from "../../src/utils/package-manager-commands.js";
 import * as npmRegistry from "./npm-registry";
+import { outputFile } from "./output-file";
+import { outputJson } from "./output-json";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
