@@ -4,7 +4,7 @@ import conventionalChangelogAngular from "conventional-changelog-angular";
 import getStream from "get-stream";
 import importFrom from "import-from-esm";
 import intoStream from "into-stream";
-import { sync as parser } from "conventional-commits-parser";
+import { CommitParser } from "conventional-commits-parser";
 import * as writerModule from "conventional-changelog-writer";
 import { filterRevertedCommitsSync } from "conventional-commits-filter";
 import { readPackageUp } from "read-package-up";
@@ -125,6 +125,7 @@ export async function generateNotes(pluginConfig, context) {
 
 	const { issue, commit, referenceActions, issuePrefixes } =
 		Object.values(HOSTS_CONFIG).find((conf) => conf.hostname === hostname) || HOSTS_CONFIG.default;
+	const parser = new CommitParser({ referenceActions, issuePrefixes, ...parserOpts });
 	const parsedCommits = filterRevertedCommitsSync(
 		commits
 			.filter(({ message }) => {
@@ -137,7 +138,7 @@ export async function generateNotes(pluginConfig, context) {
 			.map((rawCommit) =>
 				fillScope({
 					...rawCommit,
-					...parser(rawCommit.message, { referenceActions, issuePrefixes, ...parserOpts }),
+					...parser.parse(rawCommit.message),
 				}),
 			),
 	);
