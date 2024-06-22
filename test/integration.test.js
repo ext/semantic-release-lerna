@@ -379,7 +379,7 @@ it("should update package-lock.json in root with workspaces", () => {
 	});
 });
 
-if (process.env.LERNA_VERSION !== "5.x")
+if (process.env.ENABLE_PNPM_TESTS) {
 	it("should update pnpm-lock.yaml in root", () => {
 		expect.assertions(1);
 		return withTempDir(async (cwd) => {
@@ -424,8 +424,14 @@ if (process.env.LERNA_VERSION !== "5.x")
 			`);
 		});
 	});
+} else {
+	/* eslint-disable-next-line jest/no-disabled-tests, jest/no-identical-title -- conditional test, using skip to mark that this test wasn't run under this configuration */
+	it.skip("should update pnpm-lock.yaml in root", () => {
+		expect.assertions(1);
+	});
+}
 
-if (process.env.LERNA_VERSION !== "5.x")
+if (process.env.ENABLE_PNPM_TESTS) {
 	it("should update pnpm-lock.yaml in root with workspaces", () => {
 		expect.assertions(1);
 		return withTempDir(async (cwd) => {
@@ -487,6 +493,12 @@ if (process.env.LERNA_VERSION !== "5.x")
 			`);
 		});
 	});
+} else {
+	/* eslint-disable-next-line jest/no-disabled-tests, jest/no-identical-title -- conditional test, using skip to mark that this test wasn't run under this configuration */
+	it.skip("should update pnpm-lock.yaml in root with workspaces", () => {
+		expect.assertions(1);
+	});
+}
 
 it("should generate release notes", () => {
 	expect.assertions(1);
