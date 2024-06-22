@@ -101,7 +101,7 @@ export class PackageGraph extends Map {
 							currentNode.pkg.dependencies,
 					  );
 
-			/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- inherited technical debt */
+			/* eslint-disable-next-line complexity -- inherited technical debt */
 			Object.keys(graphDependencies).forEach((depName) => {
 				const depNode = this.get(depName);
 				// Yarn decided to ignore https://github.com/npm/npm/pull/15900 and implemented "link:"
