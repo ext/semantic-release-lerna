@@ -3,6 +3,7 @@ import os from "node:os";
 import path from "node:path";
 import { readFileSync, realpathSync } from "node:fs";
 import { randomBytes } from "node:crypto";
+import { jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../dist/index.js";
