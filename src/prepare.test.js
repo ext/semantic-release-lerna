@@ -3,9 +3,10 @@ import { existsSync, realpathSync } from "node:fs";
 import path from "node:path";
 import os from "node:os";
 import { randomBytes } from "node:crypto";
+import { jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
-import prepare from "./prepare";
+import realGetChangedPackages from "./get-changed-packages";
 
 let context;
 let mockChangedPackages;
@@ -14,8 +15,7 @@ const tempdir = realpathSync(os.tmpdir());
 
 globalThis.useRealGetChangedPackages = false;
 
-jest.mock("./get-changed-packages", () => {
-	const realGetChangedPackages = jest.requireActual("./get-changed-packages").default;
+jest.unstable_mockModule("./get-changed-packages", () => {
 	function getChangedPackagesMock(...args) {
 		if (!globalThis.useRealGetChangedPackages) {
 			return mockChangedPackages;
@@ -23,8 +23,12 @@ jest.mock("./get-changed-packages", () => {
 		return realGetChangedPackages(...args);
 	}
 
-	return getChangedPackagesMock;
+	return {
+		default: getChangedPackagesMock,
+	};
 });
+
+const { default: prepare } = await import("./prepare");
 
 async function outputFile(file, data) {
 	const dir = path.dirname(file);

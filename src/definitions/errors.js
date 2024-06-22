@@ -1,7 +1,4 @@
-import { homepage as pkgHomepage } from "../../package.json";
-
-const [homepage] = pkgHomepage.split("#");
-const linkify = (file) => `${homepage}/blob/master/${file}`;
+const linkify = (file) => `https://github.com/ext/semantic-release-lerna/blob/master/${file}`;
 
 export function EDIRTYWC({ files }) {
 	return {

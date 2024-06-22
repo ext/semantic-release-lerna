@@ -1,7 +1,11 @@
-jest.mock("execa");
+import { jest } from "@jest/globals";
 
-import { execa } from "execa";
-import verifyGit from "./verify-git";
+jest.unstable_mockModule("execa", () => ({
+	execa: jest.fn(),
+}));
+
+const { execa } = await import("execa");
+const { default: verifyGit } = await import("./verify-git");
 
 it("should return error if working copy is dirty", async () => {
 	expect.assertions(2);
