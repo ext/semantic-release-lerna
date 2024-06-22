@@ -112,7 +112,6 @@
     "@semantic-release/error",
     "conventional-changelog-angular",
     "conventional-changelog-writer",
-    "conventional-commits-filter",
     "conventional-commits-parser",
     "cosmiconfig",
     "libnpmversion",
