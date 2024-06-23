@@ -87,3 +87,23 @@ The plugin can be configured in the [**semantic-release** configuration file](ht
 
 Configure `@semantic-release/git` to commit `lerna.json` and `package.json` from the package folders.
 See example configuration above.
+
+### Error: Cannot modify immutable object
+
+The contentional changelog packages have mismatching versions.
+This plugin supports both `conventional-changelog-writer` v7 and v8 as long as the preset has a matching version.
+
+Assuming you use `conventional-changelog-conventionalcommits` as preset you can verify this with:
+
+    npm ls conventional-changelog-writer conventional-changelog-commits
+
+If the major version of the packages differs you need to explicitly install the correct versions:
+
+    npm install conventional-changelog-writer@8 conventional-changelog-commits@8
+
+Substitute `@8` with `@7` if you need to stay on v7.
+Usually you can get away with removing the packages from `package.json` afterwards as long as the lockfile (e.g. `package-lock.json`) still retains the requested versions of the packages.
+
+If you do not have a configured preset `conventional-changelog-angular` is used by default, same rule applies, the major version has to be the same.
+
+Also note that `semantic-release` v24 requires v8 of thte conventional changelog packages.
