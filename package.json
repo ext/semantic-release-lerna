@@ -90,7 +90,7 @@
     "@types/jest": "29.5.12",
     "@types/npmlog": "7.0.0",
     "babel-plugin-transform-import-meta": "2.2.1",
-    "esbuild": "0.23.0",
+    "esbuild": "0.23.1",
     "jest": "29.7.0",
     "lerna": "8.1.8",
     "npm-pkg-lint": "3.6.7",
