@@ -90,7 +90,7 @@ See example configuration above.
 
 ### Error: Cannot modify immutable object
 
-The contentional changelog packages have mismatching versions.
+The conventional changelog packages have mismatching versions.
 This plugin supports both `conventional-changelog-writer` v7 and v8 as long as the preset has a matching version.
 
 Assuming you use `conventional-changelog-conventionalcommits` as preset you can verify this with:
