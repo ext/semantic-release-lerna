@@ -1,5 +1,3 @@
-/* eslint-disable sonarjs/no-duplicate-string -- inherited */
-
 import fs from "node:fs";
 import fsp from "node:fs/promises";
 import path from "node:path";
@@ -63,7 +61,7 @@ function makeFileFinder(rootPath, packageConfigs) {
 	const globOpts = getGlobOpts(rootPath, packageConfigs);
 
 	return (fileName, fileMapper, customGlobOpts) => {
-		const options = Object.assign({}, customGlobOpts, globOpts);
+		const options = { ...customGlobOpts, ...globOpts };
 		const promise = pMap(
 			Array.from(packageConfigs).sort(),
 			(globPath) => {

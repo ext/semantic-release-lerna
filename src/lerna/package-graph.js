@@ -93,15 +93,14 @@ export class PackageGraph extends Map {
 		this.forEach((currentNode, currentName) => {
 			const graphDependencies =
 				graphType === "dependencies"
-					? Object.assign({}, currentNode.pkg.optionalDependencies, currentNode.pkg.dependencies)
-					: Object.assign(
-							{},
-							currentNode.pkg.devDependencies,
-							currentNode.pkg.optionalDependencies,
-							currentNode.pkg.dependencies,
-					  );
+					? { ...currentNode.pkg.optionalDependencies, ...currentNode.pkg.dependencies }
+					: {
+							...currentNode.pkg.devDependencies,
+							...currentNode.pkg.optionalDependencies,
+							...currentNode.pkg.dependencies,
+					  };
 
-			/* eslint-disable-next-line complexity -- inherited technical debt */
+			/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- inherited technical debt */
 			Object.keys(graphDependencies).forEach((depName) => {
 				const depNode = this.get(depName);
 				// Yarn decided to ignore https://github.com/npm/npm/pull/15900 and implemented "link:"
@@ -143,13 +142,11 @@ export class PackageGraph extends Map {
 				if (resolved.fetchSpec === depNode.location || depNode.satisfies(resolved)) {
 					// a local file: specifier OR a matching semver
 					depNode.localDependents.set(currentName, currentNode);
-				} else {
-					if (isWorkspaceSpec) {
-						// pnpm refuses to resolve remote dependencies when using the workspace: protocol, so lerna does too. See: https://pnpm.io/workspaces#workspace-protocol-workspace.
-						throw new Error(
-							`Package specification "${depName}@${spec}" could not be resolved within the workspace. To reference a non-matching, remote version of a local dependency, remove the 'workspace:' prefix.`,
-						);
-					}
+				} else if (isWorkspaceSpec) {
+					// pnpm refuses to resolve remote dependencies when using the workspace: protocol, so lerna does too. See: https://pnpm.io/workspaces#workspace-protocol-workspace.
+					throw new Error(
+						`Package specification "${depName}@${spec}" could not be resolved within the workspace. To reference a non-matching, remote version of a local dependency, remove the 'workspace:' prefix.`,
+					);
 				}
 			});
 		});
