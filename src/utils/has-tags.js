@@ -11,7 +11,7 @@ export function hasTags(opts, logger) {
 		result = !!execaSync("git", ["tag"], opts);
 	} catch (err) {
 		logger.error("No git tags were reachable from this branch!");
-		logger.error("hasTags error: ${err}");
+		logger.error(`hasTags error: ${err}`);
 	}
 
 	return result;

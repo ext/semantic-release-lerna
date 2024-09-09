@@ -35,7 +35,7 @@ function parse(stdout, options = {}) {
 		return { refCount: revListResponse.stdout, sha, isDirty: Boolean(isDirty) };
 	}
 
-	/* eslint-disable-next-line security/detect-unsafe-regex -- technical debt  */
+	/* eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex -- technical debt  */
 	const result = /^((?:.*@)?(.*))-(\d+)-g([\da-f]+)(-dirty)?$/.exec(stdout) || [];
 	const [, lastTagName, lastVersion, refCount, sha, isDirty] = result;
 
