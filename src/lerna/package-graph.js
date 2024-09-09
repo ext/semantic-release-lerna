@@ -98,7 +98,7 @@ export class PackageGraph extends Map {
 							...currentNode.pkg.devDependencies,
 							...currentNode.pkg.optionalDependencies,
 							...currentNode.pkg.dependencies,
-					  };
+						};
 
 			/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- inherited technical debt */
 			Object.keys(graphDependencies).forEach((depName) => {
