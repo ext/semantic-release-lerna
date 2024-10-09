@@ -68,7 +68,7 @@
     "import-from-esm": "^1.0.3",
     "into-stream": "8.0.1",
     "js-yaml": "^4.1.0",
-    "libnpmversion": "^6.0.0",
+    "libnpmversion": "^7.0.0",
     "minimatch": "10.0.1",
     "nerf-dart": "1.0.0",
     "normalize-url": "8.0.1",
