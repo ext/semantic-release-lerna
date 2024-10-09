@@ -72,7 +72,7 @@
     "minimatch": "10.0.1",
     "nerf-dart": "1.0.0",
     "normalize-url": "8.0.1",
-    "npm-package-arg": "11.0.3",
+    "npm-package-arg": "12.0.0",
     "p-map": "^7.0.0",
     "rc": "1.2.8",
     "read-package-up": "11.0.0",
