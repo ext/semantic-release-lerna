@@ -68,7 +68,7 @@
     "import-from-esm": "^1.0.3",
     "into-stream": "8.0.1",
     "js-yaml": "^4.1.0",
-    "libnpmversion": "^7.0.0",
+    "libnpmversion": "^8.0.0",
     "minimatch": "10.0.1",
     "nerf-dart": "1.0.0",
     "normalize-url": "8.0.1",
@@ -103,7 +103,7 @@
     "semantic-release": "^22 || ^23 || ^24"
   },
   "engines": {
-    "node": ">= 20.5"
+    "node": "^20.17 || >= 22.9"
   },
   "publishConfig": {
     "access": "public"
