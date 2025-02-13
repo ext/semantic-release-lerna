@@ -4,7 +4,7 @@ import { existsSync } from "node:fs";
 import { format } from "node:util";
 import { execa } from "execa";
 import npmVersion from "libnpmversion";
-import semverParse from "semver/functions/parse.js";
+import { parse as semverParse, satisfies as semverSatisfies, validRange } from "semver";
 import { Package } from "./lerna/package";
 import { Project } from "./lerna/project";
 import getChangedPackages from "./get-changed-packages.js";
@@ -113,6 +113,7 @@ async function updateLockfile(npmrc, pkg, context) {
  * @param {Record<string, string>} currentVersions
  * @returns {void}
  */
+/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- hard to refactor into something much more readable */
 function bumpDependency(dependencies, newVersion, currentVersions) {
 	const newParsed = semverParse(newVersion);
 	if (!newParsed) {
@@ -132,21 +133,37 @@ function bumpDependency(dependencies, newVersion, currentVersions) {
 		/* Exact versions */
 		if (range === version) {
 			dependencies[dep] = newVersion;
+			continue;
 		}
 
 		/* Hat ^x.y.z */
 		if (range === `^${version}`) {
 			dependencies[dep] = `^${newVersion}`;
+			continue;
 		}
 
 		/* Hat ^x.y */
 		if (range === `^${parsed.major}.${parsed.minor}`) {
 			dependencies[dep] = `^${newParsed.major}.${newParsed.minor}`;
+			continue;
 		}
 
 		/* Hat ^x */
 		if (range === `^${parsed.major}`) {
 			dependencies[dep] = `^${newParsed.major}`;
+			continue;
+		}
+
+		/* If the range is a a valid semver range but is no longer satisfied by the
+		 * new version forcibly update the range */
+		if (validRange(range)) {
+			const isSatisfied = semverSatisfies(newVersion, range);
+			if (!isSatisfied) {
+				const hat = range.startsWith("^") ? "^" : "";
+				const numComponents = Array.from(range).filter((it) => it === ".").length + 1;
+				const components = [newParsed.major, newParsed.minor, newParsed.patch];
+				dependencies[dep] = `${hat}${components.slice(0, numComponents).join(".")}`;
+			}
 		}
 	}
 }

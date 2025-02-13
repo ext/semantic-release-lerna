@@ -479,6 +479,57 @@ it("Update package.json dependency when using hat", () => {
 	});
 });
 
+it("Update package.json dependency when new version is out of range", () => {
+	expect.assertions(1);
+	return withTempDir(async (cwd) => {
+		const npmrc = await temporaryFile({ name: ".npmrc" });
+		await createProject(cwd, "1.2.3");
+		const foo = await createPackage(
+			cwd,
+			"foo",
+			"1.2.3",
+			{
+				changed: true,
+			},
+			{
+				dependencies: {
+					a: "^1.1.0",
+					b: "^1.1",
+					c: "^1",
+				},
+			},
+		);
+
+		await createPackage(cwd, "a", "1.2.3", { changed: true });
+		await createPackage(cwd, "b", "1.2.3", { changed: true });
+		await createPackage(cwd, "c", "1.2.3", { changed: true });
+
+		await prepare(
+			npmrc,
+			{},
+			{
+				cwd,
+				env: {},
+				stdout: context.stdout,
+				stderr: context.stderr,
+				nextRelease: { version: "2.0.0" },
+				logger: context.logger,
+			},
+		);
+
+		// Verify dependency has been updated
+		expect(await readJson(foo.manifestLocation)).toEqual({
+			name: "foo",
+			version: "2.0.0",
+			dependencies: {
+				a: "^2.0.0",
+				b: "^2.0",
+				c: "^2",
+			},
+		});
+	});
+});
+
 it("Should not update other dependencies", () => {
 	expect.assertions(1);
 	return withTempDir(async (cwd) => {
