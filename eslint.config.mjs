@@ -16,7 +16,12 @@ export default [
 		],
 	},
 	...defaultConfig,
-	...jestConfig,
+	{
+		name: "@html-validate/eslint-config-jest",
+		files: ["**/*.spec.[jt]s"],
+		ignores: ["cypress/**", "tests/e2e/**"],
+		...jestConfig,
+	},
 	{
 		/* files which should lint even if project isn't build yet */
 		files: ["./*.d.ts", "bin/*.js"],
