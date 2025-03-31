@@ -40,6 +40,7 @@ const WORKSPACES = ["packages/*"];
  * @param {{private?: boolean, lockfile?: boolean, packageManager?: 'npm' | 'pnpm' | 'yarn', workspaces?: boolean}} [options] - Package options
  * @returns {Promise<Project>}
  */
+/* eslint-disable-next-line complexity -- technical debt */
 export async function createProject(cwd, version, options = {}) {
 	const name = "root-pkg";
 	const manifestLocation = path.resolve(cwd, "package.json");

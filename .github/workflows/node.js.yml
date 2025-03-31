@@ -8,7 +8,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 21.x]
+        node-version: [18.x, 20.x, 22.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -26,7 +26,7 @@ jobs:
           npm run --if-present build
           node dist/index.js
       - name: Test
-        run: npm test
+        run: npm test --ignore-scripts
 
   lerna:
     runs-on: ubuntu-latest
