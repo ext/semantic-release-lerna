@@ -11,26 +11,33 @@ export default [
 			"**/coverage/**",
 			"**/dist/**",
 			"**/node_modules/**",
+			"**/out/**",
 			"**/public/assets/**",
 			"**/temp/**",
 		],
 	},
+
 	...defaultConfig,
-	...jestConfig,
+
 	{
-		/* files which should lint even if project isn't build yet */
-		files: ["./*.d.ts", "bin/*.js"],
+		name: "@html-validate/eslint-config-jest",
+		files: ["**/*.spec.[jt]s"],
+		ignores: ["cypress/**", "tests/e2e/**"],
+		...jestConfig,
+	},
+
+	{
+		name: "local",
 		rules: {
-			"import/export": "off",
 			"import/extensions": "off",
-			"import/no-unresolved": "off",
 		},
 	},
 
 	{
-		name: "Local overrides",
+		name: "local/jest",
+		files: ["**/*.spec.[jt]s"],
 		rules: {
-			"import/extensions": "off",
+			"import/no-unresolved": "off",
 		},
 	},
 ];

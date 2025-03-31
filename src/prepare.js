@@ -113,7 +113,7 @@ async function updateLockfile(npmrc, pkg, context) {
  * @param {Record<string, string>} currentVersions
  * @returns {void}
  */
-/* eslint-disable-next-line complexity, sonarjs/cognitive-complexity -- hard to refactor into something much more readable */
+/* eslint-disable-next-line complexity -- hard to refactor into something much more readable */
 function bumpDependency(dependencies, newVersion, currentVersions) {
 	const newParsed = semverParse(newVersion);
 	if (!newParsed) {
