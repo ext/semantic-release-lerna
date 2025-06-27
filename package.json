@@ -80,7 +80,7 @@
     "semver": "7.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.27.4",
+    "@babel/core": "7.27.7",
     "@babel/preset-env": "7.27.2",
     "@html-validate/eslint-config": "6.4.2",
     "@html-validate/eslint-config-jest": "6.4.2",
