@@ -84,7 +84,7 @@
     "@babel/preset-env": "7.27.2",
     "@html-validate/eslint-config": "6.4.2",
     "@html-validate/eslint-config-jest": "6.4.2",
-    "@html-validate/prettier-config": "3.0.5",
+    "@html-validate/prettier-config": "3.0.6",
     "@html-validate/release-scripts": "6.9.0",
     "@jest/globals": "30.0.3",
     "@types/jest": "30.0.0",
