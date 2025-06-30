@@ -11,7 +11,7 @@ import { startVerdaccio as startServer } from "verdaccio";
 const tempdir = realpathSync(os.tmpdir());
 
 const NPM_USERNAME = "integration";
-const NPM_PASSWORD = "suchsecure";
+const NPM_PASSWORD = "suchsecure"; // eslint-disable-line sonarjs/no-hardcoded-passwords -- for test cases only
 const NPM_EMAIL = "integration@example.net";
 
 /**
