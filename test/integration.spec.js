@@ -82,6 +82,9 @@ async function run(project, pluginConfig, options) {
 beforeAll(async () => {
 	// Start the local NPM registry
 	await npmRegistry.start();
+
+	// Let registry settle slightly (*sigh*)
+	await new Promise((resolve) => setTimeout(resolve, 10000));
 });
 
 afterAll(async () => {

@@ -49,7 +49,7 @@
       "/dist/",
       "/node_modules/"
     ],
-    "testTimeout": 30000,
+    "testTimeout": 60000,
     "transform": {},
     "transformIgnorePatterns": []
   },
@@ -82,7 +82,7 @@
   "devDependencies": {
     "@babel/core": "7.28.0",
     "@babel/preset-env": "7.28.0",
-    "@html-validate/eslint-config": "6.5.5",
+    "@html-validate/eslint-config": "6.5.6",
     "@html-validate/eslint-config-jest": "6.5.0",
     "@html-validate/prettier-config": "3.0.8",
     "@html-validate/release-scripts": "6.9.0",
