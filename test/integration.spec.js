@@ -418,11 +418,15 @@ if (process.env.ENABLE_PNPM_TESTS) {
 			/* Verify versions */
 			expect(await readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
 				.toMatchInlineSnapshot(`
-		    "lockfileVersion: '6.0'
+		    "lockfileVersion: '9.0'
 
 		    settings:
 		      autoInstallPeers: true
 		      excludeLinksFromLockfile: false
+
+		    importers:
+
+		      .: {}
 		    "
 			`);
 		});
@@ -475,7 +479,7 @@ if (process.env.ENABLE_PNPM_TESTS) {
 			/* Verify versions */
 			expect(readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
 				.toMatchInlineSnapshot(`
-		    "lockfileVersion: '6.0'
+		    "lockfileVersion: '9.0'
 
 		    settings:
 		      autoInstallPeers: true
@@ -488,7 +492,7 @@ if (process.env.ENABLE_PNPM_TESTS) {
 		      packages/test-root-workspace-bar:
 		        dependencies:
 		          test-root-workspace-foo:
-		            specifier: workspace:^
+		            specifier: workspace:*
 		            version: link:../test-root-workspace-foo
 
 		      packages/test-root-workspace-foo: {}
