@@ -80,8 +80,8 @@
     "semver": "7.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
-    "@babel/preset-env": "7.28.0",
+    "@babel/core": "7.28.3",
+    "@babel/preset-env": "7.28.3",
     "@html-validate/eslint-config": "6.5.7",
     "@html-validate/eslint-config-jest": "6.5.0",
     "@html-validate/prettier-config": "3.0.9",
