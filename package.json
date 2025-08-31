@@ -94,7 +94,7 @@
     "esbuild": "0.25.9",
     "jest": "30.1.1",
     "lerna": "8.2.3",
-    "npm-pkg-lint": "4.0.3",
+    "npm-pkg-lint": "4.0.4",
     "semantic-release": "24.2.7",
     "stream-buffers": "3.0.3",
     "verdaccio": "6.1.6"
