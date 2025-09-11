@@ -71,7 +71,7 @@
     "libnpmversion": "^8.0.0",
     "minimatch": "10.0.3",
     "nerf-dart": "1.0.0",
-    "normalize-url": "8.0.2",
+    "normalize-url": "8.1.0",
     "npm-package-arg": "13.0.0",
     "p-map": "^7.0.0",
     "rc": "1.2.8",
