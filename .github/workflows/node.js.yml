@@ -33,7 +33,7 @@ jobs:
 
     strategy:
       matrix:
-        lerna-version: [5.x, 6.x, 7.x, 8.x]
+        lerna-version: [5.x, 6.x, 7.x, 8.x, 9.x]
 
     steps:
       - uses: actions/checkout@v5
