@@ -77,7 +77,7 @@
     "rc": "1.2.8",
     "read-package-up": "11.0.0",
     "registry-auth-token": "^5.0.0",
-    "semver": "7.7.2"
+    "semver": "7.7.3"
   },
   "devDependencies": {
     "@babel/core": "7.28.4",
