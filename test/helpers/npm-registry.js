@@ -1,11 +1,11 @@
 /* eslint-disable camelcase -- environmental variables use snakecase */
 
-import fs from "node:fs/promises";
-import path from "node:path";
-import os from "node:os";
-import { fileURLToPath } from "node:url";
-import { mkdirSync, realpathSync } from "node:fs";
 import { randomBytes } from "node:crypto";
+import { mkdirSync, realpathSync } from "node:fs";
+import fs from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { startVerdaccio as startServer } from "verdaccio";
 
 const tempdir = realpathSync(os.tmpdir());

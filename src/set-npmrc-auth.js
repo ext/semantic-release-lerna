@@ -1,9 +1,9 @@
 import fs from "node:fs/promises";
 import path from "node:path";
+import AggregateError from "aggregate-error";
+import nerfDart from "nerf-dart";
 import rc from "rc";
 import getAuthToken from "registry-auth-token";
-import nerfDart from "nerf-dart";
-import AggregateError from "aggregate-error";
 import getError from "./get-error.js";
 
 export default async function (

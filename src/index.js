@@ -1,14 +1,14 @@
-import fs, { realpathSync } from "node:fs";
-import path from "node:path";
-import os from "node:os";
 import { randomBytes } from "node:crypto";
+import fs, { realpathSync } from "node:fs";
+import os from "node:os";
+import path from "node:path";
 import AggregateError from "aggregate-error";
 import getPkg from "./get-pkg.js";
-import verifyNpmConfig from "./verify-config.js";
-import verifyNpmAuth from "./verify-auth.js";
-import verifyGit from "./verify-git.js";
 import prepareNpm from "./prepare.js";
 import publishNpm from "./publish.js";
+import verifyNpmAuth from "./verify-auth.js";
+import verifyNpmConfig from "./verify-config.js";
+import verifyGit from "./verify-git.js";
 
 export { generateNotes } from "./generate-notes.js";
 

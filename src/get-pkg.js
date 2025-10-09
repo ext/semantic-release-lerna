@@ -1,5 +1,5 @@
-import path from "node:path";
 import fs from "node:fs/promises";
+import path from "node:path";
 import AggregateError from "aggregate-error";
 import getError from "./get-error.js";
 
