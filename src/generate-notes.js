@@ -1,16 +1,16 @@
 import { dirname } from "node:path";
 import { fileURLToPath, format } from "node:url";
 import conventionalChangelogAngular from "conventional-changelog-angular";
+import * as writerModule from "conventional-changelog-writer";
+import { filterRevertedCommitsSync } from "conventional-commits-filter";
+import { CommitParser } from "conventional-commits-parser";
 import getStream from "get-stream";
 import importFrom from "import-from-esm";
 import intoStream from "into-stream";
-import { CommitParser } from "conventional-commits-parser";
-import * as writerModule from "conventional-changelog-writer";
-import { filterRevertedCommitsSync } from "conventional-commits-filter";
 import { readPackageUp } from "read-package-up";
+import HOSTS_CONFIG from "./hosts-config.js";
 import { Project } from "./lerna/project";
 import { makeDiffPredicate } from "./utils/index.js";
-import HOSTS_CONFIG from "./hosts-config.js";
 
 function getWriteChangelogStream() {
 	if (writerModule.writeChangelog) {

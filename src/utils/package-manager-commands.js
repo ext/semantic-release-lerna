@@ -1,5 +1,5 @@
-import path from "node:path";
 import { existsSync } from "node:fs";
+import path from "node:path";
 
 /**
  * @typedef {'npm'|'pnpm'|'yarn'} PackageManager

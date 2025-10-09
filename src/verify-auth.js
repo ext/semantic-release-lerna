@@ -1,5 +1,5 @@
-import { execa } from "execa";
 import AggregateError from "aggregate-error";
+import { execa } from "execa";
 import getError from "./get-error.js";
 import getRegistry from "./get-registry.js";
 import setNpmrcAuth from "./set-npmrc-auth.js";

@@ -1,6 +1,6 @@
 import { execa } from "execa";
-import getRegistry from "./get-registry.js";
 import getChannel from "./get-channel.js";
+import getRegistry from "./get-registry.js";
 import getReleaseInfo from "./get-release-info.js";
 
 /**
