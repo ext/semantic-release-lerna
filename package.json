@@ -85,7 +85,7 @@
     "@html-validate/eslint-config": "6.10.2",
     "@html-validate/eslint-config-jest": "6.10.0",
     "@html-validate/prettier-config": "3.1.4",
-    "@html-validate/release-scripts": "6.10.0",
+    "@html-validate/release-scripts": "7.0.0",
     "@jest/globals": "30.2.0",
     "@types/jest": "30.0.0",
     "@types/npmlog": "7.0.0",
