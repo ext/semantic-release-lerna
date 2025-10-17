@@ -107,7 +107,8 @@
     "node": "^20.17 || >= 22.9"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "externalDependencies": [
     "@semantic-release/error",
