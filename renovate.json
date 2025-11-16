@@ -2,15 +2,7 @@
   "extends": ["gitlab>html-validate/renovate-config"],
   "packageRules": [
     {
-      "matchPackageNames": ["lerna"],
-      "matchUpdateTypes": ["major"],
-      "commitMessageAction": "support",
-      "commitMessageTopic": "{{depName}}",
-      "commitMessageExtra": "v{{newMajor}}",
-      "semanticCommitType": "feat"
-    },
-    {
-      "matchPackageNames": ["@actions/core"],
+      "matchDepTypes": ["dependencies"],
       "rangeStrategy": "bump"
     }
   ]
