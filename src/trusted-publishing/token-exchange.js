@@ -36,7 +36,7 @@ async function exchangeIdToken(idToken, packageName, logger) {
 async function exchangeGithubActionsToken(packageName, logger) {
 	let idToken;
 
-	logger.log("Verifying OIDC context for publishing from GitHub Actions");
+	logger.log(`Verifying OIDC context for publishing "${packageName}" from GitHub Actions`);
 
 	try {
 		idToken = await getIDToken("npm:registry.npmjs.org");
@@ -53,15 +53,21 @@ async function exchangeGithubActionsToken(packageName, logger) {
 async function exchangeGitlabPipelinesToken(packageName, logger) {
 	const idToken = process.env.NPM_ID_TOKEN;
 
-	logger.log("Verifying OIDC context for publishing from GitLab Pipelines");
+	logger.log(`Verifying OIDC context for publishing "${packageName}" from GitLab Pipelines`);
 
 	if (!idToken) {
+		logger.log(`Retrieval of GitLab Pipelines OIDC token failed`);
+		logger.log("Have you set the `id_tokens.NPM_ID_TOKEN` property to this pipeline job?");
+
 		return undefined;
 	}
 
 	return exchangeIdToken(idToken, packageName, logger);
 }
 
+/**
+ * @param {import("../lerna/package.js").Package} pkg - Package to verify auth for.
+ */
 export default function exchangeToken(pkg, { logger }) {
 	const { name: ciProviderName } = envCi();
 

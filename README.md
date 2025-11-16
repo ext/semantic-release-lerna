@@ -48,6 +48,12 @@ $ npm install semantic-release-lerna -D
 When publishing to the [official registry](https://registry.npmjs.org/), it is recommended to use [trusted publishing](https://docs.npmjs.com/trusted-publishers) for authentication.
 See the [npm registry authentication](https://github.com/semantic-release/npm?tab=readme-ov-file#npm-registry-authentication) section for `@semantic-release/npm` for details.
 
+> [!IMPORTANT]
+> Trusted publishing requires Lerna v9 or later.
+> If you still use an older version you need to either use `NPM_TOKEN` or update your Lerna version.
+
+Each non-private package will need trusted publishing to be enabled.
+
 For alternative registries or when trusted publishing cannot be used the `NPM_TOKEN` environment variable must be set.
 
 ### semantic release configuration

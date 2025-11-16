@@ -4,6 +4,7 @@ import normalizeUrl from "normalize-url";
 import { OFFICIAL_REGISTRY } from "./definitions/constants.js";
 import getError from "./get-error.js";
 import getRegistry from "./get-registry.js";
+import { Project } from "./lerna/project.js";
 import setNpmrcAuth from "./set-npmrc-auth.js";
 import oidcContextEstablished from "./trusted-publishing/oidc-context.js";
 
@@ -41,9 +42,13 @@ async function verifyTokenAuth(registry, npmrc, context) {
 }
 
 export default async function (npmrc, pkg, context) {
+	const { cwd, logger } = context;
 	const registry = getRegistry(pkg, context);
 
-	if (await oidcContextEstablished(registry, pkg, context)) {
+	const project = new Project(cwd, logger);
+	const packages = (await project.getPackages()).filter((pkg) => !pkg.private);
+
+	if (await oidcContextEstablished(registry, packages, context)) {
 		return;
 	}
 
