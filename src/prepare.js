@@ -101,6 +101,7 @@ async function updateLockfile(npmrc, pkg, context) {
 	const versionResult = execa(command, options, {
 		cwd: pkg.location,
 		env,
+		preferLocal: true,
 	});
 	versionResult.stdout.pipe(stdout, { end: false });
 	versionResult.stderr.pipe(stderr, { end: false });

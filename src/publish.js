@@ -47,6 +47,7 @@ export default async function (npmrc, config, pkg, context) {
 					/* Lerna does not support --userconfig */
 					NPM_CONFIG_USERCONFIG: npmrc,
 				},
+				preferLocal: true,
 			},
 		);
 		result.stdout.pipe(stdout, { end: false });

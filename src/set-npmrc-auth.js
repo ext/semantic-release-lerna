@@ -4,17 +4,22 @@ import AggregateError from "aggregate-error";
 import nerfDart from "nerf-dart";
 import rc from "rc";
 import getAuthToken from "registry-auth-token";
+import { OFFICIAL_REGISTRY } from "./definitions/constants.js";
 import getError from "./get-error.js";
 
+/**
+ * @param {string} npmrc
+ * @param {string} registry
+ */
 export default async function (
 	npmrc,
 	registry,
 	{ cwd, env: { NPM_TOKEN, NPM_CONFIG_USERCONFIG }, logger },
 ) {
 	logger.log("Verify authentication for registry %s", registry);
-	const { configs, ...rcConfig } = rc(
+	const { configs, config, ...rcConfig } = rc(
 		"npm",
-		{ registry: "https://registry.npmjs.org/" },
+		{ registry: OFFICIAL_REGISTRY },
 		{ config: NPM_CONFIG_USERCONFIG || path.resolve(cwd, ".npmrc") },
 	);
 
