@@ -75,7 +75,7 @@
     "nerf-dart": "1.0.0",
     "normalize-url": "8.1.0",
     "npm-package-arg": "13.0.2",
-    "p-map": "^7.0.0",
+    "p-map": "^7.0.4",
     "rc": "1.2.8",
     "read-package-up": "12.0.0",
     "registry-auth-token": "^5.0.0",
