@@ -44,7 +44,7 @@ const config = {
 			publish: "$all",
 		},
 	},
-	logs: { type: "stdout", format: "pretty", level: "error" },
+	log: { type: "stdout", format: "pretty", level: "error" },
 };
 
 export const authEnv = {
