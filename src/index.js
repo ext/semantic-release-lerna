@@ -60,7 +60,11 @@ export async function verifyConditions(pluginConfig, context) {
 			await verifyNpmAuth(npmrc, pkg, context);
 		}
 	} catch (error) {
-		errors.push(...error.errors);
+		if (Array.isArray(error.errors)) {
+			errors.push(...error.errors);
+		} else {
+			errors.push(error);
+		}
 	}
 
 	if (errors.length > 0) {
@@ -81,7 +85,11 @@ export async function prepare(pluginConfig, context) {
 			await verifyNpmAuth(npmrc, pkg, context);
 		}
 	} catch (error) {
-		errors.push(...error);
+		if (Array.isArray(error.errors)) {
+			errors.push(...error.errors);
+		} else {
+			errors.push(error);
+		}
 	}
 
 	if (errors.length > 0) {
@@ -102,7 +110,11 @@ export async function publish(pluginConfig, context) {
 			await verifyNpmAuth(npmrc, pkg, context);
 		}
 	} catch (error) {
-		errors.push(...error);
+		if (Array.isArray(error.errors)) {
+			errors.push(...error.errors);
+		} else {
+			errors.push(error);
+		}
 	}
 
 	if (errors.length > 0) {
