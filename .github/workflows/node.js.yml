@@ -40,7 +40,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Use Node.js 16
+      - name: Use Node.js
         uses: actions/setup-node@v6
       - name: Use pnpm for version
         uses: pnpm/action-setup@v4
@@ -68,7 +68,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
-      - name: Use Node.js 16
+      - name: Use Node.js
         uses: actions/setup-node@v6
       - name: Use pnpm for version
         uses: pnpm/action-setup@v4
