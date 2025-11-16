@@ -2,8 +2,6 @@
 
 [**semantic-release**](https://github.com/semantic-release/semantic-release) plugin to publish lerna managed [npm](https://github.com/lerna/lerna) packages to [npm](https://www.npmjs.com).
 
-This is WORK-IN-PROGRESS so there will most likely be bugs and it as only really been tested under the narrow use-cases I myself need it for.
-
 It is intended to be a drop-in replacement of the `@semantic-release/npm` plugin.
 
 The plugin works in the following way:
@@ -43,7 +41,16 @@ If a package version is bumped all the packages depending (`dependencies`, `devD
 $ npm install semantic-release-lerna -D
 ```
 
-## Usage
+## Configuration
+
+### npm registry authentication
+
+When publishing to the [official registry](https://registry.npmjs.org/), it is recommended to use [trusted publishing](https://docs.npmjs.com/trusted-publishers) for authentication.
+See the [npm registry authentication](https://github.com/semantic-release/npm?tab=readme-ov-file#npm-registry-authentication) section for `@semantic-release/npm` for details.
+
+For alternative registries or when trusted publishing cannot be used the `NPM_TOKEN` environment variable must be set.
+
+### semantic release configuration
 
 The plugin can be configured in the [**semantic-release** configuration file](https://github.com/semantic-release/semantic-release/blob/master/docs/usage/configuration.md#configuration):
 
