@@ -60,7 +60,7 @@
     "transformIgnorePatterns": []
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
+    "@actions/core": "^2.0.0",
     "@semantic-release/error": "^4.0.0",
     "aggregate-error": "5.0.0",
     "conventional-changelog-angular": "^7.0.0 || ^8.0.0",
