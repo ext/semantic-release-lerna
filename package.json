@@ -74,7 +74,7 @@
     "get-stream": "9.0.1",
     "globby": "^16.1.0",
     "import-from-esm": "^2.0.0",
-    "into-stream": "9.0.0",
+    "into-stream": "9.1.0",
     "js-yaml": "^4.1.1",
     "libnpmversion": "^8.0.3",
     "minimatch": "10.1.1",
