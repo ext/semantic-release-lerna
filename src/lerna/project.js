@@ -42,8 +42,8 @@ function getGlobOpts(rootPath, packageConfigs) {
 		followSymbolicLinks: false,
 	};
 
-	if (packageConfigs.some((cfg) => cfg.indexOf("**") > -1)) {
-		if (packageConfigs.some((cfg) => cfg.indexOf("node_modules") > -1)) {
+	if (packageConfigs.some((cfg) => cfg.includes("**"))) {
+		if (packageConfigs.some((cfg) => cfg.includes("node_modules"))) {
 			throw new Error("An explicit node_modules package path does not allow globstars (**)");
 		}
 
@@ -63,11 +63,13 @@ function makeFileFinder(rootPath, packageConfigs) {
 	return (fileName, fileMapper, customGlobOpts) => {
 		const options = { ...customGlobOpts, ...globOpts };
 		const promise = pMap(
+			/* eslint-disable-next-line unicorn/no-array-sort -- technical debt */
 			Array.from(packageConfigs).sort(),
 			(globPath) => {
 				let chain = globby(path.posix.join(globPath, fileName), options);
 
 				// fast-glob does not respect pattern order, so we re-sort by absolute path
+				/* eslint-disable-next-line unicorn/no-array-sort -- technical debt */
 				chain = chain.then((results) => results.sort());
 
 				// POSIX results always need to be normalized
@@ -83,7 +85,7 @@ function makeFileFinder(rootPath, packageConfigs) {
 		);
 
 		// always flatten the results
-		return promise.then((results) => results.reduce((acc, result) => acc.concat(result), []));
+		return promise.then((results) => results.flat());
 	};
 }
 

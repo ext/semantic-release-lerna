@@ -66,6 +66,7 @@ export class PackageGraph extends Map {
 	 *    Pass "dependencies" to create a graph of only dependencies,
 	 *    excluding the devDependencies that would normally be included.
 	 */
+	/* eslint-disable-next-line complexity -- inherited technical debt */
 	constructor(packages, graphType = "allDependencies") {
 		super(packages.map((pkg) => [pkg.name, new PackageGraphNode(pkg)]));
 
@@ -90,7 +91,7 @@ export class PackageGraph extends Map {
 			}
 		}
 
-		this.forEach((currentNode, currentName) => {
+		for (const [currentName, currentNode] of this.entries()) {
 			const graphDependencies =
 				graphType === "dependencies"
 					? { ...currentNode.pkg.optionalDependencies, ...currentNode.pkg.dependencies }
@@ -100,8 +101,7 @@ export class PackageGraph extends Map {
 							...currentNode.pkg.dependencies,
 						};
 
-			/* eslint-disable-next-line complexity -- inherited technical debt */
-			Object.keys(graphDependencies).forEach((depName) => {
+			for (const depName of Object.keys(graphDependencies)) {
 				const depNode = this.get(depName);
 				// Yarn decided to ignore https://github.com/npm/npm/pull/15900 and implemented "link:"
 				// As they apparently have no intention of being compatible, we have to do it for them.
@@ -109,7 +109,7 @@ export class PackageGraph extends Map {
 				let spec = graphDependencies[depName].replace(/^link:/, "file:");
 
 				// Support workspace: protocol for pnpm and yarn 2+ (https://pnpm.io/workspaces#workspace-protocol-workspace)
-				const isWorkspaceSpec = /^workspace:/.test(spec);
+				const isWorkspaceSpec = spec.startsWith("workspace:");
 
 				let fullWorkspaceSpec;
 				let workspaceAlias;
@@ -120,6 +120,7 @@ export class PackageGraph extends Map {
 					// replace aliases (https://pnpm.io/workspaces#referencing-workspace-packages-through-aliases)
 					if (spec === "*" || spec === "^" || spec === "~") {
 						workspaceAlias = spec;
+						/* eslint-disable-next-line max-depth -- inherited technical debt */
 						if (depNode?.version) {
 							const prefix = spec === "*" ? "" : spec;
 							const version = depNode.version;
@@ -136,7 +137,7 @@ export class PackageGraph extends Map {
 
 				if (!depNode) {
 					// it's an external dependency, store the resolution and bail
-					return;
+					continue;
 				}
 
 				if (resolved.fetchSpec === depNode.location || depNode.satisfies(resolved)) {
@@ -148,8 +149,8 @@ export class PackageGraph extends Map {
 						`Package specification "${depName}@${spec}" could not be resolved within the workspace. To reference a non-matching, remote version of a local dependency, remove the 'workspace:' prefix.`,
 					);
 				}
-			});
-		});
+			}
+		}
 	}
 
 	get rawPackageList() {

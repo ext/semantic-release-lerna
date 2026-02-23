@@ -1,4 +1,4 @@
-module.exports = function (api) {
+module.exports = function babelConfig(api) {
 	if (!api.env("test")) {
 		throw new Error("Babel config for running Jest unittests only");
 	}

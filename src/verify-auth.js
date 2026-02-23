@@ -41,12 +41,13 @@ async function verifyTokenAuth(registry, npmrc, context) {
 	}
 }
 
-export default async function (npmrc, pkg, context) {
+export default async function verifyAuth(npmrc, pkg, context) {
 	const { cwd, logger } = context;
 	const registry = getRegistry(pkg, context);
 
 	const project = new Project(cwd, logger);
-	const packages = (await project.getPackages()).filter((pkg) => !pkg.private);
+	const allPackages = await project.getPackages();
+	const packages = allPackages.filter((pkg) => !pkg.private);
 
 	if (await oidcContextEstablished(registry, packages, context)) {
 		return;
