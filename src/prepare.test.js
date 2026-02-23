@@ -15,14 +15,14 @@ const tempdir = realpathSync(os.tmpdir());
 
 globalThis.useRealGetChangedPackages = false;
 
-jest.unstable_mockModule("./get-changed-packages", () => {
-	function getChangedPackagesMock(...args) {
-		if (!globalThis.useRealGetChangedPackages) {
-			return mockChangedPackages;
-		}
-		return realGetChangedPackages(...args);
+function getChangedPackagesMock(...args) {
+	if (!globalThis.useRealGetChangedPackages) {
+		return mockChangedPackages;
 	}
+	return realGetChangedPackages(...args);
+}
 
+jest.unstable_mockModule("./get-changed-packages", () => {
 	return {
 		default: getChangedPackagesMock,
 	};

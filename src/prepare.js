@@ -201,7 +201,7 @@ async function getCurrentVersion(pkg) {
  * @param {any} context
  * @returns {Promise<void>}
  */
-export default async function (npmrc, pluginConfig, context) {
+export default async function prepare(npmrc, pluginConfig, context) {
 	const {
 		cwd,
 		nextRelease: { version },

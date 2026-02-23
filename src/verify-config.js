@@ -11,7 +11,7 @@ const VALIDATORS = {
 	pkgRoot: isNonEmptyString,
 };
 
-export default function ({ npmPublish, tarballDir, pkgRoot }) {
+export default function verifyConfig({ npmPublish, tarballDir, pkgRoot }) {
 	return Object.entries({ npmPublish, tarballDir, pkgRoot }).reduce(
 		(errors, [option, value]) =>
 			!isNil(value) && !VALIDATORS[option](value)

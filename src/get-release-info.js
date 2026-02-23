@@ -1,7 +1,7 @@
 import normalizeUrl from "normalize-url";
 import { OFFICIAL_REGISTRY } from "./definitions/constants.js";
 
-export default function (
+export default function getReleaseInfo(
 	{ name },
 	{ env: { DEFAULT_NPM_REGISTRY = OFFICIAL_REGISTRY }, nextRelease: { version } },
 	distTag,

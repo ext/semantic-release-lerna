@@ -3,7 +3,7 @@ import path from "node:path";
 import AggregateError from "aggregate-error";
 import getError from "./get-error.js";
 
-export default async function ({ pkgRoot }, { cwd }) {
+export default async function getPkg({ pkgRoot }, { cwd }) {
 	try {
 		const rootDir = pkgRoot ? path.resolve(cwd, String(pkgRoot)) : cwd;
 		const filePath = path.join(rootDir, "package.json");

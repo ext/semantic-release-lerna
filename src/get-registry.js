@@ -6,7 +6,7 @@ import { OFFICIAL_REGISTRY } from "./definitions/constants.js";
 /**
  * @returns {string}
  */
-export default function ({ publishConfig: { registry } = {}, name }, { cwd, env }) {
+export default function getRegistry({ publishConfig: { registry } = {}, name }, { cwd, env }) {
 	return (
 		registry ||
 		env.NPM_CONFIG_REGISTRY ||

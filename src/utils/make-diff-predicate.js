@@ -19,7 +19,7 @@ export function makeDiffPredicate(committish, execOpts, context) {
 		),
 	);
 
-	if (ignoreFilters.size) {
+	if (ignoreFilters.size > 0) {
 		logger.log("ignoring diff in paths matching", ignoreChanges);
 	}
 
@@ -32,13 +32,13 @@ export function makeDiffPredicate(committish, execOpts, context) {
 
 		let changedFiles = diff.split("\n");
 
-		if (ignoreFilters.size) {
+		if (ignoreFilters.size > 0) {
 			for (const ignored of ignoreFilters) {
 				changedFiles = changedFiles.filter(ignored);
 			}
 		}
 
-		if (changedFiles.length) {
+		if (changedFiles.length > 0) {
 			logger.log("filtered diff", changedFiles);
 		} else {
 			logger.log("", "no diff found in %s (after filtering)", node.name);

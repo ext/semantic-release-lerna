@@ -9,7 +9,7 @@ import getReleaseInfo from "./get-release-info.js";
  * @param {any} pkg
  * @param {any} context
  */
-export default async function (npmrc, config, pkg, context) {
+export default async function publish(npmrc, config, pkg, context) {
 	const { npmPublish } = config;
 	const {
 		cwd,

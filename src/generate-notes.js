@@ -1,5 +1,4 @@
-import { dirname } from "node:path";
-import { fileURLToPath, format } from "node:url";
+import { format } from "node:url";
 import conventionalChangelogAngular from "conventional-changelog-angular";
 import * as writerModule from "conventional-changelog-writer";
 import { filterRevertedCommitsSync } from "conventional-commits-filter";
@@ -40,7 +39,7 @@ async function loadChangelogConfig(pluginConfig, context) {
 	const { preset, config, parserOpts, writerOpts, presetConfig } = pluginConfig;
 	const { cwd } = context;
 	let loadedConfig;
-	const __dirname = dirname(fileURLToPath(import.meta.url));
+	const __dirname = import.meta.dirname;
 
 	if (preset) {
 		const presetPackage = `conventional-changelog-${preset.toLowerCase()}`;

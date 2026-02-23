@@ -90,8 +90,8 @@
   "devDependencies": {
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.0",
-    "@html-validate/eslint-config": "6.16.0",
-    "@html-validate/eslint-config-jest": "6.16.0",
+    "@html-validate/eslint-config": "6.17.2",
+    "@html-validate/eslint-config-jest": "6.17.0",
     "@html-validate/prettier-config": "3.1.15",
     "@html-validate/release-scripts": "7.1.0",
     "@jest/globals": "30.2.0",
@@ -112,7 +112,7 @@
     "semantic-release": "^22.0.0 || ^23.0.0 || ^24.0.0 || ^25.0.0"
   },
   "engines": {
-    "node": "^20.17 || >= 22.9"
+    "node": "^20.17 || >= 22.16"
   },
   "publishConfig": {
     "access": "public",

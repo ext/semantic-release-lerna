@@ -11,7 +11,7 @@ import getError from "./get-error.js";
  * @param {string} npmrc
  * @param {string} registry
  */
-export default async function (
+export default async function setNpmrcAuth(
 	npmrc,
 	registry,
 	{ cwd, env: { NPM_TOKEN, NPM_CONFIG_USERCONFIG }, logger },
@@ -28,7 +28,8 @@ export default async function (
 	}
 
 	const currentConfig = configs
-		? (await Promise.all(configs.map((config) => fs.readFile(config)))).join("\n")
+		? /* eslint-disable-next-line unicorn/no-await-expression-member -- technical debt */
+			(await Promise.all(configs.map((config) => fs.readFile(config)))).join("\n")
 		: "";
 
 	if (getAuthToken(registry, { npmrc: rcConfig })) {
