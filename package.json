@@ -101,7 +101,7 @@
     "babel-plugin-transform-import-meta": "2.3.3",
     "esbuild": "0.27.3",
     "jest": "30.2.0",
-    "lerna": "9.0.4",
+    "lerna": "9.0.5",
     "npm-pkg-lint": "4.4.0",
     "semantic-release": "25.0.3",
     "stream-buffers": "3.0.3",
