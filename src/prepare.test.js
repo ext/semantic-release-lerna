@@ -627,10 +627,9 @@ describe("getChangedPackages", () => {
 			},
 		);
 
-		await execa("git", ["config", "--global", "user.email", "you@example.com"], { cwd });
-		await execa("git", ["config", "--global", "user.name", "Sample User"], { cwd });
-
 		await execa("git", ["init"], { cwd });
+		await execa("git", ["config", "--local", "user.email", "you@example.com"], { cwd });
+		await execa("git", ["config", "--local", "user.name", "Sample User"], { cwd });
 		await execa("git", ["add", "."], { cwd });
 		await execa("git", ["commit", "-m", "'feat:initial commit'"], { cwd });
 
