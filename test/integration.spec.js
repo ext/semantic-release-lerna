@@ -567,8 +567,6 @@ it("should generate release notes", () => {
 
 			* **test-release-notes-foo:** change foo {{commit 1}}
 
-
-
 			"
 		`);
 	});
@@ -633,8 +631,6 @@ it("should skip private packages in release notes", () => {
 			### Features
 
 			* **test-skip-private-foo:** change foo {{commit 1}}
-
-
 
 			"
 		`);
