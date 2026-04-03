@@ -99,7 +99,7 @@
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
     "babel-plugin-transform-import-meta": "2.3.3",
-    "esbuild": "0.27.5",
+    "esbuild": "0.28.0",
     "jest": "30.3.0",
     "lerna": "9.0.7",
     "npm-pkg-lint": "4.6.3",
