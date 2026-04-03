@@ -3,7 +3,7 @@ import { readFileSync, realpathSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { jest } from "@jest/globals";
+import { expect, it, jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../dist/index.js";
