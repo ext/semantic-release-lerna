@@ -90,7 +90,7 @@
   "devDependencies": {
     "@babel/core": "7.29.0",
     "@babel/preset-env": "7.29.2",
-    "@html-validate/eslint-config": "7.0.6",
+    "@html-validate/eslint-config": "7.0.11",
     "@html-validate/eslint-config-jest": "7.0.7",
     "@html-validate/prettier-config": "3.1.17",
     "@html-validate/release-scripts": "7.1.19",
