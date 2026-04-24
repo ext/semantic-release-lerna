@@ -93,7 +93,7 @@
     "@html-validate/eslint-config": "7.0.11",
     "@html-validate/eslint-config-jest": "7.0.13",
     "@html-validate/prettier-config": "3.1.18",
-    "@html-validate/release-scripts": "7.1.19",
+    "@html-validate/release-scripts": "7.1.20",
     "@jest/globals": "30.3.0",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
