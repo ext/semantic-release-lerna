@@ -22,7 +22,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
       - run: npm ci
       - name: Build
         run: |
@@ -45,7 +45,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
       - name: Build
         run: |
           npm ci
@@ -73,7 +73,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@v6
         with:
-          version: 10
+          version: 11
       - name: Build
         run: |
           npm ci
