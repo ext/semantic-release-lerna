@@ -8,9 +8,6 @@ import {
 } from "../definitions/constants.js";
 
 async function exchangeIdToken(idToken, packageName, logger) {
-	/* eslint-disable-next-line n/no-unsupported-features/node-builtins -- we
-	 * still support node 20 which supports this properly even if it yields a
-	 * warning about being experimental, node 21 drops the warning */
 	const response = await fetch(
 		`${OFFICIAL_REGISTRY}-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(packageName)}`,
 		{

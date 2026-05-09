@@ -9,7 +9,7 @@ build({
 	bundle: true,
 	outdir: "dist",
 	platform: "node",
-	target: "node18",
+	target: "node22",
 	format: "esm",
 	logLevel: "info",
 	external: externalDependencies,
