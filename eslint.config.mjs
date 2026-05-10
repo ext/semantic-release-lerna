@@ -29,7 +29,7 @@ export default [
 	{
 		name: "local",
 		rules: {
-			"import/extensions": "off",
+			"import-x/extensions": "off",
 		},
 	},
 
@@ -37,7 +37,7 @@ export default [
 		name: "local/jest",
 		files: ["**/*.spec.[jt]s"],
 		rules: {
-			"import/no-unresolved": "off",
+			"import-x/no-unresolved": "off",
 		},
 	},
 ];
