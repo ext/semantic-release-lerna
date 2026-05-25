@@ -3,7 +3,7 @@ import { readFileSync, realpathSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { expect, it, jest } from "@jest/globals";
+import { afterAll, beforeAll, beforeEach, expect, it, jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../dist/index.js";
@@ -86,11 +86,6 @@ beforeAll(async () => {
 	await new Promise((resolve) => setTimeout(resolve, 10000));
 });
 
-afterAll(async () => {
-	// Stop the local NPM registry
-	await npmRegistry.stop();
-});
-
 beforeEach(() => {
 	const log = jest.fn();
 	const warn = jest.fn();
@@ -102,9 +97,14 @@ beforeEach(() => {
 	};
 });
 
-it("should setup testable environment", () => {
+afterAll(async () => {
+	// Stop the local NPM registry
+	await npmRegistry.stop();
+});
+
+it("should setup testable environment", async () => {
 	expect.assertions(7);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const project = await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "test-initial-foo", "0.0.0");
 		const bar = await createPackage(cwd, "test-initial-bar", "0.0.0");
@@ -129,9 +129,9 @@ it("should setup testable environment", () => {
 	});
 });
 
-it("should publish only changed packages", () => {
+it("should publish only changed packages", async () => {
 	expect.assertions(7);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "test-single-foo", "0.0.0");
@@ -171,9 +171,9 @@ it("should publish only changed packages", () => {
 	});
 });
 
-it("should latch package versions", () => {
+it("should latch package versions", async () => {
 	expect.assertions(7);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "test-latched-foo", "0.0.0");
@@ -213,9 +213,9 @@ it("should latch package versions", () => {
 	});
 });
 
-it("should publish depender packages when dependee changes", () => {
+it("should publish depender packages when dependee changes", async () => {
 	expect.assertions(7);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
 		const foo = await createPackage(cwd, "test-dependant-foo", "0.0.0", { lockfile: true });
@@ -263,9 +263,9 @@ it("should publish depender packages when dependee changes", () => {
 	});
 });
 
-it("should update package-lock.json in root", () => {
+it("should update package-lock.json in root", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0", { lockfile: true });
 		const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0");
@@ -305,9 +305,9 @@ it("should update package-lock.json in root", () => {
 	});
 });
 
-it("should update package-lock.json in root with workspaces", () => {
+it("should update package-lock.json in root with workspaces", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0", { lockfile: true, workspaces: true });
 		const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0", { lockfile: true });
@@ -382,9 +382,9 @@ it("should update package-lock.json in root with workspaces", () => {
 });
 
 if (process.env.ENABLE_PNPM_TESTS) {
-	it("should update pnpm-lock.yaml in root", () => {
+	it("should update pnpm-lock.yaml in root", async () => {
 		expect.assertions(1);
-		return withTempDir(async (cwd) => {
+		await withTempDir(async (cwd) => {
 			const env = npmRegistry.authEnv;
 			const project = await createProject(cwd, "0.0.0", { lockfile: true, packageManager: "pnpm" });
 			const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0", {
@@ -438,9 +438,9 @@ if (process.env.ENABLE_PNPM_TESTS) {
 }
 
 if (process.env.ENABLE_PNPM_TESTS) {
-	it("should update pnpm-lock.yaml in root with workspaces", () => {
+	it("should update pnpm-lock.yaml in root with workspaces", async () => {
 		expect.assertions(1);
-		return withTempDir(async (cwd) => {
+		await withTempDir(async (cwd) => {
 			const env = npmRegistry.authEnv;
 			const project = await createProject(cwd, "0.0.0", {
 				lockfile: true,
@@ -506,9 +506,9 @@ if (process.env.ENABLE_PNPM_TESTS) {
 	});
 }
 
-it("should generate release notes", () => {
+it("should generate release notes", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "test-release-notes-foo", "0.0.0");
@@ -570,9 +570,9 @@ it("should generate release notes", () => {
 	});
 });
 
-it("should skip private packages in release notes", () => {
+it("should skip private packages in release notes", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const env = npmRegistry.authEnv;
 		const project = await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "test-skip-private-foo", "0.0.0");
