@@ -72,12 +72,15 @@ export async function createPackage(cwd, name, version, options = {}) {
 			let args;
 			switch (packageManager) {
 				case "npm":
+					/* eslint-disable-next-line unicorn/no-this-outside-of-class -- stateful object */
 					args = ["install", "--workspace", this.name, dep.name];
 					break;
 				case "pnpm":
+					/* eslint-disable-next-line unicorn/no-this-outside-of-class -- stateful object */
 					args = ["add", "--workspace", "--filter", this.name, dep.name];
 					break;
 				case "yarn":
+					/* eslint-disable-next-line unicorn/no-this-outside-of-class -- stateful object */
 					args = ["add", this.name, dep.name];
 					break;
 			}

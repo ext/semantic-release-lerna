@@ -118,7 +118,7 @@ export class PackageGraph extends Map {
 					spec = spec.replace(/^workspace:/, "");
 
 					// replace aliases (https://pnpm.io/workspaces#referencing-workspace-packages-through-aliases)
-					if (spec === "*" || spec === "^" || spec === "~") {
+					if (["*", "^", "~"].includes(spec)) {
 						workspaceAlias = spec;
 						/* eslint-disable-next-line max-depth -- inherited technical debt */
 						if (depNode?.version) {

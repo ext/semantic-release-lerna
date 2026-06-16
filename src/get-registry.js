@@ -11,7 +11,7 @@ export default function getRegistry({ publishConfig: { registry } = {}, name }, 
 		registry ||
 		env.NPM_CONFIG_REGISTRY ||
 		getRegistryUrl(
-			name.split("/")[0],
+			name.split("/", 1)[0],
 			rc(
 				"npm",
 				{ registry: OFFICIAL_REGISTRY },

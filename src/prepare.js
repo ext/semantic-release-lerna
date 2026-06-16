@@ -20,7 +20,7 @@ import {
  * @returns {any}
  **/
 async function readJson(path) {
-	return JSON.parse(await fs.readFile(path));
+	return JSON.parse(await fs.readFile(path, "utf8"));
 }
 
 /**
