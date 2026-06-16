@@ -2,7 +2,7 @@
 const latchMajor = /^\d+\.0\.0$/;
 const latchMinor = /^\d+\.\d+\.0$/;
 const latchPatch = /^\d+\.\d+\.\d+$/;
-const latchPrerelease = /^\d+\.\d+\.\d+(-(.*\.)?\d+)?$/;
+const latchPrerelease = /^\d+\.\d+\.\d+(?:-(?:.*\.)?\d+)?$/;
 
 /**
  * Returns true if version should be latched together

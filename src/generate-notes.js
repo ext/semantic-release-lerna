@@ -111,7 +111,7 @@ export async function generateNotes(pluginConfig, context) {
 	}
 
 	const [match, auth, host, path] =
-		/* eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex -- technical debt  */
+		/* eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex, regexp/no-super-linear-backtracking -- technical debt  */
 		/^(?!.+:\/\/)(?:(?<auth>.*)@)?(?<host>.*?):(?<path>.*)$/.exec(repositoryUrl) || [];
 	const authString = auth ? `${auth}@` : "";
 	const url = new URL(match ? `ssh://${authString}${host}/${path}` : repositoryUrl);
@@ -119,7 +119,7 @@ export async function generateNotes(pluginConfig, context) {
 	let { port, protocol } = url;
 	port = protocol.includes("ssh") ? "" : port;
 	protocol = protocol && /http[^s]/.test(protocol) ? "http" : "https";
-	/* eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex -- technical debt  */
+	/* eslint-disable-next-line security/detect-unsafe-regex, sonarjs/slow-regex, regexp/no-super-linear-backtracking, regexp/no-misleading-capturing-group -- technical debt  */
 	const [, owner, repository] = /^\/(?<owner>[^/]+)?\/?(?<repository>.+)?$/.exec(pathname);
 
 	const { issue, commit, referenceActions, issuePrefixes } =
