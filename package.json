@@ -117,6 +117,12 @@
     "access": "public",
     "provenance": true
   },
+  "allowScripts": {
+    "esbuild": true,
+    "nx": false,
+    "fsevents": false,
+    "unrs-resolver": true
+  },
   "externalDependencies": [
     "@actions/core",
     "@semantic-release/error",
