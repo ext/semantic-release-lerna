@@ -121,7 +121,7 @@ function bumpDependency(dependencies, newVersion, currentVersions) {
 		return;
 	}
 	for (const [dep, range] of Object.entries(dependencies)) {
-		if (!currentVersions[dep]) {
+		if (!Object.hasOwn(currentVersions, dep)) {
 			continue;
 		}
 

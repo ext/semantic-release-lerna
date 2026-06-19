@@ -13,6 +13,7 @@ let mockChangedPackages;
 
 const tempdir = realpathSync(os.tmpdir());
 
+/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
 globalThis.useRealGetChangedPackages = false;
 
 function getChangedPackagesMock(...args) {
@@ -119,6 +120,7 @@ beforeEach(() => {
 		stderr: new WritableStreamBuffer(),
 	};
 	mockChangedPackages = [];
+	/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
 	globalThis.useRealGetChangedPackages = false;
 });
 
@@ -600,6 +602,7 @@ it("Handle dependencies from root package", async () => {
 
 describe("getChangedPackages", () => {
 	beforeEach(() => {
+		/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
 		globalThis.useRealGetChangedPackages = true;
 	});
 

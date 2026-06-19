@@ -1,7 +1,7 @@
 import { execaSync } from "execa";
 
 /**
- * Determine if any git tags are reachable.
+ * Determine if any Git tags are reachable.
  * @param {import("execa").SyncOptions} [opts]
  */
 export function hasTags(opts, logger) {

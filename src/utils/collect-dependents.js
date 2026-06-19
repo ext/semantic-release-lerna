@@ -33,7 +33,7 @@ export function collectDependents(nodes) {
 		while (queue.length > 0) {
 			const node = queue.shift();
 
-			/* eslint-disable-next-line unicorn/no-array-for-each -- technical debt */
+			/* eslint-disable-next-line unicorn/no-for-each -- technical debt */
 			node.localDependents.forEach(visit);
 		}
 	}

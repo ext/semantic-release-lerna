@@ -90,7 +90,7 @@ function startVerdaccio() {
 }
 
 /**
- * Register a new user in the NPM registry.
+ * Register a new user in the npm registry.
  *
  * @param {string} username
  * @param {string} password
@@ -116,13 +116,14 @@ async function registerUser(username, password, email) {
 }
 
 /**
- * Register a new user in the NPM registry.
+ * Register a new user in the npm registry.
  *
  * @param {string} username
  * @param {string} password
  * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
  */
 async function getUserToken(username, password) {
+	/* eslint-disable-next-line unicorn/prefer-uint8array-base64 -- technical debt */
 	const authToken = Buffer.from(`${username}:${password}`).toString("base64");
 
 	const response = await fetch(`${registryUrl}/-/npm/v1/tokens`, {
@@ -137,7 +138,7 @@ async function getUserToken(username, password) {
 }
 
 /**
- * Start local NPM registry
+ * Start local npm registry
  */
 export async function start() {
 	if (server) {
@@ -152,21 +153,23 @@ export async function start() {
 }
 
 /**
- * Stop local NPM registry
+ * Stop local npm registry
  */
 export async function stop() {
 	await fs.rm(config.storage, { recursive: true });
 	return new Promise((resolve, reject) => {
-		if (server) {
-			server.close((error) => {
-				if (error) {
-					reject(error);
-				} else {
-					resolve();
-				}
-			});
-			server = null;
+		if (!server) {
+			return;
 		}
+
+		server.close((error) => {
+			if (error) {
+				reject(error);
+			} else {
+				resolve();
+			}
+		});
+		server = null;
 	});
 }
 
@@ -189,7 +192,7 @@ export function getRegistryHost() {
 }
 
 /**
- * Get registry url
+ * Get registry URL
  *
  * @returns {string}
  */

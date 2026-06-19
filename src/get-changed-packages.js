@@ -24,7 +24,7 @@ function describeRefSync(execOptions) {
 
 function parse(stdout, options = {}) {
 	const minimalShaRegex = /^([\da-f]{7,40})(-dirty)?$/;
-	// When git describe fails to locate tags, it returns only the minimal sha
+	// When Git describe fails to locate tags, it returns only the minimal sha
 	if (minimalShaRegex.test(stdout)) {
 		// Repo might still be dirty
 		const [, sha, isDirty] = minimalShaRegex.exec(stdout);
