@@ -101,6 +101,7 @@ export class PackageGraph extends Map {
 							...currentNode.pkg.dependencies,
 						};
 
+			/* eslint-disable-next-line unicorn/prefer-object-iterable-methods -- technical debt */
 			for (const depName of Object.keys(graphDependencies)) {
 				const depNode = this.get(depName);
 				// Yarn decided to ignore https://github.com/npm/npm/pull/15900 and implemented "link:"
@@ -137,6 +138,7 @@ export class PackageGraph extends Map {
 
 				if (!depNode) {
 					// it's an external dependency, store the resolution and bail
+					/* eslint-disable-next-line unicorn/no-break-in-nested-loop -- technical debt */
 					continue;
 				}
 

@@ -17,8 +17,8 @@ const MOCK_EMAIL = "mock-user@example.net";
  * @property {string} manifestLocation - Path to package.json
  * @property {string|null} lockfileLocation - Path to package-lock.json if present
  * @property {string} lernaPath - Path to lerna.json
- * @property {(message: string) => Promise<void>} commit - Create a new git commit
- * @property {(version: string) => Promise<void>} tag - Create a new git tag
+ * @property {(message: string) => Promise<void>} commit - Create a new Git commit
+ * @property {(version: string) => Promise<void>} tag - Create a new Git tag
  */
 
 /**

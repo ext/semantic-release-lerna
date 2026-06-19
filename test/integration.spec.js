@@ -69,7 +69,9 @@ async function run(project, pluginConfig, options) {
 	const generateNotes = await semanticReleaseLerna.generateNotes(pluginConfig, options);
 	const prepare = await semanticReleaseLerna.prepare(pluginConfig, options);
 
+	/* eslint-disable unicorn/comment-content -- false positive */
 	/* Simulate @semantic-release/git */
+	/* eslint-enable unicorn/comment-content */
 	await project.commit("v0.1.0");
 	await project.tag("v0.1.0");
 
@@ -79,7 +81,7 @@ async function run(project, pluginConfig, options) {
 }
 
 beforeAll(async () => {
-	// Start the local NPM registry
+	// Start the local npm registry
 	await npmRegistry.start();
 
 	// Let registry settle slightly (*sigh*)
@@ -98,7 +100,7 @@ beforeEach(() => {
 });
 
 afterAll(async () => {
-	// Stop the local NPM registry
+	// Stop the local npm registry
 	await npmRegistry.stop();
 });
 

@@ -14,9 +14,8 @@ import { makeDiffPredicate } from "./utils/index.js";
 function getWriteChangelogStream() {
 	if (writerModule.writeChangelog) {
 		return writerModule.writeChangelogStream;
-	} else {
-		return writerModule;
 	}
+	return writerModule;
 }
 
 const writer = getWriteChangelogStream();
@@ -60,6 +59,7 @@ async function loadChangelogConfig(pluginConfig, context) {
 	};
 }
 
+/* eslint-disable unicorn/comment-content -- false positive */
 /**
  * Generate the changelog for all the commits in `options.commits`.
  *
@@ -76,6 +76,7 @@ async function loadChangelogConfig(pluginConfig, context) {
  *
  * @returns {String} The changelog for all the commits in `context.commits`.
  */
+/* eslint-enable unicorn/comment-content */
 /* eslint-disable-next-line complexity -- technical debt */
 export async function generateNotes(pluginConfig, context) {
 	const { commits, lastRelease, nextRelease, options, cwd, logger } = context;

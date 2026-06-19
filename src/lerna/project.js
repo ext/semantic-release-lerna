@@ -63,19 +63,21 @@ function makeFileFinder(rootPath, packageConfigs) {
 	return (fileName, fileMapper, customGlobOpts) => {
 		const options = { ...customGlobOpts, ...globOpts };
 		const promise = pMap(
-			/* eslint-disable-next-line unicorn/no-array-sort -- technical debt */
+			/* eslint-disable-next-line unicorn/no-array-sort, unicorn/require-array-sort-compare -- technical debt */
 			Array.from(packageConfigs).sort(),
 			(globPath) => {
 				let chain = globby(path.posix.join(globPath, fileName), options);
 
 				// fast-glob does not respect pattern order, so we re-sort by absolute path
-				/* eslint-disable-next-line unicorn/no-array-sort -- technical debt */
+				/* eslint-disable-next-line unicorn/no-array-sort, unicorn/require-array-sort-compare, unicorn/prefer-await -- technical debt */
 				chain = chain.then((results) => results.sort());
 
 				// POSIX results always need to be normalized
+				/* eslint-disable-next-line unicorn/prefer-await -- technical debt */
 				chain = chain.then(normalize);
 
 				if (fileMapper) {
+					/* eslint-disable-next-line unicorn/prefer-await -- technical debt */
 					chain = chain.then(fileMapper);
 				}
 
@@ -85,6 +87,7 @@ function makeFileFinder(rootPath, packageConfigs) {
 		);
 
 		// always flatten the results
+		/* eslint-disable-next-line unicorn/prefer-await -- technical debt */
 		return promise.then((results) => results.flat());
 	};
 }
@@ -185,6 +188,7 @@ export class Project {
 	getPackages() {
 		const fileFinder = makeFileFinder(this.rootPath, this.packageConfigs);
 		const mapper = (packageConfigPath) =>
+			/* eslint-disable-next-line unicorn/prefer-await -- technical debt */
 			loadJsonFile(packageConfigPath).then(
 				(packageJson) => new Package(packageJson, path.dirname(packageConfigPath), this.rootPath),
 			);
