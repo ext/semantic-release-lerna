@@ -113,12 +113,14 @@ async function createPackage(cwd, name, version, options, pkgData) {
 
 beforeEach(() => {
 	const log = jest.fn();
+	/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- false positive */
 	context = {
 		log,
 		logger: { log },
 		stdout: new WritableStreamBuffer(),
 		stderr: new WritableStreamBuffer(),
 	};
+	/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- false positive */
 	mockChangedPackages = [];
 	/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
 	globalThis.useRealGetChangedPackages = false;

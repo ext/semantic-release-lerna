@@ -12,7 +12,9 @@ import verifyGit from "./verify-git.js";
 
 export { generateNotes } from "./generate-notes.js";
 
-let verified;
+const state = {
+	verified: false,
+};
 
 const tempdir = realpathSync(os.tmpdir());
 const npmrc = temporaryFile({ name: ".npmrc" });
@@ -71,13 +73,13 @@ export async function verifyConditions(pluginConfig, context) {
 		throw new AggregateError(errors);
 	}
 
-	verified = true;
+	state.verified = true;
 }
 
 export async function prepare(pluginConfig, context) {
 	pluginConfig.latch = defaultTo(pluginConfig.latch, defaultConfig.latch);
 
-	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
+	const errors = state.verified ? [] : verifyNpmConfig(pluginConfig);
 
 	try {
 		if (pluginConfig.npmVerifyAuth) {
@@ -101,12 +103,12 @@ export async function prepare(pluginConfig, context) {
 
 export async function publish(pluginConfig, context) {
 	let pkg;
-	const errors = verified ? [] : verifyNpmConfig(pluginConfig);
+	const errors = state.verified ? [] : verifyNpmConfig(pluginConfig);
 
 	try {
 		// Reload package.json in case a previous external step updated it
 		pkg = await getPkg(pluginConfig, context);
-		if (!verified && pluginConfig.npmPublish !== false && pkg.private !== true) {
+		if (!state.verified && pluginConfig.npmPublish !== false && pkg.private !== true) {
 			await verifyNpmAuth(npmrc, pkg, context);
 		}
 	} catch (error) {
