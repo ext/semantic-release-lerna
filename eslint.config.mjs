@@ -5,18 +5,6 @@ import defaultConfig from "@html-validate/eslint-config";
 import jestConfig from "@html-validate/eslint-config-jest";
 
 export default [
-	{
-		name: "Ignored files",
-		ignores: [
-			"**/coverage/**",
-			"**/dist/**",
-			"**/node_modules/**",
-			"**/out/**",
-			"**/public/assets/**",
-			"**/temp/**",
-		],
-	},
-
 	...defaultConfig,
 
 	{

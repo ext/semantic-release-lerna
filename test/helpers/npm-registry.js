@@ -77,7 +77,9 @@ function startVerdaccio() {
 		try {
 			startServer(config, 0, {}, "1.0.0", "verdaccio", (webServer, addr) => {
 				webServer.listen(addr.port || addr.path, addr.host, () => {
+					/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- technical debt */
 					registryHost = `${addr.host}:${addr.port}`;
+					/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- technical debt */
 					registryUrl = `${addr.proto}://${registryHost}`;
 					authEnv.npm_config_registry = registryUrl;
 					resolve(webServer);
@@ -145,6 +147,7 @@ export async function start() {
 		throw new Error("server already started");
 	}
 
+	/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- technical debt */
 	server = await startVerdaccio();
 
 	await registerUser(NPM_USERNAME, NPM_PASSWORD, NPM_EMAIL);
@@ -169,6 +172,7 @@ export async function stop() {
 				resolve();
 			}
 		});
+		/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- technical debt */
 		server = null;
 	});
 }
