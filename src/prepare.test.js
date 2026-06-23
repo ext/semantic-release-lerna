@@ -6,7 +6,7 @@ import path from "node:path";
 import { jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
-import realGetChangedPackages from "./get-changed-packages";
+import realGetChangedPackages from "./get-changed-packages.js";
 
 let context;
 let mockChangedPackages;
@@ -29,7 +29,7 @@ jest.unstable_mockModule("./get-changed-packages", () => {
 	};
 });
 
-const { default: prepare } = await import("./prepare");
+const { default: prepare } = await import("./prepare.js");
 
 async function outputFile(file, data) {
 	const dir = path.dirname(file);

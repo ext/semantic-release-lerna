@@ -5,7 +5,7 @@ jest.unstable_mockModule("execa", () => ({
 }));
 
 const { execa } = await import("execa");
-const { default: verifyGit } = await import("./verify-git");
+const { default: verifyGit } = await import("./verify-git.js");
 
 it("should return error if working copy is dirty", async () => {
 	expect.assertions(2);

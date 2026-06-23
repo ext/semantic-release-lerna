@@ -4,9 +4,9 @@ import {
 	getLockFileFromPackageManager,
 	getUpdateLockFileCommand,
 } from "../../src/utils/package-manager-commands.js";
-import * as npmRegistry from "./npm-registry";
-import { outputFile } from "./output-file";
-import { outputJson } from "./output-json";
+import * as npmRegistry from "./npm-registry.js";
+import { outputFile } from "./output-file.js";
+import { outputJson } from "./output-json.js";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";

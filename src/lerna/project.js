@@ -5,8 +5,8 @@ import { cosmiconfigSync } from "cosmiconfig";
 import { globby } from "globby";
 import { load } from "js-yaml";
 import pMap from "p-map";
-import { writeJsonFile } from "../utils";
-import { Package } from "./package";
+import { writeJsonFile } from "../utils/index.js";
+import { Package } from "./package.js";
 
 /**
  * @typedef {object} ProjectConfig

@@ -4,7 +4,7 @@ import {
 	getLockFileFromPackageManager,
 	getUpdateLockFileCommand,
 } from "../../src/utils/package-manager-commands.js";
-import { outputJson } from "./output-json";
+import { outputJson } from "./output-json.js";
 
 const MOCK_NAME = "Mock user";
 const MOCK_EMAIL = "mock-user@example.net";
