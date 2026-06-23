@@ -8,7 +8,7 @@ import importFrom from "import-from-esm";
 import intoStream from "into-stream";
 import { readPackageUp } from "read-package-up";
 import HOSTS_CONFIG from "./hosts-config.js";
-import { Project } from "./lerna/project";
+import { Project } from "./lerna/project.js";
 import { makeDiffPredicate } from "./utils/index.js";
 
 function getWriteChangelogStream() {

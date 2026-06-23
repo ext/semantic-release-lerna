@@ -5,7 +5,7 @@ import defaultConfig from "@html-validate/eslint-config";
 import jestConfig from "@html-validate/eslint-config-jest";
 
 export default [
-	...defaultConfig,
+	...defaultConfig({ type: "module" }),
 
 	{
 		name: "@html-validate/eslint-config-jest",
@@ -15,15 +15,8 @@ export default [
 	},
 
 	{
-		name: "local",
-		rules: {
-			"import-x/extensions": "off",
-		},
-	},
-
-	{
-		name: "local/jest",
-		files: ["**/*.spec.[jt]s"],
+		name: "local/integration-test",
+		files: ["test/integration.spec.js"],
 		rules: {
 			"import-x/no-unresolved": "off",
 		},

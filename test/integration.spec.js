@@ -7,8 +7,8 @@ import { afterAll, beforeAll, beforeEach, expect, it, jest } from "@jest/globals
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
 import * as semanticReleaseLerna from "../dist/index.js";
-import { createPackage, createProject, outputJson, readJson } from "./helpers";
-import * as npmRegistry from "./helpers/npm-registry";
+import { createPackage, createProject, outputJson, readJson } from "./helpers/index.js";
+import * as npmRegistry from "./helpers/npm-registry.js";
 
 const tempdir = realpathSync(os.tmpdir());
 

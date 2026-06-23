@@ -1,5 +1,5 @@
-export { outputFile } from "./output-file";
-export { outputJson } from "./output-json";
-export { createProject } from "./project";
-export { createPackage } from "./package";
-export { readJson } from "./read-json";
+export { outputFile } from "./output-file.js";
+export { outputJson } from "./output-json.js";
+export { createProject } from "./project.js";
+export { createPackage } from "./package.js";
+export { readJson } from "./read-json.js";

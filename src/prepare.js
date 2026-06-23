@@ -6,9 +6,9 @@ import { execa } from "execa";
 import npmVersion from "libnpmversion";
 import { parse as semverParse, satisfies as semverSatisfies, validRange } from "semver";
 import getChangedPackages from "./get-changed-packages.js";
-import { Package } from "./lerna/package";
-import { Project } from "./lerna/project";
-import { writeJsonFile } from "./utils";
+import { Package } from "./lerna/package.js";
+import { Project } from "./lerna/project.js";
+import { writeJsonFile } from "./utils/index.js";
 import {
 	getLockFileFromPackageManager,
 	getPackageManagerFromLockFile,
