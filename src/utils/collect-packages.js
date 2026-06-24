@@ -25,12 +25,14 @@ export function collectPackages(
 	const updates = [];
 
 	for (const [name, node] of packages.entries()) {
-		if (candidates.has(node)) {
-			if (onInclude) {
-				onInclude(name);
-			}
-			updates.push(node);
+		if (!candidates.has(node)) {
+			continue;
 		}
+
+		if (onInclude) {
+			onInclude(name);
+		}
+		updates.push(node);
 	}
 
 	return updates;
