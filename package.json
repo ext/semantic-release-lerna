@@ -91,7 +91,7 @@
     "@babel/core": "7.29.7",
     "@babel/preset-env": "7.29.7",
     "@html-validate/eslint-config": "9.8.5",
-    "@html-validate/eslint-config-jest": "9.8.0",
+    "@html-validate/eslint-config-jest": "9.8.6",
     "@html-validate/prettier-config": "4.1.1",
     "@html-validate/release-scripts": "7.3.1",
     "@jest/globals": "30.4.1",
