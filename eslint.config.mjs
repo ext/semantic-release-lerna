@@ -2,16 +2,16 @@
 /* Changes may be overwritten */
 
 import defaultConfig from "@html-validate/eslint-config";
-import jestConfig from "@html-validate/eslint-config-jest";
+import vitestConfig from "@html-validate/eslint-config-vitest";
 
 export default [
 	...defaultConfig({ type: "module" }),
 
 	{
-		name: "@html-validate/eslint-config-jest",
+		name: "@html-validate/eslint-config-vitest",
 		files: ["**/*.spec.[jt]s"],
 		ignores: ["cypress/**", "tests/e2e/**"],
-		...jestConfig,
+		...vitestConfig,
 	},
 
 	{

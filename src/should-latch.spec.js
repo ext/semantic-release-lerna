@@ -1,4 +1,5 @@
 import semver from "semver";
+import { describe, expect, it } from "vitest";
 import { shouldLatch } from "./should-latch.js";
 
 const version = "1.10.10";

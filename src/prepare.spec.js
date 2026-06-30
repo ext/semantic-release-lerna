@@ -3,33 +3,30 @@ import { existsSync, realpathSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
-import realGetChangedPackages from "./get-changed-packages.js";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import prepare from "./prepare.js";
 
 let context;
-let mockChangedPackages;
+const mockState = {
+	changedPackages: [],
+	useRealGetChangedPackages: false,
+};
 
 const tempdir = realpathSync(os.tmpdir());
 
-/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
-globalThis.useRealGetChangedPackages = false;
-
-function getChangedPackagesMock(...args) {
-	if (!globalThis.useRealGetChangedPackages) {
-		return mockChangedPackages;
-	}
-	return realGetChangedPackages(...args);
-}
-
-jest.unstable_mockModule("./get-changed-packages", () => {
+vi.mock(import("./get-changed-packages.js"), async (importOriginal) => {
+	const { default: original } = await importOriginal();
 	return {
-		default: getChangedPackagesMock,
+		default(...args) {
+			if (!mockState.useRealGetChangedPackages) {
+				return mockState.changedPackages;
+			}
+			return original(...args);
+		},
 	};
 });
-
-const { default: prepare } = await import("./prepare.js");
 
 async function outputFile(file, data) {
 	const dir = path.dirname(file);
@@ -105,30 +102,27 @@ async function createPackage(cwd, name, version, options, pkgData) {
 	};
 	await outputJson(manifestLocation, { name, version, ...pkgData });
 	if (changed) {
-		mockChangedPackages.push(pkg);
+		mockState.changedPackages.push(pkg);
 	}
 
 	return pkg;
 }
 
 beforeEach(() => {
-	const log = jest.fn();
-	/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- false positive */
+	const log = vi.fn();
 	context = {
 		log,
 		logger: { log },
 		stdout: new WritableStreamBuffer(),
 		stderr: new WritableStreamBuffer(),
 	};
-	/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- false positive */
-	mockChangedPackages = [];
-	/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
-	globalThis.useRealGetChangedPackages = false;
+	mockState.changedPackages = [];
+	mockState.useRealGetChangedPackages = false;
 });
 
-it("Update lerna.json and root package.json when no package has changed", () => {
+it("Update lerna.json and root package.json when no package has changed", async () => {
 	expect.assertions(4);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		const project = await createProject(cwd, "0.0.0");
 
@@ -167,9 +161,9 @@ it("Update lerna.json and root package.json when no package has changed", () => 
 	});
 });
 
-it("Update lerna.json and root package.json when one or more package has changed", () => {
+it("Update lerna.json and root package.json when one or more package has changed", async () => {
 	expect.assertions(5);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		const project = await createProject(cwd, "0.0.0");
 		const pkg = await createPackage(cwd, "foo", "0.0.0", {
@@ -214,9 +208,9 @@ it("Update lerna.json and root package.json when one or more package has changed
 	});
 });
 
-it("Update only lerna.json when one or more package has changed when option `rootVersion` is `false`", () => {
+it("Update only lerna.json when one or more package has changed when option `rootVersion` is `false`", async () => {
 	expect.assertions(4);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		const project = await createProject(cwd, "0.0.0");
 
@@ -253,9 +247,9 @@ it("Update only lerna.json when one or more package has changed when option `roo
 	});
 });
 
-it("Update package.json in changed packages", () => {
+it("Update package.json in changed packages", async () => {
 	expect.assertions(2);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.0.0");
 		const foo = await createPackage(cwd, "foo", "0.0.0", {
@@ -292,9 +286,9 @@ it("Update package.json in changed packages", () => {
 	});
 });
 
-it("Update npm-shrinkwrap.json if present", () => {
+it("Update npm-shrinkwrap.json if present", async () => {
 	expect.assertions(2);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.0.0");
 		const pkg = await createPackage(cwd, "foo", "0.0.0", {
@@ -333,9 +327,9 @@ it("Update npm-shrinkwrap.json if present", () => {
 	});
 });
 
-it("Update package-lock.json if present", () => {
+it("Update package-lock.json if present", async () => {
 	expect.assertions(2);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.0.0");
 		const pkg = await createPackage(cwd, "foo", "0.0.0", {
@@ -374,9 +368,9 @@ it("Update package-lock.json if present", () => {
 	});
 });
 
-it("Update package.json dependency when using exact version", () => {
+it("Update package.json dependency when using exact version", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.0.0");
 		const foo = await createPackage(
@@ -432,9 +426,9 @@ it("Update package.json dependency when using exact version", () => {
 	});
 });
 
-it("Update package.json dependency when using hat", () => {
+it("Update package.json dependency when using hat", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.1.2");
 		const foo = await createPackage(
@@ -483,9 +477,9 @@ it("Update package.json dependency when using hat", () => {
 	});
 });
 
-it("Update package.json dependency when new version is out of range", () => {
+it("Update package.json dependency when new version is out of range", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "1.2.3");
 		const foo = await createPackage(
@@ -534,9 +528,9 @@ it("Update package.json dependency when new version is out of range", () => {
 	});
 });
 
-it("Should not update other dependencies", () => {
+it("Should not update other dependencies", async () => {
 	expect.assertions(1);
-	return withTempDir(async (cwd) => {
+	await withTempDir(async (cwd) => {
 		const npmrc = await temporaryFile({ name: ".npmrc" });
 		await createProject(cwd, "0.0.0");
 		const foo = await createPackage(
@@ -586,26 +580,24 @@ it("Handle dependencies from root package", async () => {
 			"external-dependency": "1.2.3",
 		},
 	});
-	expect(async () => {
-		await prepare(
-			npmrc,
-			{},
-			{
-				cwd,
-				env: {},
-				stdout: context.stdout,
-				stderr: context.stderr,
-				nextRelease: { version: "0.0.2" },
-				logger: context.logger,
-			},
-		);
-	}).not.toThrow();
+	const result = prepare(
+		npmrc,
+		{},
+		{
+			cwd,
+			env: {},
+			stdout: context.stdout,
+			stderr: context.stderr,
+			nextRelease: { version: "0.0.2" },
+			logger: context.logger,
+		},
+	);
+	await expect(result).resolves.toBeUndefined();
 });
 
 describe("getChangedPackages", () => {
 	beforeEach(() => {
-		/* eslint-disable-next-line unicorn/no-global-object-property-assignment -- technical debt */
-		globalThis.useRealGetChangedPackages = true;
+		mockState.useRealGetChangedPackages = true;
 	});
 
 	it("should run without any reference error if the repository has not yet any tag", async () => {
@@ -642,19 +634,18 @@ describe("getChangedPackages", () => {
 		await execa("git", ["add", "."], { cwd });
 		await execa("git", ["commit", "-m", "'fix:commit msg'"], { cwd });
 
-		expect(async () => {
-			await prepare(
-				npmrc,
-				{},
-				{
-					cwd,
-					env: {},
-					stdout: context.stdout,
-					stderr: context.stderr,
-					nextRelease: { version: "0.0.2" },
-					logger: context.logger,
-				},
-			);
-		}).not.toThrow();
+		const result = prepare(
+			npmrc,
+			{},
+			{
+				cwd,
+				env: {},
+				stdout: context.stdout,
+				stderr: context.stderr,
+				nextRelease: { version: "0.0.2" },
+				logger: context.logger,
+			},
+		);
+		await expect(result).resolves.toBeUndefined();
 	});
 });

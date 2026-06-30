@@ -47,18 +47,9 @@
     "prettier:write": "prettier --write .",
     "postpublish": "release-postpublish",
     "pretest": "npm run eslint && npm run prettier:check",
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --collectCoverage"
+    "test": "vitest run"
   },
   "prettier": "@html-validate/prettier-config",
-  "jest": {
-    "coveragePathIgnorePatterns": [
-      "/dist/",
-      "/node_modules/"
-    ],
-    "testTimeout": 60000,
-    "transform": {},
-    "transformIgnorePatterns": []
-  },
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@semantic-release/error": "^4.0.0",
@@ -88,23 +79,20 @@
     "semver": "7.8.5"
   },
   "devDependencies": {
-    "@babel/core": "7.29.7",
-    "@babel/preset-env": "7.29.7",
     "@html-validate/eslint-config": "9.8.8",
-    "@html-validate/eslint-config-jest": "9.8.6",
+    "@html-validate/eslint-config-vitest": "9.8.0",
     "@html-validate/prettier-config": "4.1.4",
     "@html-validate/release-scripts": "7.3.1",
-    "@jest/globals": "30.4.1",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
-    "babel-plugin-transform-import-meta": "2.3.3",
+    "@vitest/coverage-v8": "4.1.9",
     "esbuild": "0.28.1",
-    "jest": "30.4.2",
     "lerna": "9.0.7",
     "npm-pkg-lint": "5.1.10",
     "semantic-release": "25.0.5",
     "stream-buffers": "3.0.3",
-    "verdaccio": "6.7.4"
+    "verdaccio": "6.7.4",
+    "vitest": "4.1.9"
   },
   "peerDependencies": {
     "lerna": "^8.0.0 || ^9.0.0",

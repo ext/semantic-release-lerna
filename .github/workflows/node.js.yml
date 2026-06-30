@@ -57,7 +57,7 @@ jobs:
       - name: Integration test
         env:
           ENABLE_PNPM_TESTS: ${{ matrix.lerna-version != '8.x' && '1' || '' }}
-        run: node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage integration
+        run: npm exec vitest -- --no-coverage integration
 
   semantic-release:
     runs-on: ubuntu-latest
@@ -83,7 +83,7 @@ jobs:
           npm install $(npx -y npm-min-peer semantic-release --major ${{ matrix.sr-version }} --with-name)
           npm ls semantic-release
       - name: Integration test
-        run: node --experimental-vm-modules node_modules/jest/bin/jest.js --no-coverage integration
+        run: npm exec vitest -- --no-coverage integration
 
   npm-pkg-lint:
     runs-on: ubuntu-latest
