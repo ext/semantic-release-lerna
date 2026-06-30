@@ -1,15 +1,12 @@
-import { jest } from "@jest/globals";
+import { execa } from "execa";
+import { expect, it, vi } from "vitest";
+import verifyGit from "./verify-git.js";
 
-jest.unstable_mockModule("execa", () => ({
-	execa: jest.fn(),
-}));
-
-const { execa } = await import("execa");
-const { default: verifyGit } = await import("./verify-git.js");
+vi.mock(import("execa"));
 
 it("should return error if working copy is dirty", async () => {
 	expect.assertions(2);
-	execa.mockImplementation(() => ({ stdout: " M file.js\n" }));
+	vi.mocked(execa).mockImplementation(() => ({ stdout: " M file.js\n" }));
 	const errors = await verifyGit({});
 	expect(errors).toHaveLength(1);
 	expect(errors[0]).toMatchObject({
@@ -23,7 +20,7 @@ it("should return error if working copy is dirty", async () => {
 
 it("should return error when working copy has mixed dirty and untracked", async () => {
 	expect.assertions(2);
-	execa.mockImplementation(() => ({ stdout: " M file.js\n?? file.c" }));
+	vi.mocked(execa).mockImplementation(() => ({ stdout: " M file.js\n?? file.c" }));
 	const errors = await verifyGit({});
 	expect(errors).toHaveLength(1);
 	expect(errors[0]).toMatchObject({
@@ -38,14 +35,14 @@ it("should return error when working copy has mixed dirty and untracked", async 
 
 it("should ignore untracked files", async () => {
 	expect.assertions(1);
-	execa.mockImplementation(() => ({ stdout: "?? file.js\n" }));
+	vi.mocked(execa).mockImplementation(() => ({ stdout: "?? file.js\n" }));
 	const errors = await verifyGit({});
 	expect(errors).toHaveLength(0);
 });
 
 it("should not return error if working copy is clean", async () => {
 	expect.assertions(1);
-	execa.mockImplementation(() => ({ stdout: "" }));
+	vi.mocked(execa).mockImplementation(() => ({ stdout: "" }));
 	const errors = await verifyGit({});
 	expect(errors).toHaveLength(0);
 });

@@ -3,13 +3,14 @@ import { readFileSync, realpathSync } from "node:fs";
 import fs from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
-import { afterAll, beforeAll, beforeEach, expect, it, jest } from "@jest/globals";
 import { execa } from "execa";
 import { WritableStreamBuffer } from "stream-buffers";
+import { afterAll, beforeAll, beforeEach, expect, it, vi } from "vitest";
 import * as semanticReleaseLerna from "../dist/index.js";
 import { createPackage, createProject, outputJson, readJson } from "./helpers/index.js";
 import * as npmRegistry from "./helpers/npm-registry.js";
 
+const enablePnpmTests = Boolean(process.env.ENABLE_PNPM_TESTS);
 const tempdir = realpathSync(os.tmpdir());
 
 let context;
@@ -83,12 +84,12 @@ beforeAll(async () => {
 	await npmRegistry.start();
 
 	// Let registry settle slightly (*sigh*)
-	await new Promise((resolve) => setTimeout(resolve, 10000));
+	await new Promise((resolve) => setTimeout(resolve, 5_000));
 });
 
 beforeEach(() => {
-	const log = jest.fn();
-	const warn = jest.fn();
+	const log = vi.fn();
+	const warn = vi.fn();
 	context = {
 		log,
 		stdout: new WritableStreamBuffer(),
@@ -381,42 +382,41 @@ it("should update package-lock.json in root with workspaces", async () => {
 	});
 });
 
-if (process.env.ENABLE_PNPM_TESTS) {
-	it("should update pnpm-lock.yaml in root", async () => {
-		expect.assertions(1);
-		await withTempDir(async (cwd) => {
-			const env = npmRegistry.authEnv;
-			const project = await createProject(cwd, "0.0.0", { lockfile: true, packageManager: "pnpm" });
-			const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0", {
-				packageManager: "pnpm",
-			});
-			const bar = await createPackage(cwd, "test-root-lock-bar", "0.0.0", {
-				lockfile: true,
-				packageManager: "pnpm",
-			});
-			await bar.require(foo);
-			await project.commit("bar depends on foo");
-			await initialPublish(cwd);
+it.runIf(enablePnpmTests)("should update pnpm-lock.yaml in root", async () => {
+	expect.assertions(1);
+	await withTempDir(async (cwd) => {
+		const env = npmRegistry.authEnv;
+		const project = await createProject(cwd, "0.0.0", { lockfile: true, packageManager: "pnpm" });
+		const foo = await createPackage(cwd, "test-root-lock-foo", "0.0.0", {
+			packageManager: "pnpm",
+		});
+		const bar = await createPackage(cwd, "test-root-lock-bar", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		await bar.require(foo);
+		await project.commit("bar depends on foo");
+		await initialPublish(cwd);
 
-			/* Make change to foo package */
-			await outputJson(foo.resolve("file.json"), { test: 1 });
-			await project.commit("change foo");
+		/* Make change to foo package */
+		await outputJson(foo.resolve("file.json"), { test: 1 });
+		await project.commit("change foo");
 
-			/* Simulate semantic release */
-			const pluginConfig = {};
-			await run(project, pluginConfig, {
-				cwd,
-				env,
-				options: {},
-				stdout: context.stdout,
-				stderr: context.stderr,
-				logger: context.logger,
-				nextRelease: { version: "0.0.1" },
-			});
+		/* Simulate semantic release */
+		const pluginConfig = {};
+		await run(project, pluginConfig, {
+			cwd,
+			env,
+			options: {},
+			stdout: context.stdout,
+			stderr: context.stderr,
+			logger: context.logger,
+			nextRelease: { version: "0.0.1" },
+		});
 
-			/* Verify versions */
-			expect(await readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
-				.toMatchInlineSnapshot(`
+		/* Verify versions */
+		expect(await readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
+			.toMatchInlineSnapshot(`
 		    "lockfileVersion: '9.0'
 
 		    settings:
@@ -428,56 +428,49 @@ if (process.env.ENABLE_PNPM_TESTS) {
 		      .: {}
 		    "
 			`);
+	});
+});
+
+it.runIf(enablePnpmTests)("should update pnpm-lock.yaml in root with workspaces", async () => {
+	expect.assertions(1);
+	await withTempDir(async (cwd) => {
+		const env = npmRegistry.authEnv;
+		const project = await createProject(cwd, "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+			workspaces: true,
 		});
-	});
-} else {
-	/* eslint-disable-next-line jest/no-disabled-tests, jest/no-identical-title -- conditional test, using skip to mark that this test wasn't run under this configuration */
-	it.skip("should update pnpm-lock.yaml in root", () => {
-		expect.assertions(1);
-	});
-}
+		const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0", {
+			lockfile: true,
+			packageManager: "pnpm",
+		});
+		await bar.require(foo);
+		await project.commit("bar depends on foo");
+		await initialPublish(cwd);
 
-if (process.env.ENABLE_PNPM_TESTS) {
-	it("should update pnpm-lock.yaml in root with workspaces", async () => {
-		expect.assertions(1);
-		await withTempDir(async (cwd) => {
-			const env = npmRegistry.authEnv;
-			const project = await createProject(cwd, "0.0.0", {
-				lockfile: true,
-				packageManager: "pnpm",
-				workspaces: true,
-			});
-			const foo = await createPackage(cwd, "test-root-workspace-foo", "0.0.0", {
-				lockfile: true,
-				packageManager: "pnpm",
-			});
-			const bar = await createPackage(cwd, "test-root-workspace-bar", "0.0.0", {
-				lockfile: true,
-				packageManager: "pnpm",
-			});
-			await bar.require(foo);
-			await project.commit("bar depends on foo");
-			await initialPublish(cwd);
+		/* Make change to foo package */
+		await outputJson(foo.resolve("file.json"), { test: 1 });
+		await project.commit("change foo");
 
-			/* Make change to foo package */
-			await outputJson(foo.resolve("file.json"), { test: 1 });
-			await project.commit("change foo");
+		/* Simulate semantic release */
+		const pluginConfig = {};
+		await run(project, pluginConfig, {
+			cwd,
+			env,
+			options: {},
+			stdout: context.stdout,
+			stderr: context.stderr,
+			logger: context.logger,
+			nextRelease: { version: "0.0.1" },
+		});
 
-			/* Simulate semantic release */
-			const pluginConfig = {};
-			await run(project, pluginConfig, {
-				cwd,
-				env,
-				options: {},
-				stdout: context.stdout,
-				stderr: context.stderr,
-				logger: context.logger,
-				nextRelease: { version: "0.0.1" },
-			});
-
-			/* Verify versions */
-			expect(readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
-				.toMatchInlineSnapshot(`
+		/* Verify versions */
+		expect(readFileSync(project.lockfileLocation, { encoding: "utf8", flag: "r" }))
+			.toMatchInlineSnapshot(`
 		    "lockfileVersion: '9.0'
 
 		    settings:
@@ -497,14 +490,8 @@ if (process.env.ENABLE_PNPM_TESTS) {
 		      packages/test-root-workspace-foo: {}
 		    "
 			`);
-		});
 	});
-} else {
-	/* eslint-disable-next-line jest/no-disabled-tests, jest/no-identical-title -- conditional test, using skip to mark that this test wasn't run under this configuration */
-	it.skip("should update pnpm-lock.yaml in root with workspaces", () => {
-		expect.assertions(1);
-	});
-}
+});
 
 it("should generate release notes", async () => {
 	expect.assertions(1);

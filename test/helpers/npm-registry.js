@@ -75,7 +75,7 @@ let registryUrl;
 function startVerdaccio() {
 	return new Promise((resolve, reject) => {
 		try {
-			startServer(config, 0, {}, "1.0.0", "verdaccio", (webServer, addr) => {
+			startServer(config, "127.0.0.1:4873", {}, "1.0.0", "verdaccio", (webServer, addr) => {
 				webServer.listen(addr.port || addr.path, addr.host, () => {
 					/* eslint-disable-next-line unicorn/no-top-level-assignment-in-function -- technical debt */
 					registryHost = `${addr.host}:${addr.port}`;
