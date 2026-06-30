@@ -97,7 +97,7 @@
     "@jest/globals": "30.4.1",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
-    "babel-plugin-transform-import-meta": "2.3.3",
+    "babel-plugin-transform-import-meta": "3.0.0",
     "esbuild": "0.28.1",
     "jest": "30.4.2",
     "lerna": "9.0.7",
