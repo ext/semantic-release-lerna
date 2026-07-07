@@ -85,14 +85,14 @@
     "@html-validate/release-scripts": "7.3.1",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
-    "@vitest/coverage-v8": "4.1.9",
+    "@vitest/coverage-v8": "4.1.10",
     "esbuild": "0.28.1",
     "lerna": "9.0.7",
     "npm-pkg-lint": "5.1.10",
     "semantic-release": "25.0.5",
     "stream-buffers": "3.0.3",
     "verdaccio": "6.7.4",
-    "vitest": "4.1.9"
+    "vitest": "4.1.10"
   },
   "peerDependencies": {
     "lerna": "^8.0.0 || ^9.0.0",
