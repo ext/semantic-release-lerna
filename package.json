@@ -88,7 +88,7 @@
     "@vitest/coverage-v8": "4.1.10",
     "esbuild": "0.28.1",
     "lerna": "9.0.7",
-    "npm-pkg-lint": "5.1.10",
+    "npm-pkg-lint": "5.1.11",
     "semantic-release": "25.0.5",
     "stream-buffers": "3.0.3",
     "verdaccio": "6.7.4",
