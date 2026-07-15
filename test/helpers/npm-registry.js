@@ -125,7 +125,6 @@ async function registerUser(username, password, email) {
  * @returns {{ token: string, user: string, key: string, cidr: string[], readonly: boolean, created: string}}
  */
 async function getUserToken(username, password) {
-	/* eslint-disable-next-line unicorn/prefer-uint8array-base64 -- technical debt */
 	const authToken = Buffer.from(`${username}:${password}`).toString("base64");
 
 	const response = await fetch(`${registryUrl}/-/npm/v1/tokens`, {
