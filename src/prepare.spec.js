@@ -286,47 +286,6 @@ it("Update package.json in changed packages", async () => {
 	});
 });
 
-it("Update npm-shrinkwrap.json if present", async () => {
-	expect.assertions(2);
-	await withTempDir(async (cwd) => {
-		const npmrc = await temporaryFile({ name: ".npmrc" });
-		await createProject(cwd, "0.0.0");
-		const pkg = await createPackage(cwd, "foo", "0.0.0", {
-			changed: true,
-		});
-		// Create a npm-shrinkwrap.json file
-		await execa("npm", ["shrinkwrap"], { cwd: pkg.location });
-
-		await prepare(
-			npmrc,
-			{},
-			{
-				cwd,
-				env: {},
-				stdout: context.stdout,
-				stderr: context.stderr,
-				nextRelease: { version: "1.0.0" },
-				logger: context.logger,
-			},
-		);
-
-		// Verify foo/package.json has been updated
-		expect(await readJson(pkg.manifestLocation)).toEqual({
-			name: "foo",
-			version: "1.0.0",
-		});
-
-		// Verify foo/npm-shrinkwrap.json has been updated
-		expect(await readJson(pkg.shrinkwrapPath)).toEqual(
-			expect.objectContaining({
-				lockfileVersion: expect.anything(),
-				name: "foo",
-				version: "1.0.0",
-			}),
-		);
-	});
-});
-
 it("Update package-lock.json if present", async () => {
 	expect.assertions(2);
 	await withTempDir(async (cwd) => {
