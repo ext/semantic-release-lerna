@@ -82,7 +82,7 @@
     "@html-validate/eslint-config": "9.13.1",
     "@html-validate/eslint-config-vitest": "9.13.0",
     "@html-validate/prettier-config": "4.1.9",
-    "@html-validate/release-scripts": "7.3.6",
+    "@html-validate/release-scripts": "7.5.0",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.7.1",
     "@vitest/coverage-v8": "4.1.10",
