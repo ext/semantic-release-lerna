@@ -76,7 +76,8 @@
     "rc": "1.2.8",
     "read-package-up": "12.0.0",
     "registry-auth-token": "^5.1.1",
-    "semver": "7.8.5"
+    "semver": "7.8.5",
+    "tar": "^7.5.19"
   },
   "devDependencies": {
     "@html-validate/eslint-config": "9.13.7",
