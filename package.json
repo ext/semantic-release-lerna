@@ -68,7 +68,7 @@
     "into-stream": "9.1.0",
     "js-yaml": "^5.2.2",
     "libnpmversion": "^9.0.0",
-    "minimatch": "10.2.5",
+    "minimatch": "10.2.6",
     "nerf-dart": "1.0.0",
     "normalize-url": "9.0.1",
     "npm-package-arg": "14.0.0",
