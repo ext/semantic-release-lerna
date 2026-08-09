@@ -5,14 +5,11 @@ import defaultConfig from "@html-validate/eslint-config";
 import vitestConfig from "@html-validate/eslint-config-vitest";
 
 export default [
-	...defaultConfig({ type: "module" }),
+	...defaultConfig({
+		type: "module",
+	}),
 
-	{
-		name: "@html-validate/eslint-config-vitest",
-		files: ["**/*.spec.[jt]s"],
-		ignores: ["cypress/**", "tests/e2e/**"],
-		...vitestConfig,
-	},
+	vitestConfig(),
 
 	{
 		name: "local/integration-test",
