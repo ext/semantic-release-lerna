@@ -22,7 +22,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
-          version: 11
+          version: 12
       - run: npm ci
       - name: Build
         run: |
@@ -45,7 +45,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
-          version: 11
+          version: 12
       - name: Build
         run: |
           npm ci
@@ -73,7 +73,7 @@ jobs:
       - name: Use pnpm for version
         uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
         with:
-          version: 11
+          version: 12
       - name: Build
         run: |
           npm ci
