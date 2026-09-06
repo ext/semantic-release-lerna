@@ -1,0 +1,9 @@
+{
+  "name": "semantic-release-lerna",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "npm": "^10.x || ^11.x || ^12.x",
+    "pnpm": "^10.x || ^11.x"
+  }
+}

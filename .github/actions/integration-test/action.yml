@@ -1,0 +1,8 @@
+name: Integration tests
+description: Run the integration tests
+runs:
+  using: composite
+  steps:
+    - name: Integration test
+      shell: bash
+      run: npm exec vitest -- --no-coverage integration

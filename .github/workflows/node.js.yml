@@ -8,100 +8,16 @@ permissions:
 jobs:
   node:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [22.x, 24.x]
-
     steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          node-version: ${{ matrix.node-version }}
-      - name: Use pnpm for version
-        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
-        with:
-          version: 11
-      - run: npm ci
-      - name: Build
-        run: |
-          npm run --if-present build
-          node dist/index.js
-      - name: Test
-        run: npm test --ignore-scripts
-
-  lerna:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        lerna-version: [8.x, 9.x, 10.x]
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+          persist-credentials: false
       - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-      - name: Use pnpm for version
-        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
-        with:
-          version: 11
-      - name: Build
-        run: |
-          npm ci
-          npm run build --if-present
-      - name: Install lerna v${{ matrix.lerna-version }}
-        run: |
-          npm install $(npx -y npm-min-peer lerna --major ${{ matrix.lerna-version }} --with-name)
-          npm ls lerna
-      - name: Integration test
-        env:
-          ENABLE_PNPM_TESTS: ${{ matrix.lerna-version != '8.x' && '1' || '' }}
-        run: npm exec vitest -- --no-coverage integration
-
-  semantic-release:
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        sr-version: [24.x, 25.x]
-
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - name: Use Node.js
-        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
-      - name: Use pnpm for version
-        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
-        with:
-          version: 11
-      - name: Build
-        run: |
-          npm ci
-          npm run build --if-present
-      - name: Install semantic-release v${{ matrix.sr-version }}
-        run: |
-          npm install $(npx -y npm-min-peer semantic-release --major ${{ matrix.sr-version }} --with-name)
-          npm ls semantic-release
-      - name: Integration test
-        run: npm exec vitest -- --no-coverage integration
-
-  npm-pkg-lint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
-      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
-        with:
-          path: ~/.cache/npm-pkg-lint
-          key: npm-pkg-lint
-      - name: Use Node.js 24.x
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
         with:
           node-version: 24.x
-      - name: Install dependencies
-        run: npm ci
       - name: Build
-        run: npm run --if-present build
-      - name: npm-pkg-lint
-        run: |
-          npm pack
-          npm exec npm-pkg-lint
+        uses: ./.github/actions/build
+      - name: Test
+        run: npm test --ignore-scripts
