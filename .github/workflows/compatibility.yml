@@ -1,0 +1,117 @@
+name: Compatibility
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [22.x, 24.x, 26.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/build
+      - name: Test
+        run: npm test --ignore-scripts
+
+  lerna:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        lerna-version: [8.x, 9.x, 10.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.x
+      - name: Build
+        uses: ./.github/actions/build
+      - name: Install lerna v${{ matrix.lerna-version }}
+        run: |
+          npm install $(npx -y npm-min-peer lerna --major ${{ matrix.lerna-version }} --with-name)
+          npm ls lerna
+      - uses: ./.github/actions/integration-test
+
+  semantic-release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sr-version: [24.x, 25.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.x
+      - name: Build
+        uses: ./.github/actions/build
+      - name: Install semantic-release v${{ matrix.sr-version }}
+        run: |
+          npm install $(npx -y npm-min-peer semantic-release --major ${{ matrix.sr-version }} --with-name)
+          npm ls semantic-release
+      - uses: ./.github/actions/integration-test
+
+  npm:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        npm-version: [10.x, 11.x, 12.x]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.x
+      - name: Build
+        uses: ./.github/actions/build
+      - name: Use npm ${{ matrix.npm-version }}
+        run: |
+          npm install -g npm@${{ matrix.npm-version }}
+          npm --version
+      - name: Integration tests
+        uses: ./.github/actions/integration-test
+
+  pnpm:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        pnpm-version: [10.x, 11.x]
+    env:
+      ENABLE_PNPM_TESTS: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Use Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24.x
+      - name: Build
+        uses: ./.github/actions/build
+      - name: Use pnpm ${{ matrix.pnpm-version }}
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6
+        with:
+          version: ${{ matrix.pnpm-version }}
+      - uses: ./.github/actions/integration-test

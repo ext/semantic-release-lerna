@@ -1,0 +1,13 @@
+name: Build
+description: Build the package
+runs:
+  using: composite
+  steps:
+    - name: Install dependencies
+      shell: bash
+      run: npm ci
+    - name: Build
+      shell: bash
+      run: |
+        npm run build
+        node dist/index.js
