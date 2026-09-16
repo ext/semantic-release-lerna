@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        pnpm-version: [10.x, 11.x]
+        pnpm-version: [10.x, 11.x, 12.x]
     env:
       ENABLE_PNPM_TESTS: 1
     steps:
