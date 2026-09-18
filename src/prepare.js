@@ -155,17 +155,21 @@ function bumpDependency(dependencies, newVersion, currentVersions) {
 			continue;
 		}
 
+		if (!validRange(range)) {
+			continue;
+		}
+
+		const isSatisfied = semverSatisfies(newVersion, range);
+		if (isSatisfied) {
+			continue;
+		}
+
 		/* If the range is a a valid semver range but is no longer satisfied by the
 		 * new version forcibly update the range */
-		if (validRange(range)) {
-			const isSatisfied = semverSatisfies(newVersion, range);
-			if (!isSatisfied) {
-				const hat = range.startsWith("^") ? "^" : "";
-				const numComponents = Array.from(range).filter((it) => it === ".").length + 1;
-				const components = [newParsed.major, newParsed.minor, newParsed.patch];
-				dependencies[dep] = `${hat}${components.slice(0, numComponents).join(".")}`;
-			}
-		}
+		const hat = range.startsWith("^") ? "^" : "";
+		const numComponents = Array.from(range).filter((it) => it === ".").length + 1;
+		const components = [newParsed.major, newParsed.minor, newParsed.patch];
+		dependencies[dep] = `${hat}${components.slice(0, numComponents).join(".")}`;
 	}
 }
 
