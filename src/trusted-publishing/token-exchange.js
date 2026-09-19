@@ -7,7 +7,7 @@ import {
 	OFFICIAL_REGISTRY,
 } from "../definitions/constants.js";
 
-async function exchangeIdToken(idToken, packageName, logger) {
+async function exchangeIdToken(idToken, packageName, provider, logger) {
 	const response = await fetch(
 		`${OFFICIAL_REGISTRY}-/npm/v1/oidc/token/exchange/package/${encodeURIComponent(packageName)}`,
 		{
@@ -18,13 +18,15 @@ async function exchangeIdToken(idToken, packageName, logger) {
 	const responseBody = await response.json();
 
 	if (response.ok) {
-		logger.log("OIDC token exchange with the npm registry succeeded");
+		logger.log(
+			`OIDC token exchange with the npm registry succeeded for package "${packageName}" (provider: ${provider}, status: ${response.status})`,
+		);
 
 		return responseBody.token;
 	}
 
 	logger.log(
-		`OIDC token exchange with the npm registry failed: ${response.status} ${responseBody.message}`,
+		`OIDC token exchange with the npm registry failed for package "${packageName}" (provider: ${provider}): ${response.status} ${responseBody.message}`,
 	);
 
 	return undefined;
@@ -44,7 +46,7 @@ async function exchangeGithubActionsToken(packageName, logger) {
 		return undefined;
 	}
 
-	return exchangeIdToken(idToken, packageName, logger);
+	return exchangeIdToken(idToken, packageName, GITHUB_ACTIONS_PROVIDER_NAME, logger);
 }
 
 async function exchangeGitlabPipelinesToken(packageName, logger) {
@@ -59,7 +61,7 @@ async function exchangeGitlabPipelinesToken(packageName, logger) {
 		return undefined;
 	}
 
-	return exchangeIdToken(idToken, packageName, logger);
+	return exchangeIdToken(idToken, packageName, GITLAB_PIPELINES_PROVIDER_NAME, logger);
 }
 
 /**
