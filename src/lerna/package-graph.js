@@ -138,7 +138,6 @@ export class PackageGraph extends Map {
 
 				if (!depNode) {
 					// it's an external dependency, store the resolution and bail
-					/* eslint-disable-next-line unicorn/no-break-in-nested-loop -- technical debt */
 					continue;
 				}
 
