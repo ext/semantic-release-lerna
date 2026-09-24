@@ -81,7 +81,7 @@
   "devDependencies": {
     "@html-validate/eslint-config": "9.21.1",
     "@html-validate/eslint-config-vitest": "9.21.0",
-    "@html-validate/prettier-config": "4.1.13",
+    "@html-validate/prettier-config": "4.1.14",
     "@html-validate/release-scripts": "7.6.12",
     "@types/npmlog": "7.0.0",
     "@types/semver": "7.8.0",
