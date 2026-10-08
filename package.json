@@ -61,7 +61,7 @@
     "cosmiconfig": "^10.0.1",
     "detect-indent": "7.0.2",
     "env-ci": "11.2.0",
-    "execa": "10.0.1",
+    "execa": "10.1.0",
     "get-stream": "9.0.1",
     "globby": "^16.2.4",
     "import-from-esm": "^2.0.0",
