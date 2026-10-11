@@ -1,8 +1,7 @@
 import fs from "node:fs/promises";
 import { build } from "esbuild";
 
-const pkg = JSON.parse(await fs.readFile("package.json", "utf-8"));
-const { externalDependencies } = pkg;
+const { externalDependencies } = JSON.parse(await fs.readFile("package.json", "utf-8"));
 
 build({
 	entryPoints: ["src/index.js"],
