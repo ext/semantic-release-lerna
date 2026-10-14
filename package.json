@@ -79,8 +79,8 @@
     "semver": "7.8.5"
   },
   "devDependencies": {
-    "@html-validate/eslint-config": "9.22.1",
-    "@html-validate/eslint-config-vitest": "9.22.0",
+    "@html-validate/eslint-config": "9.23.2",
+    "@html-validate/eslint-config-vitest": "9.23.0",
     "@html-validate/prettier-config": "4.1.16",
     "@html-validate/release-scripts": "7.6.16",
     "@types/npmlog": "7.0.0",
