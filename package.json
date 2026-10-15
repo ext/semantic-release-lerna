@@ -70,7 +70,7 @@
     "libnpmversion": "^9.0.0",
     "minimatch": "10.2.6",
     "nerf-dart": "1.0.0",
-    "normalize-url": "9.0.1",
+    "normalize-url": "10.0.0",
     "npm-package-arg": "14.0.0",
     "p-map": "^7.1.1",
     "rc": "1.2.8",
