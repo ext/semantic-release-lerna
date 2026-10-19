@@ -49,6 +49,12 @@
     "pretest": "npm run eslint && npm run prettier:check",
     "test": "vitest run"
   },
+  "allowScripts": {
+    "esbuild": true,
+    "fsevents": false,
+    "nx": false,
+    "unrs-resolver": true
+  },
   "prettier": "@html-validate/prettier-config",
   "dependencies": {
     "@actions/core": "^3.0.1",
@@ -104,12 +110,6 @@
   "publishConfig": {
     "access": "public",
     "provenance": true
-  },
-  "allowScripts": {
-    "esbuild": true,
-    "nx": false,
-    "fsevents": false,
-    "unrs-resolver": true
   },
   "externalDependencies": [
     "@actions/core",
