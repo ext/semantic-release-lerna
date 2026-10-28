@@ -38,7 +38,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Build
         uses: ./.github/actions/build
       - name: Install lerna v${{ matrix.lerna-version }}
@@ -60,7 +60,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Build
         uses: ./.github/actions/build
       - name: Install semantic-release v${{ matrix.sr-version }}
@@ -82,7 +82,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Build
         uses: ./.github/actions/build
       - name: Use npm ${{ matrix.npm-version }}
@@ -107,7 +107,7 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
         with:
-          node-version: 24.x
+          node-version: 26.x
       - name: Build
         uses: ./.github/actions/build
       - name: Use pnpm ${{ matrix.pnpm-version }}
