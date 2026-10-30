@@ -2,6 +2,7 @@ import { getIDToken } from "@actions/core";
 import envCi from "env-ci";
 
 import {
+	CIRCLECI_PROVIDER_NAME,
 	GITHUB_ACTIONS_PROVIDER_NAME,
 	GITLAB_PIPELINES_PROVIDER_NAME,
 	OFFICIAL_REGISTRY,
@@ -55,7 +56,19 @@ async function exchangeGitlabPipelinesToken(packageName, logger) {
 	if (!idToken) {
 		logger.log(`Retrieval of GitLab Pipelines OIDC token failed`);
 		logger.log("Have you set the `id_tokens.NPM_ID_TOKEN` property to this pipeline job?");
+		return undefined;
+	}
 
+	return exchangeIdToken(idToken, packageName, logger);
+}
+
+async function exchangeCircleCIToken(packageName, logger) {
+	const idToken = process.env.NPM_ID_TOKEN;
+
+	logger.log(`Verifying OIDC context for publishing "${packageName}" from CircleCI`);
+
+	if (!idToken) {
+		logger.log(`Retrieval of CircleCI OIDC token failed`);
 		return undefined;
 	}
 
@@ -74,6 +87,10 @@ export default function exchangeToken(pkg, { logger }) {
 
 	if (GITLAB_PIPELINES_PROVIDER_NAME === ciProviderName) {
 		return exchangeGitlabPipelinesToken(pkg.name, logger);
+	}
+
+	if (CIRCLECI_PROVIDER_NAME === ciProviderName) {
+		return exchangeCircleCIToken(pkg.name, logger);
 	}
 
 	return undefined;
