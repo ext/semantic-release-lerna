@@ -40,4 +40,4 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: npm-pkg-lint
-        uses: ext/npm-pkg-lint@4a56802561878ebeaa5d8f254b103e936a720fff # v5.4.2
+        uses: ext/npm-pkg-lint@ad63685df0711a75bccfa89671d9a513add6245c # v5.5.0
