@@ -95,14 +95,14 @@
     "esbuild": "0.28.2",
     "lerna": "10.1.1",
     "npm-pkg-lint": "5.5.0",
-    "semantic-release": "25.0.9",
+    "semantic-release": "26.0.1",
     "stream-buffers": "3.0.3",
     "verdaccio": "6.11.2",
     "vitest": "5.1.0"
   },
   "peerDependencies": {
     "lerna": "^8.0.0 || ^9.0.0 || ^10.0.0",
-    "semantic-release": "^24.0.0 || ^25.0.0"
+    "semantic-release": "^24.0.0 || ^25.0.0 || ^26.0.0"
   },
   "engines": {
     "node": "^22.22.2 || ^24.15.0 || >= 26.0.0"
