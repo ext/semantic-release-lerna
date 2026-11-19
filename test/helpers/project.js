@@ -28,7 +28,7 @@ function generateNpmrc() {
 	return [
 		`registry=${npmRegistry.getRegistryUrl()}`,
 		`//${npmRegistry.getRegistryHost()}/:_authToken=${npmRegistry.getAuthToken()}`,
-		"email=${NPM_EMAIL}",
+		"//${npmRegistry.getRegistryHost()}/:email=${NPM_EMAIL}",
 	].join("\n");
 }
 
